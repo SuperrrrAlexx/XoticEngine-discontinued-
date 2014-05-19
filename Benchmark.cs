@@ -8,19 +8,58 @@ namespace ScorpionEngine
 {
     public class Benchmark
     {
-        static DateTime startTime, endTime;
-        static string name;
-        static bool started = false;
+        static string sName;
+        static DateTime sStartTime, sEndTime;
+        static bool sStarted = false;
 
-        public static void Start(string benchmarkName)
+        string name;
+        DateTime startTime, endTime;
+        bool started = false;
+
+        public Benchmark(string name)
         {
-            name = benchmarkName;
-            GameConsole.Write("Benchmark " + name + " started");
-            started = true;
-            startTime = DateTime.Now;
+            this.name = name;
         }
 
-        public static void End()
+        public static void StartStatic(string benchmarkName)
+        {
+            if (!sStarted)
+            {
+                sName = benchmarkName;
+                GameConsole.Write("Benchmark " + sName + " started");
+                sStarted = true;
+                sStartTime = DateTime.Now;
+            }
+            else
+                GameConsole.Error("Can't start a static benchmark before the previous on ended, recommend using instances.");
+        }
+
+        public void Start()
+        {
+            if (!started)
+            {
+                GameConsole.Write("Benchmark " + name + " started");
+                started = true;
+                startTime = DateTime.Now;
+            }
+            else
+                GameConsole.Error("Can't start a benchmark before it on ended.");
+        }
+
+        public static void EndStatic()
+        {
+            if (sStarted)
+            {
+                sEndTime = DateTime.Now;
+                GameConsole.Write("Benchmark " + sName + " ended");
+                GameConsole.Write("Time: " + (sEndTime - sStartTime));
+                sStarted = false;
+            }
+            else
+                GameConsole.Error("Can't end benchmark before it started.");
+        }
+
+        public void End()
         {
             if (started)
             {
@@ -30,7 +69,12 @@ namespace ScorpionEngine
                 started = false;
             }
             else
-                GameConsole.Error("Can't end benchmark before it started");
+                GameConsole.Error("Can't end benchmark before it started.");
         }
+
+        public DateTime StartTime
+        { get { return startTime; } }
+        public DateTime EndTime
+        { get { return endTime; } }
     }
 }
