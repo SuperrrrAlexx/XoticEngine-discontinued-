@@ -38,7 +38,13 @@ namespace ScorpionEngine
             //Initialize the assets, input, console
             Assets.Initialize(c, GraphicsDevice);
             Input.Initialize();
-            GameConsole.Initialize(consoleFont);
+            if (consoleFont != null)
+            {
+                GameConsole.Enabled = true;
+                GameConsole.Initialize(consoleFont);
+            }
+            else
+                GameConsole.Enabled = false;
 
             //Randomness
             random = new Random();

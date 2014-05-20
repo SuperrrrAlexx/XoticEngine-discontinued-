@@ -11,6 +11,7 @@ namespace ScorpionEngine
     public static class GameConsole
     {
         #region Fields
+        static bool enabled;
         //Input, log
         static List<Tuple<string, Color>> log = new List<Tuple<string,Color>>();
         static string input = "";
@@ -203,53 +204,59 @@ namespace ScorpionEngine
 
         public static void Update()
         {
-            //Make the text cursor blink
-            blinkTimeLeft -= SE.GameTime.ElapsedGameTime.Milliseconds;
-            if (blinkTimeLeft <= 0)
+            if (enabled)
             {
-                cursorVisible = !cursorVisible;
-                blinkTimeLeft += blinkTime;
-            }
-
-            //Add all letters from the addString to the input
-            while (addString != "")
-            {
-                if (input.Length < maxInputLength)
+                //Make the text cursor blink
+                blinkTimeLeft -= SE.GameTime.ElapsedGameTime.Milliseconds;
+                if (blinkTimeLeft <= 0)
                 {
-                    //Add the first letter
-                    input = input.Substring(0, cursorPos) + addString[0] + input.Substring(cursorPos, input.Length - cursorPos);
-                    addString = addString.Substring(1, addString.Length - 1);
-                    //Set the cursor position
-                    cursorPos++;
+                    cursorVisible = !cursorVisible;
+                    blinkTimeLeft += blinkTime;
                 }
-                else
-                    //Clear the addString
-                    addString = "";
+
+                //Add all letters from the addString to the input
+                while (addString != "")
+                {
+                    if (input.Length < maxInputLength)
+                    {
+                        //Add the first letter
+                        input = input.Substring(0, cursorPos) + addString[0] + input.Substring(cursorPos, input.Length - cursorPos);
+                        addString = addString.Substring(1, addString.Length - 1);
+                        //Set the cursor position
+                        cursorPos++;
+                    }
+                    else
+                        //Clear the addString
+                        addString = "";
+                }
             }
         }
 
         public static void Draw(SpriteBatch s)
         {
-            //Only draw the console if it's visible
-            if (visible)
+            if (enabled)
             {
-                //Draw the background
-                s.Draw(Assets.Get<Texture2D>("DummyTexture"), backRect, Color.Black * 0.6f);
-
-                //Draw the '>' and input
-                s.DrawString(font, ">", new Vector2(5, textPos.Y), Color.LightGray);
-                s.DrawString(font, input, textPos, Color.White);
-                //Draw the blinking text cursor
-                if (cursorVisible)
-                    s.DrawString(font, "|", textPos + new Vector2(font.MeasureString(input.Substring(0, cursorPos)).X - 5, 0), Color.LightGray);
-
-                //Draw the log
-                for (int i = log.Count - 1; i >= 0; i--)
+                //Only draw the console if it's visible
+                if (visible)
                 {
-                    //Calculate the text position
-                    Vector2 linePos = new Vector2(5, textPos.Y - font.LineSpacing * (log.Count - i));
-                    //Draw the text
-                    s.DrawString(font, log[i].Item1, linePos, log[i].Item2);
+                    //Draw the background
+                    s.Draw(Assets.Get<Texture2D>("DummyTexture"), backRect, Color.Black * 0.6f);
+
+                    //Draw the '>' and input
+                    s.DrawString(font, ">", new Vector2(5, textPos.Y), Color.LightGray);
+                    s.DrawString(font, input, textPos, Color.White);
+                    //Draw the blinking text cursor
+                    if (cursorVisible)
+                        s.DrawString(font, "|", textPos + new Vector2(font.MeasureString(input.Substring(0, cursorPos)).X - 5, 0), Color.LightGray);
+
+                    //Draw the log
+                    for (int i = log.Count - 1; i >= 0; i--)
+                    {
+                        //Calculate the text position
+                        Vector2 linePos = new Vector2(5, textPos.Y - font.LineSpacing * (log.Count - i));
+                        //Draw the text
+                        s.DrawString(font, log[i].Item1, linePos, log[i].Item2);
+                    }
                 }
             }
         }
@@ -293,6 +300,8 @@ namespace ScorpionEngine
         #region Properties
         public static bool Visible
         { get { return visible; } }
+        public static bool Enabled
+        { get { return enabled; } set { enabled = value; } }
         #endregion
     }
 }
