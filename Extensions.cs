@@ -24,5 +24,16 @@ namespace ScorpionEngine
             //Draw a rotated rectangle with height 1 (a line)
             s.Draw(Assets.Get<Texture2D>("DummyTexture"), new Rectangle((int)p1.X, (int)p1.Y, (int)length, 1), null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
         }
+
+        //Random
+        public static float NextFloat(this Random r)
+        {
+            return (float)r.NextDouble();
+        }
+
+        public static int NextParity(this Random r)
+        {
+            return r.Next(2) * 2 - 1;
+        }
     }
 }

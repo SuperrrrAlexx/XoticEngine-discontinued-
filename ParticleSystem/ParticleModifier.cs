@@ -16,32 +16,30 @@ namespace ScorpionEngine.ParticleSystem
     public class RandomSpawnSpeedModifier : ParticleModifier
     {
         #region Fields
-        Vector2 minSpeed;
-        Vector2 maxSpeed;
-        Random random;
+        float minSpeed, maxSpeed;
+        Vector2 direction;
         #endregion
 
         #region Constructors
-        public RandomSpawnSpeedModifier(Vector2 speed)
+        public RandomSpawnSpeedModifier(float speed)
         {
-            this.minSpeed = -speed;
             this.maxSpeed = speed;
-            random = new Random();
+            this.minSpeed = 0;
         }
-
-        public RandomSpawnSpeedModifier(Vector2 minSpeed, Vector2 maxSpeed)
+        public RandomSpawnSpeedModifier(float minSpeed, float maxSpeed)
         {
             this.minSpeed = minSpeed;
-            this.maxSpeed = maxSpeed;
-            random = new Random();
+            this.maxSpeed = maxSpeed - minSpeed;
         }
         #endregion
 
         #region Methods
         public override void Update(Particle p)
         {
-            Vector2 speed = new Vector2((float)random.NextDouble() * (maxSpeed.X - minSpeed.X) + minSpeed.X, (float)random.NextDouble() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
-            p.Speed = speed;
+            direction = new Vector2(SE.Random.NextFloat() * SE.Random.NextParity(), SE.Random.NextFloat() * SE.Random.NextParity());
+            direction.Normalize();
+            Vector2 newSpeed = (SE.Random.NextFloat() * (maxSpeed + minSpeed) * direction);
+            p.Speed = newSpeed;
         }
         #endregion
 
@@ -51,7 +49,7 @@ namespace ScorpionEngine.ParticleSystem
     public class RandomSpawnRotationModifier : ParticleModifier
     {
         #region Fields
-        Random random;
+        
         double minRot = 0.0;
         double maxRot = 2 * Math.PI;
         #endregion
@@ -59,12 +57,10 @@ namespace ScorpionEngine.ParticleSystem
         #region Constructors
         public RandomSpawnRotationModifier()
         {
-            random = new Random();
         }
 
         public RandomSpawnRotationModifier(double minRotation, double maxRotation)
         {
-            random = new Random();
             this.minRot = minRotation;
             this.maxRot = maxRotation;
         }
@@ -73,7 +69,7 @@ namespace ScorpionEngine.ParticleSystem
         #region Methods
         public override void Update(Particle p)
         {
-            p.Rotation = random.NextDouble() * (maxRot - minRot) + minRot;
+            p.Rotation = SE.Random.NextDouble() * (maxRot - minRot) + minRot;
         }
         #endregion
 
@@ -85,18 +81,15 @@ namespace ScorpionEngine.ParticleSystem
         #region Fields
         double minRotSpeed = -2 * Math.PI;
         double maxRotSpeed = 2 * Math.PI;
-        Random random;
         #endregion
 
         #region Constructors
         public RandomRotationSpeedModifier()
         {
-            random = new Random();
         }
 
         public RandomRotationSpeedModifier(double minRotationSpeed, double maxRotationSpeed)
         {
-            random = new Random();
             this.minRotSpeed = minRotationSpeed;
             this.maxRotSpeed = maxRotationSpeed;
         }
@@ -105,7 +98,7 @@ namespace ScorpionEngine.ParticleSystem
         #region Methods
         public override void Update(Particle p)
         {
-            p.RotationSpeed = random.NextDouble() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
+            p.RotationSpeed = SE.Random.NextDouble() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
         }
         #endregion
 
@@ -224,7 +217,7 @@ namespace ScorpionEngine.ParticleSystem
     public class FilledRectangleModifier : ParticleModifier
     {
         #region Fields
-        Random random;
+        
         int width;
         int height;
         #endregion
@@ -234,14 +227,14 @@ namespace ScorpionEngine.ParticleSystem
         {
             this.width = width;
             this.height = height;
-            random = new Random();
+            
         }
         #endregion
 
         #region Methods
         public override void Update(Particle p)
         {
-            p.Position = new Vector2((float)random.NextDouble() * width + p.Position.X, (float)random.NextDouble() * height + p.Position.Y);
+            p.Position = new Vector2((float)SE.Random.NextDouble() * width + p.Position.X, (float)SE.Random.NextDouble() * height + p.Position.Y);
         }
         #endregion
 
