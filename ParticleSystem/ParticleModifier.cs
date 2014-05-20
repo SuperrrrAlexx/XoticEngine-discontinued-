@@ -178,15 +178,61 @@ namespace ScorpionEngine.ParticleSystem
         {
             this.width = width;
             this.height = height;
-            
         }
 
         public override void Update(Particle p)
         {
-            p.Position = new Vector2((float)SE.Random.NextDouble() * width + p.Position.X, (float)SE.Random.NextDouble() * height + p.Position.Y);
+            p.Position += new Vector2(SE.Random.NextFloat() * width, SE.Random.NextFloat() * height);
         }
 
         public override bool UpdateOnce { get { return true; } }
+    }
+
+    public class OutlineRectangleModifier : ParticleModifier
+    {
+        int width, height;
+
+        public OutlineRectangleModifier(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+
+        public override void Update(Particle p)
+        {
+            if (SE.Random.NextParity() == 1)
+                p.Position += new Vector2(SE.Random.NextFloat() * width, SE.Random.Next(2) * height);
+            else
+                p.Position += new Vector2(SE.Random.Next(2) * width, SE.Random.NextFloat() * height);
+        }
+
+        public override bool UpdateOnce { get { return true; } }
+    }
+
+    public class FilledCircleModifier : ParticleModifier
+    {
+        int width, height;
+
+        public FilledCircleModifier(int radius)
+        {
+            this.width = radius;
+            this.height = radius;
+        }
+        public FilledCircleModifier(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+
+        public override void Update(Particle p)
+        {
+            double angle = SE.Random.NextDouble() * Math.PI * 2;
+            float random = SE.Random.NextFloat();
+            p.Position += new Vector2((float)Math.Cos(angle) * width * random, (float)Math.Sin(angle) * height * random);
+        }
+
+        public override bool UpdateOnce
+        { get { return true; } }
     }
 
     public class OutlineCircleModifier : ParticleModifier
