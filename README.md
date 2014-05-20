@@ -27,16 +27,36 @@ protected override void Draw(GameTime gameTime)
 ###GameObjects and GameStates
 By calling Update and Draw, the SE will update and draw all GameObjects in the current GameState. Objects in a gamestate other than the current one are not updated or drawn.
 
-###Assets
-Assets are loaded in dynamically when they are first used. Simply use the following code.
+You can create your own gamestate classes by inheriting them from the GameState class. In the constructor you then need to call the base constructor with the name of the gamestate. This name will be used to switch between states.
 ```
-//Load the item
+//Note that GameState is part of the GameObjects namespace
+using ScorpionEngine.GameObjects;
+
+public class PlayingState : GameState
+{
+  public PlayingState() : base("playing")
+  {
+    //Constructor stuff
+  }
+}
+```
+
+###Assets
+All of your games assets will be obtained and used through the Assets class. The supported types are:
+- Texture2D
+- SpriteFont
+- Effect
+- SoundEffect
+- Song
+- Video
+
+There is no need to load anything before getting it, because everything that isn't loaded when getting it will get loaded and stored, so it only needs to be loaded once. However, for sounds and music it can be useful to load it beforehand as this may cause lag.
+```
+//Load the item (not necessary)
 Assets.Load<Texture2D>("name");
 //Get the item
 Texture2D tex = Assets.Get<Texture2D>("name");
 ```
-There is no need to load anything before getting it, because everything that isn't loaded when getting it will get loaded and stored, so it only needs to be loaded once. However, for sounds and music it can be useful to load it beforehand as this may cause lag.
-
 
 Namespaces:  
 ScorpionEngine<br>
