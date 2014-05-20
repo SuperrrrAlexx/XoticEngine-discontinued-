@@ -15,12 +15,8 @@ namespace ScorpionEngine.ParticleSystem
     //Random spawn modifiers
     public class RandomSpawnSpeedModifier : ParticleModifier
     {
-        #region Fields
         float minSpeed, maxSpeed;
-        Vector2 direction;
-        #endregion
 
-        #region Constructors
         public RandomSpawnSpeedModifier(float speed)
         {
             this.maxSpeed = speed;
@@ -31,30 +27,22 @@ namespace ScorpionEngine.ParticleSystem
             this.minSpeed = minSpeed;
             this.maxSpeed = maxSpeed - minSpeed;
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
-            direction = new Vector2(SE.Random.NextFloat() * SE.Random.NextParity(), SE.Random.NextFloat() * SE.Random.NextParity());
+            Vector2 direction = new Vector2(SE.Random.NextFloat() * SE.Random.NextParity(), SE.Random.NextFloat() * SE.Random.NextParity());
             direction.Normalize();
-            Vector2 newSpeed = (SE.Random.NextFloat() * (maxSpeed + minSpeed) * direction);
-            p.Speed = newSpeed;
+            p.Speed = (SE.Random.NextFloat() * (maxSpeed + minSpeed) * direction);
         }
-        #endregion
 
         public override bool UpdateOnce { get { return true; } }
     }
 
     public class RandomSpawnRotationModifier : ParticleModifier
     {
-        #region Fields
-        
         double minRot = 0.0;
         double maxRot = 2 * Math.PI;
-        #endregion
 
-        #region Constructors
         public RandomSpawnRotationModifier()
         {
         }
@@ -64,26 +52,20 @@ namespace ScorpionEngine.ParticleSystem
             this.minRot = minRotation;
             this.maxRot = maxRotation;
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
             p.Rotation = SE.Random.NextDouble() * (maxRot - minRot) + minRot;
         }
-        #endregion
 
         public override bool UpdateOnce { get { return true; } }
     }
 
     public class RandomRotationSpeedModifier : ParticleModifier
     {
-        #region Fields
         double minRotSpeed = -2 * Math.PI;
         double maxRotSpeed = 2 * Math.PI;
-        #endregion
 
-        #region Constructors
         public RandomRotationSpeedModifier()
         {
         }
@@ -93,14 +75,11 @@ namespace ScorpionEngine.ParticleSystem
             this.minRotSpeed = minRotationSpeed;
             this.maxRotSpeed = maxRotationSpeed;
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
             p.RotationSpeed = SE.Random.NextDouble() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
         }
-        #endregion
 
         public override bool UpdateOnce { get { return true; } }
     }
@@ -108,39 +87,30 @@ namespace ScorpionEngine.ParticleSystem
     //Lerp modifiers
     public class ColorLerpModifier : ParticleModifier
     {
-        #region Fields
-        Color color1;
-        Color color2;
-        #endregion
+        Color color1, color2;
 
-        #region Constructors
         public ColorLerpModifier(Color color1, Color color2)
         {
             this.color1 = color1;
             this.color2 = color2;
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
             p.ParticleColor = Color.Lerp(color2, color1, p.TimeToLive / p.InitalTimeToLive);
         }
-        #endregion
 
         public override bool UpdateOnce { get { return false; } }
     }
 
     public class SizeLerpModifier : ParticleModifier
     {
-        #region Fields
-        Vector2 scale1 = Vector2.One;
-        Vector2 scale2 = Vector2.Zero;
-        #endregion
+        Vector2 scale1, scale2;
 
-        #region Constructors
         public SizeLerpModifier()
         {
+            this.scale1 = Vector2.One;
+            this.scale2 = Vector2.Zero;
         }
 
         public SizeLerpModifier(Vector2 scale1, Vector2 scale2)
@@ -148,33 +118,25 @@ namespace ScorpionEngine.ParticleSystem
             this.scale1 = scale1;
             this.scale2 = scale2;
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
             p.Scale = Vector2.Lerp(scale2, scale1, p.TimeToLive / p.InitalTimeToLive);
         }
-        #endregion
 
         public override bool UpdateOnce { get { return false; } }
     }
 
     public class FadeOutModifier : ParticleModifier
     {
-        #region Fields
         float fadeTime;
         Color startColor = Color.Transparent;
-        #endregion
 
-        #region Constructors
         public FadeOutModifier(float fadeTime)
         {
             this.fadeTime = fadeTime;
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
             if (p.TimeToLive <= fadeTime)
@@ -185,30 +147,24 @@ namespace ScorpionEngine.ParticleSystem
                 p.ParticleColor = Color.Lerp(Color.Transparent, startColor, p.TimeToLive / fadeTime);
             }
         }
-        #endregion
+
         public override bool UpdateOnce { get { return false; } }
     }
 
     //Other modifiers
     public class AccelerationModifier : ParticleModifier
     {
-        #region Fields
         Vector2 acceleration;
-        #endregion
 
-        #region Constructors
         public AccelerationModifier(Vector2 acceleration)
         {
             this.acceleration = acceleration;
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
             p.Speed += acceleration * (float)SE.DeltaTime.TotalSeconds;
         }
-        #endregion
 
         public override bool UpdateOnce { get { return false; } }
     }
@@ -216,28 +172,45 @@ namespace ScorpionEngine.ParticleSystem
     //Spawn shape modifiers
     public class FilledRectangleModifier : ParticleModifier
     {
-        #region Fields
-        
-        int width;
-        int height;
-        #endregion
+        int width, height;
 
-        #region Constructors
         public FilledRectangleModifier(int width, int height)
         {
             this.width = width;
             this.height = height;
             
         }
-        #endregion
 
-        #region Methods
         public override void Update(Particle p)
         {
             p.Position = new Vector2((float)SE.Random.NextDouble() * width + p.Position.X, (float)SE.Random.NextDouble() * height + p.Position.Y);
         }
-        #endregion
 
         public override bool UpdateOnce { get { return true; } }
+    }
+
+    public class OutlineCircleModifier : ParticleModifier
+    {
+        int width, height;
+
+        public OutlineCircleModifier(int radius)
+        {
+            this.width = radius;
+            this.height = radius;
+        }
+        public OutlineCircleModifier(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+
+        public override void Update(Particle p)
+        {
+            double angle = SE.Random.NextDouble() * Math.PI * 2;
+            p.Position += new Vector2((float)Math.Cos(angle) * width, (float)Math.Sin(angle) * height);
+        }
+
+        public override bool UpdateOnce
+        { get { return true; } }
     }
 }
