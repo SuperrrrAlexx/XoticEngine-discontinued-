@@ -25,6 +25,17 @@ namespace ScorpionEngine
             s.Draw(Assets.Get<Texture2D>("DummyTexture"), new Rectangle((int)p1.X, (int)p1.Y, (int)length, 1), null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
         }
 
+        //Point and Vector2
+        public static Vector2 ToVector2(this Point p)
+        {
+            return new Vector2(p.X, p.Y);
+        }
+
+        public static Point ToPoint(this Vector2 v)
+        {
+            return new Point((int)(v.X + 0.5f), (int)(v.Y + 0.5f));
+        }
+
         //Random
         public static float NextFloat(this Random r)
         {

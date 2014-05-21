@@ -17,6 +17,11 @@ namespace ScorpionEngine.Shapes
             this.radius = radius;
         }
 
+        public bool Contains(Point point)
+        {
+            return Vector2.Distance(point.ToVector2(), center.ToVector2()) <= radius;
+        }
+
         public Point Center
         { get { return center; } set { center = value; } }
         public int Radius
