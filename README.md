@@ -2,7 +2,7 @@
 
 ###Index
 - [Getting started](#getting-started)
-- [GameStates and GameObjects](gamestates-and-gameobjects)
+- [GameStates and GameObjects](#gamestates-and-gameobjects)
 - [Assets](#assets)
 - [Particle System](#particle-system)
 
