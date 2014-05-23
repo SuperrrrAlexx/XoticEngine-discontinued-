@@ -38,6 +38,29 @@ namespace ScorpionEngine.ParticleSystem
         public override bool UpdateOnce { get { return true; } }
     }
 
+    public class RandomSpawnDirectionModifier : ParticleModifier
+    {
+        Vector2 minSpeed, maxSpeed;
+
+        public RandomSpawnDirectionModifier(Vector2 speed)
+        {
+            this.maxSpeed = speed;
+            this.minSpeed = -speed;
+        }
+        public RandomSpawnDirectionModifier(Vector2 minSpeed, Vector2 maxSpeed)
+        {
+            this.minSpeed = minSpeed;
+            this.maxSpeed = maxSpeed;
+        }
+
+        public override void Update(Particle p)
+        {
+            p.Speed = new Vector2(SE.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, SE.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
+        }
+
+        public override bool UpdateOnce { get { return true; } }
+    }
+
     public class RandomSpawnRotationModifier : ParticleModifier
     {
         double minRot, maxRot;
@@ -176,6 +199,11 @@ namespace ScorpionEngine.ParticleSystem
     {
         int width, height;
 
+        public FilledRectangleModifier(int length)
+        {
+            this.width = length;
+            this.height = length;
+        }
         public FilledRectangleModifier(int width, int height)
         {
             this.width = width;

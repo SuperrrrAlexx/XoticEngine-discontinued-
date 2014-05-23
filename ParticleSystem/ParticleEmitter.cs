@@ -28,7 +28,7 @@ namespace ScorpionEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, double rotation, double rotationSpeed, Texture2D texture, Color color, float particlesPerSecond, float secondsToLive, List<ParticleModifier> modifierList)
+        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, double rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
             : base(name, position)
         {
             //Position
