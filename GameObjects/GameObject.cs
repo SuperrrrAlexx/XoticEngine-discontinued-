@@ -55,8 +55,6 @@ namespace ScorpionEngine.GameObjects
             {
                 //Add the child
                 children.Add(g);
-                //Set the parent to this on the child
-                g.Parent = this;
             }
         }
         #endregion
@@ -78,7 +76,16 @@ namespace ScorpionEngine.GameObjects
         { get { return relativePosition; } set { relativePosition = value; } }
         //Parent and children
         public GameObject Parent
-        { get { return parent; } set { parent = value; } }
+        {
+            get { return parent; }
+            set
+            {
+                if (parent != null)
+                    parent.Children.Remove(this);
+                value.AddChild(this);
+                parent = value;
+            }
+        }
         public List<GameObject> Children
         { get { return children; } set { children = value; } }
         #endregion
