@@ -11,8 +11,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
     {
         #region Fields
         //Background
-        Texture2D bar;
-        Texture2D button;
+        Texture2D bar, button;
         //Button
         Rectangle buttonRect;
         bool dragging = false;
@@ -22,14 +21,14 @@ namespace ScorpionEngine.GameObjects.MenuItems
         int amount = 0;
         float valueWidth;
         //Offsets
-        int offsetLeft, offsetRight;
+        int offsetLeft, offsetRight, yOffset;
         //Events
         int prevAmout;
         public event Action OnValueChange;
         #endregion
 
         #region Constructors
-        public Slider(string name, Vector2 position, Texture2D sliderBar, Texture2D sliderButton, int offsetLeft, int offsetRight, int values)
+        public Slider(string name, Vector2 position, Texture2D sliderBar, Texture2D sliderButton, int offsetLeft, int offsetRight, int yOffset, int values)
             : base(name, position)
         {
             this.bar = sliderBar;
@@ -42,6 +41,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
             //Offsets
             this.offsetLeft = offsetLeft;
             this.offsetRight = offsetRight;
+            this.yOffset = yOffset;
         }
         #endregion
 
@@ -64,7 +64,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
                 amount = (int)MathHelper.Clamp((Input.MousePosition.X - ((RelativePosition.X + offsetLeft) - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position
-            buttonPos = new Vector2(amount * valueWidth - button.Width / 2 + offsetLeft, bar.Height / 2 - button.Height / 2);
+            buttonPos = new Vector2(amount * valueWidth - button.Width / 2 + offsetLeft, (bar.Height / 2 - button.Height / 2) + yOffset);
             //Update the button rectangle
             buttonRect = new Rectangle((int)(RelativePosition.X + buttonPos.X), (int)(RelativePosition.Y + buttonPos.Y), button.Width, button.Height);
 
@@ -80,7 +80,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
         {
             //Draw the bar and button
             s.Draw(bar, RelativePosition, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.01f);
-            s.Draw(button, RelativePosition + buttonPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            s.Draw(button, buttonRect, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
 
             base.Draw(s);
         }
