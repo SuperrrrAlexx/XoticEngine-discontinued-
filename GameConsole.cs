@@ -38,10 +38,10 @@ namespace ScorpionEngine
         {
             //Set the text font and position
             font = Assets.Get<SpriteFont>(fontName);
-            textPos = new Vector2(font.MeasureString(">").X + 5, (int)(SE.Viewport.Height * 0.6) - font.LineSpacing);
+            textPos = new Vector2(font.MeasureString(">").X + 5, (int)(SE.Graphics.Viewport.Height * 0.6) - font.LineSpacing);
             
             //Set the back rectangle
-            backRect = new Rectangle(0, 0, SE.Viewport.Width, (int)(SE.Viewport.Height * 0.6));
+            backRect = new Rectangle(0, 0, SE.Graphics.Viewport.Width, (int)(SE.Graphics.Viewport.Height * 0.6));
 
             //Add the help text
             Write("Type \"commands\" for a list of commands.");
@@ -133,8 +133,8 @@ namespace ScorpionEngine
             //Show the total gametime
             Action<string[]> gameTime = (args) =>
                 {
-                    if (SE.GameTime != null)
-                        Write(SE.GameTime.TotalGameTime.ToString());
+                    if (SE.Time.GameTime != null)
+                        Write(SE.Time.GameTime.TotalGameTime.ToString());
                 };
             commands.Add("gametime", gameTime);
 
@@ -192,8 +192,8 @@ namespace ScorpionEngine
                 try
                 {
                     float gs = float.Parse(args[0]);
-                    SE.GameSpeed = gs;
-                    Write("Current game speed: " + SE.GameSpeed.ToString());
+                    SE.Time.GameSpeed = gs;
+                    Write("Current game speed: " + SE.Time.GameSpeed.ToString());
                 }
                 catch (Exception)
                 { Error("That is not a valid game speed. Example: gamespeed 0,5"); }
@@ -207,7 +207,7 @@ namespace ScorpionEngine
             if (enabled)
             {
                 //Make the text cursor blink
-                blinkTimeLeft -= SE.GameTime.ElapsedGameTime.Milliseconds;
+                blinkTimeLeft -= SE.Time.GameTime.ElapsedGameTime.Milliseconds;
                 if (blinkTimeLeft <= 0)
                 {
                     cursorVisible = !cursorVisible;

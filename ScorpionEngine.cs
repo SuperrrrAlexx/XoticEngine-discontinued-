@@ -13,7 +13,6 @@ namespace ScorpionEngine
 {
     public static class SE
     {
-        #region Fields
         //Time
         static GameTime gameTime;
         static TimeSpan deltaTime;
@@ -26,17 +25,15 @@ namespace ScorpionEngine
         static GameState currentState;
         //Random
         static Random random;
-        #endregion
 
-        #region Methods
         public static void Initialize(GraphicsDeviceManager g, ContentManager c, string consoleFont)
         {
             graphics = g;
             //Create a new spritebatch
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(Graphics.Device);
 
             //Initialize the assets, input, console
-            Assets.Initialize(c, GraphicsDevice);
+            Assets.Initialize(c, Graphics.Device);
             Input.Initialize();
             if (consoleFont != null)
             {
@@ -69,7 +66,7 @@ namespace ScorpionEngine
         public static void Draw()
         {
             //Clear the graphics device
-            GraphicsDevice.Clear(Color.Black);
+            Graphics.Device.Clear(Color.Black);
             //Begin the spritebatch
             spriteBatch.Begin();
 
@@ -110,25 +107,31 @@ namespace ScorpionEngine
                 currentState.BeginState();
             }
         }
-        #endregion
 
-        #region Properties
         //Time
-        public static GameTime GameTime
-        { get { return gameTime; } }
-        public static TimeSpan DeltaTime
-        { get { return deltaTime; } }
-        public static float GameSpeed
-        { get { return gameSpeed; } set { gameSpeed = value; } }
+        public struct Time
+        {
+            public static GameTime GameTime
+            { get { return gameTime; } }
+            public static TimeSpan DeltaTime
+            { get { return deltaTime; } }
+            public static float GameSpeed
+            { get { return gameSpeed; } set { gameSpeed = value; } }
+        }
+
         //Graphics, screen
-        public static GraphicsDevice GraphicsDevice
-        { get { return graphics.GraphicsDevice; } }
-        public static Point Screen
-        { get { return new Point(GraphicsDevice.DisplayMode.Width, GraphicsDevice.DisplayMode.Height); } }
-        public static Rectangle Viewport
-        { get { return GraphicsDevice.Viewport.Bounds; } }
-        public static bool Fullscreen
-        { get { return graphics.IsFullScreen; } set { graphics.IsFullScreen = value; } }
+        public struct Graphics
+        {
+            public static GraphicsDevice Device
+            { get { return graphics.GraphicsDevice; } }
+            public static Point Screen
+            { get { return new Point(Device.DisplayMode.Width, Device.DisplayMode.Height); } }
+            public static Rectangle Viewport
+            { get { return Device.Viewport.Bounds; } }
+            public static bool Fullscreen
+            { get { return graphics.IsFullScreen; } set { graphics.IsFullScreen = value; } }
+        }
+
         //Gamestate
         public static GameState CurrentState
         { get { return currentState; } }
@@ -157,6 +160,5 @@ namespace ScorpionEngine
         //Random
         public static Random Random
         { get { return random; } }
-        #endregion
     }
 }

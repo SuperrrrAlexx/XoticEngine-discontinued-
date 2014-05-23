@@ -163,7 +163,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Speed += acceleration * (float)SE.DeltaTime.TotalSeconds;
+            p.Speed += acceleration * (float)SE.Time.DeltaTime.TotalSeconds;
         }
 
         public override bool UpdateOnce { get { return false; } }

@@ -63,7 +63,7 @@ namespace ScorpionEngine
                 {
                     //The sprite texture
                     Rectangle sourceRect = new Rectangle(c * spriteWidth, r * spriteHeight, spriteWidth, spriteHeight);
-                    Texture2D sprite = new Texture2D(SE.GraphicsDevice, spriteWidth, spriteHeight);
+                    Texture2D sprite = new Texture2D(SE.Graphics.Device, spriteWidth, spriteHeight);
 
                     //Get the data from the sheet
                     Color[] data = new Color[spriteWidth * spriteHeight];

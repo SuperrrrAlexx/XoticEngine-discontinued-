@@ -74,7 +74,7 @@ namespace ScorpionEngine.ParticleSystem
                 p.Update(this);
 
             //Update the time to live
-            ttl -= (float)SE.DeltaTime.TotalSeconds;
+            ttl -= (float)SE.Time.DeltaTime.TotalSeconds;
             //If the ttl <= 0, let the particle die
             if (ttl <= 0)
                 alive = false;
