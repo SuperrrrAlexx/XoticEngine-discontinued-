@@ -47,6 +47,15 @@ public class PlayingState : GameState
 }
 ```
 
+Each GameObject has a couple of useful things:
+- Name
+- Position
+- RelativePosition
+- Parent
+- Children
+
+Let's start at the beginning: the name of a GameObject is how you find or remove GameObjects from a GameState. It's Position is the absolute position, that is the RelativePosition plus the RelativePosition of the parent (and the parents parent, etc). The RelativePosition is the position as compared to  its parent. You can only set a GameObjects RelativePosition, not its Position. The Parent is a GameObject, and the Children is a list of GameObjects. When adding a child, the parent will be set accordingly and vice versa.
+
 ###Assets
 All of your games assets will be obtained and used through the Assets class. The supported types are:
 - Texture2D
