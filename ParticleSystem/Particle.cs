@@ -9,7 +9,6 @@ namespace ScorpionEngine.ParticleSystem
 {
     public class Particle
     {
-        #region Fields
         //Position, rotation, size
         Vector2 position;
         Vector2 speed;
@@ -19,17 +18,15 @@ namespace ScorpionEngine.ParticleSystem
         float depth;
         //Alive or dead
         bool alive = true;
-        float ttl;
+        double ttl;
         //Modifiers
         List<ParticleModifier> modList;
-        float initialTTL;
+        double initialTTL;
         //Texture
         Texture2D texture;
         Color particleColor;
-        #endregion
 
-        #region Constructors
-        public Particle(Vector2 position, float depth, Vector2 speed, double rotation, double rotationSpeed, Texture2D texture, Color color, float ttl, List<ParticleModifier> modList)
+        public Particle(Vector2 position, float depth, Vector2 speed, double rotation, double rotationSpeed, Texture2D texture, Color color, double ttl, List<ParticleModifier> modList)
         {
             //Position, speed, rotation
             this.position = position;
@@ -60,24 +57,25 @@ namespace ScorpionEngine.ParticleSystem
                 }
             }
         }
-        #endregion
 
-        #region Methods
         public void Update()
         {
-            //Move and rotate the particle
-            position += speed;
-            rotation += rotationSpeed / 60;
+            if (alive)
+            {
+                //Move and rotate the particle
+                position += speed * (float)SE.Time.DeltaTime.TotalSeconds;
+                rotation += rotationSpeed * SE.Time.DeltaTime.TotalSeconds;
 
-            //Update each particle modifier
-            foreach (ParticleModifier p in modList)
-                p.Update(this);
+                //Update each particle modifier
+                foreach (ParticleModifier p in modList)
+                    p.Update(this);
 
-            //Update the time to live
-            ttl -= (float)SE.Time.DeltaTime.TotalSeconds;
-            //If the ttl <= 0, let the particle die
-            if (ttl <= 0)
-                alive = false;
+                //Update the time to live
+                ttl -= SE.Time.DeltaTime.TotalSeconds;
+                //If the ttl <= 0, let the particle die
+                if (ttl <= 0)
+                    alive = false;
+            }
         }
 
         public void Draw(SpriteBatch s)
@@ -85,14 +83,12 @@ namespace ScorpionEngine.ParticleSystem
             if (alive)
                 s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2(texture.Bounds.Center.X, texture.Bounds.Center.Y), scale, SpriteEffects.None, depth);
         }
-        #endregion
 
-        #region Properties
         public bool Alive
         { get { return alive; } }
-        public float TimeToLive
+        public double TimeToLive
         { get { return ttl; } }
-        public float InitalTimeToLive
+        public double InitalTimeToLive
         { get { return initialTTL; } }
         public Vector2 Position
         { get { return position; } set { position = value; } }
@@ -106,6 +102,5 @@ namespace ScorpionEngine.ParticleSystem
         { get { return scale; } set { scale = value; } }
         public Color ParticleColor
         { get { return particleColor; } set { particleColor = value; } }
-        #endregion
     }
 }

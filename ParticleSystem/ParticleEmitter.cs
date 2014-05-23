@@ -10,7 +10,6 @@ namespace ScorpionEngine.ParticleSystem
 {
     public class ParticleEmitter : GameObject
     {
-        #region Fields
         //Paused
         public bool Paused = false;
         //Position, rotation, speed
@@ -21,16 +20,14 @@ namespace ScorpionEngine.ParticleSystem
         float depth;
         //Particles
         List<Particle> particles;
-        float ppt;
-        float queue = 0;
-        float ttl;
+        double pps;
+        double queue = 0;
+        double ttl;
         List<ParticleModifier> modList;
         //Texture
         Texture2D texture;
         Color particleColor;
-        #endregion
 
-        #region Constructors
         public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, double rotation, double rotationSpeed, Texture2D texture, Color color, float particlesPerSecond, float secondsToLive, List<ParticleModifier> modifierList)
             : base(name, position)
         {
@@ -44,14 +41,12 @@ namespace ScorpionEngine.ParticleSystem
             this.speed = speed;
             this.texture = texture;
             this.ParticleColor = color;
-            this.ppt = particlesPerSecond / 60;
+            this.pps = particlesPerSecond;
             this.ttl = secondsToLive;
             this.modList = modifierList;
             this.particles = new List<Particle>();
         }
-        #endregion
 
-        #region Methods
         public override void Update()
         {
             //If the emitter is not paused, shoot particles
@@ -87,7 +82,7 @@ namespace ScorpionEngine.ParticleSystem
         public void Shoot()
         {
             //Update the queue and the actual amount of particles to be spawned this tick
-            queue += ppt;
+            queue += pps * SE.Time.DeltaTime.TotalSeconds;
             int spawns = (int)queue;
             //Create all the particles
             for (int n = spawns; n > 0; n--)
@@ -101,31 +96,35 @@ namespace ScorpionEngine.ParticleSystem
             queue -= spawns;
         }
 
-        public void Move(Vector2 position)
+        public void Shoot(int amount)
         {
-            //Set the previous and new position
-            prevPosition = Position;
-            RelativePosition = position;
+            //Create all the particles
+            for (int n = amount; n > 0; n--)
+            {
+                //Calculate the particle position between the old and new position
+                Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / amount), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / amount));
+                //Create a new particle and add it to the list
+                Particle p = new Particle(pos, depth, speed, rotation, rotationSpeed, texture, particleColor, ttl, modList);
+                particles.Add(p);
+            }
         }
-        #endregion
 
-        #region Properties
+        public new Vector2 RelativePosition
+        {
+            get { return base.RelativePosition; }
+            set
+            {
+                prevPosition = Position;
+                base.RelativePosition = value;
+            }
+        }
         //Particles shooting
-        public float ParticlesPerSecond
-        {
-            get { return ppt * 60f; }
-            set { ppt = value / 60f; }
-        }
-        public float TimeToLive
-        {
-            get { return ttl; }
-            set { ttl = value; }
-        }
+        public double ParticlesPerSecond
+        { get { return pps; } set { pps = value; } }
+        public double TimeToLive
+        { get { return ttl; } set { ttl = value; } }
         public List<ParticleModifier> ModifierList
-        {
-            get { return modList; }
-            set { modList = value; }
-        }
+        { get { return modList; } set { modList = value; } }
         //Particle properties
         public Vector2 Speed
         { get { return speed; } set { speed = value; } }
@@ -135,6 +134,5 @@ namespace ScorpionEngine.ParticleSystem
         { get { return rotationSpeed; } set { rotationSpeed = value; } }
         public Color ParticleColor
         { get { return particleColor; } set { particleColor = value; } }
-        #endregion
     }
 }

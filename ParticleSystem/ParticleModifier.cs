@@ -40,11 +40,12 @@ namespace ScorpionEngine.ParticleSystem
 
     public class RandomSpawnRotationModifier : ParticleModifier
     {
-        double minRot = 0.0;
-        double maxRot = 2 * Math.PI;
+        double minRot, maxRot;
 
         public RandomSpawnRotationModifier()
         {
+            this.minRot = 0.0;
+            this.maxRot = 2 * Math.PI;
         }
 
         public RandomSpawnRotationModifier(double minRotation, double maxRotation)
@@ -63,11 +64,12 @@ namespace ScorpionEngine.ParticleSystem
 
     public class RandomRotationSpeedModifier : ParticleModifier
     {
-        double minRotSpeed = -2 * Math.PI;
-        double maxRotSpeed = 2 * Math.PI;
+        double minRotSpeed, maxRotSpeed;
 
         public RandomRotationSpeedModifier()
         {
+            this.minRotSpeed = -2 * Math.PI;
+            this.maxRotSpeed = 2 * Math.PI;
         }
 
         public RandomRotationSpeedModifier(double minRotationSpeed, double maxRotationSpeed)
@@ -97,7 +99,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.ParticleColor = Color.Lerp(color2, color1, p.TimeToLive / p.InitalTimeToLive);
+            p.ParticleColor = Color.Lerp(color2, color1, (float)(p.TimeToLive / p.InitalTimeToLive));
         }
 
         public override bool UpdateOnce { get { return false; } }
@@ -121,7 +123,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Scale = Vector2.Lerp(scale2, scale1, p.TimeToLive / p.InitalTimeToLive);
+            p.Scale = Vector2.Lerp(scale2, scale1, (float)(p.TimeToLive / p.InitalTimeToLive));
         }
 
         public override bool UpdateOnce { get { return false; } }
@@ -129,10 +131,10 @@ namespace ScorpionEngine.ParticleSystem
 
     public class FadeOutModifier : ParticleModifier
     {
-        float fadeTime;
+        double fadeTime;
         Color startColor = Color.Transparent;
 
-        public FadeOutModifier(float fadeTime)
+        public FadeOutModifier(double fadeTime)
         {
             this.fadeTime = fadeTime;
         }
@@ -144,7 +146,7 @@ namespace ScorpionEngine.ParticleSystem
                 if (startColor == Color.Transparent)
                     startColor = p.ParticleColor;
 
-                p.ParticleColor = Color.Lerp(Color.Transparent, startColor, p.TimeToLive / fadeTime);
+                p.ParticleColor = Color.Lerp(Color.Transparent, startColor, (float)(p.TimeToLive / fadeTime));
             }
         }
 
