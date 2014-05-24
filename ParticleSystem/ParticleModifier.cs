@@ -16,23 +16,36 @@ namespace ScorpionEngine.ParticleSystem
     public class RandomSpawnSpeedModifier : ParticleModifier
     {
         float minSpeed, maxSpeed;
+        double minAngle, maxAngle;
 
         public RandomSpawnSpeedModifier(float speed)
         {
             this.maxSpeed = speed;
-            this.minSpeed = 0;
+            this.minSpeed = speed;
+            this.minAngle = 0;
+            this.maxAngle = 2 * Math.PI;
         }
         public RandomSpawnSpeedModifier(float minSpeed, float maxSpeed)
         {
             this.minSpeed = minSpeed;
-            this.maxSpeed = maxSpeed - minSpeed;
+            this.maxSpeed = maxSpeed;
+            this.minAngle = 0;
+            this.maxAngle = 2 * Math.PI;
+        }
+
+        public RandomSpawnSpeedModifier(float minSpeed,float maxSpeed, double minAngle, double maxAngle)
+        {
+            this.maxSpeed = minSpeed;
+            this.minSpeed = maxSpeed;
+            this.minAngle = minAngle;
+            this.maxAngle = maxAngle;
         }
 
         public override void Update(Particle p)
         {
-            Vector2 direction = new Vector2(SE.Random.NextFloat() * SE.Random.NextParity(), SE.Random.NextFloat() * SE.Random.NextParity());
-            direction.Normalize();
-            p.Speed = (SE.Random.NextFloat() * (maxSpeed + minSpeed) * direction);
+            double random = SE.Random.NextDouble();
+            Vector2 angle = new Vector2((float)(Math.Cos(random * (maxAngle - minAngle) + minAngle)), (float)(Math.Sin(random * (maxAngle - minAngle) + minAngle)));
+            p.Speed = (SE.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angle;
         }
 
         public override bool UpdateOnce { get { return true; } }
