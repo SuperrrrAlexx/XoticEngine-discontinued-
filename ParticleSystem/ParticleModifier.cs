@@ -13,19 +13,19 @@ namespace ScorpionEngine.ParticleSystem
     }
 
     //Random spawn modifiers
-    public class RandomSpawnSpeedModifier : ParticleModifier
+    public class RandomSpawnDirectionModifier : ParticleModifier
     {
         float minSpeed, maxSpeed;
         double minAngle, maxAngle;
 
-        public RandomSpawnSpeedModifier(float speed)
+        public RandomSpawnDirectionModifier(float speed)
         {
             this.maxSpeed = speed;
             this.minSpeed = speed;
             this.minAngle = 0;
             this.maxAngle = 2 * Math.PI;
         }
-        public RandomSpawnSpeedModifier(float minSpeed, float maxSpeed)
+        public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed)
         {
             this.minSpeed = minSpeed;
             this.maxSpeed = maxSpeed;
@@ -33,7 +33,7 @@ namespace ScorpionEngine.ParticleSystem
             this.maxAngle = 2 * Math.PI;
         }
 
-        public RandomSpawnSpeedModifier(float minSpeed,float maxSpeed, double minAngle, double maxAngle)
+        public RandomSpawnDirectionModifier(float minSpeed,float maxSpeed, double minAngle, double maxAngle)
         {
             this.maxSpeed = minSpeed;
             this.minSpeed = maxSpeed;
@@ -51,16 +51,16 @@ namespace ScorpionEngine.ParticleSystem
         public override bool UpdateOnce { get { return true; } }
     }
 
-    public class RandomSpawnDirectionModifier : ParticleModifier
+    public class RandomSpawnSpeedModifier : ParticleModifier
     {
         Vector2 minSpeed, maxSpeed;
 
-        public RandomSpawnDirectionModifier(Vector2 speed)
+        public RandomSpawnSpeedModifier(Vector2 speed)
         {
             this.maxSpeed = speed;
             this.minSpeed = -speed;
         }
-        public RandomSpawnDirectionModifier(Vector2 minSpeed, Vector2 maxSpeed)
+        public RandomSpawnSpeedModifier(Vector2 minSpeed, Vector2 maxSpeed)
         {
             this.minSpeed = minSpeed;
             this.maxSpeed = maxSpeed;
