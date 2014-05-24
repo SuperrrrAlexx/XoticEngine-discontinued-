@@ -11,7 +11,7 @@ namespace ScorpionEngine
     public static class Extensions
     {
         //Draw a line
-        public static void Draw(this SpriteBatch s, Line l, Color color)
+        public static void DrawLine(this SpriteBatch s, Line l, Color color)
         {
             //Calculate the direction and angle
             Vector2 p1 = new Vector2(l.P1.X, l.P1.Y);
