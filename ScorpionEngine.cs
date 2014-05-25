@@ -19,7 +19,8 @@ namespace ScorpionEngine
         static float gameSpeed = 1.0f;
         //Graphics
         static GraphicsDeviceManager graphics;
-        static SpriteBatch spriteBatch;
+        static SpriteBatch spriteBatch, noCamSpriteBatch;
+        static Matrix transformMatrix;
         //Gamestates
         static Dictionary<string, GameState> gameStates = new Dictionary<string, GameState>();
         static GameState currentState;
@@ -31,6 +32,7 @@ namespace ScorpionEngine
             graphics = g;
             //Create a new spritebatch
             spriteBatch = new SpriteBatch(Graphics.Device);
+            noCamSpriteBatch = new SpriteBatch(Graphics.Device);
 
             //Initialize the assets, input, console
             Assets.Initialize(c, Graphics.Device);
@@ -45,6 +47,9 @@ namespace ScorpionEngine
 
             //Randomness
             random = new Random();
+
+            //Set the transform matrix
+            transformMatrix = Matrix.Identity;
         }
 
         public static void Update(GameTime g)
@@ -67,18 +72,21 @@ namespace ScorpionEngine
         {
             //Clear the graphics device
             Graphics.Device.Clear(Color.Black);
-            //Begin the spritebatch
-            spriteBatch.Begin();
+
+            //Begin the spritebatches
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transformMatrix);
+            noCamSpriteBatch.Begin();
 
             //If the current game state is not null, draw it
             if (currentState != null)
                 currentState.Draw(spriteBatch);
 
             //Draw the console
-            GameConsole.Draw(spriteBatch);
+            GameConsole.Draw(noCamSpriteBatch);
 
-            //End the spritebatch
+            //End the spritebatches
             spriteBatch.End();
+            noCamSpriteBatch.End();
         }
 
         public static void AddGameState(GameState g)
@@ -130,6 +138,10 @@ namespace ScorpionEngine
             { get { return Device.Viewport.Bounds; } }
             public static bool Fullscreen
             { get { return graphics.IsFullScreen; } set { graphics.IsFullScreen = value; } }
+            public static Matrix TransformMatrix
+            { get { return transformMatrix; } set { transformMatrix = value; } }
+            public static SpriteBatch NoCamSpriteBatch
+            { get { return noCamSpriteBatch; } }
         }
 
         //Gamestate

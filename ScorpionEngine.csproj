@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Assets.cs" />
     <Compile Include="Benchmark.cs" />
+    <Compile Include="Camera.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameConsole.cs" />
     <Compile Include="GameObjects\GameObject.cs" />

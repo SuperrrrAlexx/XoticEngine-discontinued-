@@ -10,7 +10,6 @@ namespace ScorpionEngine
 {
     public static class GameConsole
     {
-        #region Fields
         static bool enabled;
         //Input, log
         static List<Tuple<string, Color>> log = new List<Tuple<string,Color>>();
@@ -30,10 +29,7 @@ namespace ScorpionEngine
         static SpriteFont font;
         //Commands
         static Dictionary<string, Action<string[]>> commands = new Dictionary<string, Action<string[]>>();
-        #endregion
 
-        #region Methods
-        #region Initialization
         public static void Initialize(string fontName)
         {
             //Set the text font and position
@@ -112,7 +108,7 @@ namespace ScorpionEngine
                 addString += c.ToString();
         }
 
-        //All the commands
+        //Initialize all the commands
         static void InitCommands()
         {
             //Display all the commands
@@ -200,8 +196,8 @@ namespace ScorpionEngine
             };
             commands.Add("gamespeed", gameSpeed);
         }
-        #endregion
 
+        //Update and draw
         public static void Update()
         {
             if (enabled)
@@ -231,7 +227,6 @@ namespace ScorpionEngine
                 }
             }
         }
-
         public static void Draw(SpriteBatch s)
         {
             if (enabled)
@@ -261,6 +256,7 @@ namespace ScorpionEngine
             }
         }
 
+        //Write to console
         public static void WriteColored(string t, Color c)
         {
             log.Add(new Tuple<string, Color>(t, c));
@@ -278,6 +274,7 @@ namespace ScorpionEngine
             WriteColored(t, Color.Red);
         }
 
+        //Command input
         public static void Command(string c)
         {
             //Make sure the string is in lowercase.
@@ -295,13 +292,10 @@ namespace ScorpionEngine
             else
                 Error("This command (" + command + ") does not exist. Type \"commands\" for a list of commands.");
         }
-        #endregion
 
-        #region Properties
         public static bool Visible
-        { get { return visible; } }
+        { get { return visible; } set { visible = value; } }
         public static bool Enabled
         { get { return enabled; } set { enabled = value; } }
-        #endregion
     }
 }
