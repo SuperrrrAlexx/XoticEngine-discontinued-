@@ -66,6 +66,9 @@ namespace ScorpionEngine.ParticleSystem
                         particles.RemoveAt(i);
                 }
             }
+
+            //Update the previous position
+            prevPosition = Position;
         }
 
         public override void Draw(SpriteBatch s)
