@@ -11,7 +11,7 @@ namespace ScorpionEngine.ParticleSystem
     public class ParticleEmitter : GameObject
     {
         //Paused
-        public bool Paused = false;
+        bool paused = false;
         //Position, rotation, speed
         Vector2 prevPosition;
         Vector2 speed;
@@ -50,7 +50,7 @@ namespace ScorpionEngine.ParticleSystem
         public override void Update()
         {
             //If the emitter is not paused, shoot particles
-            if (!Paused)
+            if (!paused)
                 Shoot();
 
             //If there are particles
@@ -119,6 +119,8 @@ namespace ScorpionEngine.ParticleSystem
             }
         }
         //Particles shooting
+        public bool Paused
+        { get { return paused; } set { paused = value; } }
         public double ParticlesPerSecond
         { get { return pps; } set { pps = value; } }
         public double TimeToLive

@@ -140,6 +140,8 @@ namespace ScorpionEngine
             { get { return graphics.IsFullScreen; } set { graphics.IsFullScreen = value; } }
             public static Matrix TransformMatrix
             { get { return transformMatrix; } set { transformMatrix = value; } }
+            public static void ResetTransformMatrix()
+            { transformMatrix = Matrix.Identity; }
             public static SpriteBatch NoCamSpriteBatch
             { get { return noCamSpriteBatch; } }
         }
