@@ -131,15 +131,17 @@ namespace ScorpionEngine
 
         public static void PlaySound(string name)
         {
-            Get<SoundEffect>("name").Play();
+            Get<SoundEffect>(name).Play();
         }
         public static void PlaySound(string name, float volume, float pitch, float pan)
         {
-            Get<SoundEffect>("name").Play(volume, pitch, pan);
+            Get<SoundEffect>(name).Play(volume, pitch, pan);
         }
         #endregion
 
         public static ContentManager Content
         { get { return content; } }
+        public static Texture2D DummyTexture
+        { get { return Get<Texture2D>("DummyTexture"); } }
     }
 }

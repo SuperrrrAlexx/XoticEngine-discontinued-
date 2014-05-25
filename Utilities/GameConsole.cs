@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ScorpionEngine
+namespace ScorpionEngine.Utilities
 {
     public static class GameConsole
     {

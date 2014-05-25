@@ -93,10 +93,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets.cs" />
-    <Compile Include="Benchmark.cs" />
-    <Compile Include="Camera.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="GameConsole.cs" />
+    <Compile Include="Utilities\Benchmark.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="Utilities\GameConsole.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameState.cs" />
     <Compile Include="GameObjects\MenuItems\Button.cs" />
