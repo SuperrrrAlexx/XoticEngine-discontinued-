@@ -96,6 +96,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Utilities\Benchmark.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Utilities\FrameRateCounter.cs" />
     <Compile Include="Utilities\GameConsole.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameState.cs" />

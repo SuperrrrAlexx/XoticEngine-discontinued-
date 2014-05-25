@@ -121,33 +121,41 @@ namespace ScorpionEngine.Utilities
 
             //Clear the log
             Action<string[]> clearLog = (args) =>
-            {
-                log = new List<Tuple<string, Color>>();
-            };
+                {
+                    log = new List<Tuple<string, Color>>();
+                };
             commands.Add("clear", clearLog);
+
+            //Show the fps
+            Action<string[]> showFPS = (args) =>
+                {
+                    Write("FPS: " + FrameRateCounter.FrameRate.ToString());
+                };
+            commands.Add("fps", showFPS);
 
             //Show the total gametime
             Action<string[]> gameTime = (args) =>
                 {
                     if (SE.Time.GameTime != null)
-                        Write(SE.Time.GameTime.TotalGameTime.ToString());
+                        Write("Total gametime: " + SE.Time.GameTime.TotalGameTime.ToString());
                 };
             commands.Add("gametime", gameTime);
 
             //Show the current gamestate
             Action<string[]> gameState = (args) =>
                 {
-                    Write(SE.CurrentStateName.ToString());
+                    Write("Current gamestate: " + SE.CurrentStateName.ToString());
                 };
             commands.Add("gamestate", gameState);
 
             //Show the list of gamestates
             Action<string[]> stateList = (args) =>
-            {
-                List<string> states = SE.GameStateNameList;
-                for (int i = 0; i < states.Count; i++)
-                    Write(states[i]);
-            };
+                {
+                    Write("Gamestates:");
+                    List<string> states = SE.GameStateNameList;
+                    for (int i = 0; i < states.Count; i++)
+                        Write(states[i]);
+                };
             commands.Add("statelist", stateList);
 
             //Switch to a gamestate
@@ -160,7 +168,7 @@ namespace ScorpionEngine.Utilities
                         else
                             Error(args[0] + " is already the current state.");
                     }
-                    catch(Exception)
+                    catch (Exception)
                     { Error("Example: switchto stateName"); }
                 };
             commands.Add("switchto", switchState);
@@ -168,6 +176,7 @@ namespace ScorpionEngine.Utilities
             //Show the list of gameobjects in the current gamestate
             Action<string[]> currentObjects = (args) =>
                 {
+                    Write("Gameobjects:");
                     List<string> names = SE.GameObjectNameList;
                     for (int i = 0; i < names.Count; i++)
                         Write(names[i]);
@@ -176,24 +185,24 @@ namespace ScorpionEngine.Utilities
 
             //Reset the gamestate
             Action<string[]> resetState = (args) =>
-            {
-                if (SE.CurrentStateName != "null")
-                    SE.SwitchTo(SE.CurrentStateName);
-            };
+                {
+                    if (SE.CurrentStateName != "null")
+                        SE.SwitchTo(SE.CurrentStateName);
+                };
             commands.Add("reset", resetState);
 
             //Show or set the gamespeed
             Action<string[]> gameSpeed = (args) =>
-            {
-                try
                 {
-                    float gs = float.Parse(args[0]);
-                    SE.Time.GameSpeed = gs;
-                    Write("Current game speed: " + SE.Time.GameSpeed.ToString());
-                }
-                catch (Exception)
-                { Error("That is not a valid game speed. Example: gamespeed 0,5"); }
-            };
+                    try
+                    {
+                        float gs = float.Parse(args[0]);
+                        SE.Time.GameSpeed = gs;
+                        Write("Current game speed: " + SE.Time.GameSpeed.ToString());
+                    }
+                    catch (Exception)
+                    { Error("That is not a valid game speed. Example: gamespeed 0,5"); }
+                };
             commands.Add("gamespeed", gameSpeed);
         }
 

@@ -67,6 +67,9 @@ namespace ScorpionEngine
             //Update the game console
             Input.Update();
             GameConsole.Update();
+
+            //Update the framerate counter
+            FrameRateCounter.Update();
         }
 
         public static void Draw()
@@ -88,6 +91,9 @@ namespace ScorpionEngine
             //End the spritebatches
             spriteBatch.End();
             noCamSpriteBatch.End();
+
+            //Draw the framerate counter
+            FrameRateCounter.Draw();
         }
 
         public static void AddGameState(GameState g)
