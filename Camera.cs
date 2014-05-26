@@ -9,7 +9,7 @@ namespace ScorpionEngine
     public class Camera
     {
         Matrix transform;
-        Vector2 position;
+        Vector2 position, shake;
         float zoom, rotation;
         bool applyOnUpdate;
 
@@ -26,7 +26,7 @@ namespace ScorpionEngine
 
         public void UpdateMatrix()
         {
-            transform = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
+            transform = Matrix.CreateTranslation(new Vector3(-position.X - shake.X, -position.Y - shake.Y, 0)) *
                 Matrix.CreateRotationZ(rotation) *
                 Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
                 Matrix.CreateTranslation(new Vector3(SE.Graphics.Viewport.Width * 0.5f, SE.Graphics.Viewport.Height * 0.5f, 0));
@@ -51,9 +51,20 @@ namespace ScorpionEngine
             position = Vector2.Zero;
             zoom = 1.0f;
             rotation = 0.0f;
+            shake = Vector2.Zero;
 
             //Update the matrix
             UpdateMatrix();
+        }
+
+        public void Shake(Vector2 amount)
+        {
+            shake = new Vector2(SE.Random.NextFloat() * SE.Random.NextParity() * amount.X, SE.Random.NextFloat() * SE.Random.NextParity() * amount.Y);
+            UpdateMatrix();
+        }
+        public void Shake(float amount)
+        {
+            Shake(new Vector2(amount));
         }
 
         public Matrix TransformMatrix
