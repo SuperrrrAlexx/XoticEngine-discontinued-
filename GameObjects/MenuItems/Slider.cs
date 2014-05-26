@@ -12,33 +12,31 @@ namespace ScorpionEngine.GameObjects.MenuItems
         //Background
         Texture2D bar, button;
         //Button
-        Rectangle buttonRect;
         bool dragging = false;
-        Vector2 buttonPos;
+        Vector2 buttonOffset, buttonPos;
+        Rectangle boundingBox;
         //Slider values
-        int maxValue;
+        int offsetRight, maxValue;
         int amount = 0;
         float valueWidth;
-        //Offsets
-        int offsetLeft, offsetRight, yOffset;
         //Events
         int prevAmout;
         public event Action OnValueChange;
 
-        public Slider(string name, Vector2 position, Texture2D sliderBar, Texture2D sliderButton, int offsetLeft, int offsetRight, int yOffset, int values)
+        public Slider(string name, Vector2 position, Vector2 buttonOffset, int offsetRight, Texture2D sliderBar, Texture2D sliderButton, int values)
             : base(name, position)
         {
             this.bar = sliderBar;
+            //Button
             this.button = sliderButton;
-            this.buttonRect = new Rectangle((int)RelativePosition.X, (int)RelativePosition.Y, button.Width, button.Height);
-            this.buttonPos = RelativePosition;
+            this.buttonOffset = buttonOffset;
+            this.buttonPos = Position + buttonOffset;
+            this.boundingBox = new Rectangle((int)(Position.X + buttonOffset.X), (int)(Position.Y + buttonOffset.Y), button.Width, button.Height);
             //Slider values
             this.maxValue = values - 1;
-            this.valueWidth = (float)(bar.Width - (offsetLeft + offsetRight)) / maxValue;
-            //Offsets
-            this.offsetLeft = offsetLeft;
+            this.valueWidth = (float)(bar.Width - (buttonOffset.X + offsetRight)) / maxValue;
+            //Offset
             this.offsetRight = offsetRight;
-            this.yOffset = yOffset;
         }
 
         public override void Update()
@@ -47,8 +45,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
             prevAmout = amount;
 
             //Update the bouding box
-            Rectangle boundingBox = buttonRect;
-            boundingBox.Location = Vector2.Transform(buttonRect.Location.ToVector2(), SE.Graphics.TransformMatrix).ToPoint();
+            boundingBox.Location = Vector2.Transform(buttonPos, SE.Graphics.TransformMatrix).ToPoint();
 
             //Start dragging
             if (Input.LeftClicked())
@@ -60,16 +57,13 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
             //Drag the button
             if (dragging)
-                amount = (int)MathHelper.Clamp((Input.MousePosition.X - ((boundingBox.X + offsetLeft) - valueWidth / 2)) / valueWidth, 0, maxValue);
+                amount = (int)MathHelper.Clamp((Input.MousePosition.X - (Vector2.Transform(Position, SE.Graphics.TransformMatrix).X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position
-            buttonPos = new Vector2(amount * valueWidth - button.Width / 2 + offsetLeft, (bar.Height / 2 - button.Height / 2) + yOffset);
-            //Update the button rectangle
-            buttonRect.Location = (RelativePosition + buttonPos).ToPoint();
+            buttonPos = Position + new Vector2(amount * valueWidth - button.Width / 2 + buttonOffset.X, (bar.Height / 2 - button.Height / 2) + buttonOffset.Y);
 
             //Call the OnValueChange event
-            if (prevAmout != amount)
-                if (OnValueChange != null)
+            if (prevAmout != amount && OnValueChange != null)
                     OnValueChange();
 
             base.Update();
@@ -78,8 +72,8 @@ namespace ScorpionEngine.GameObjects.MenuItems
         public override void Draw(SpriteBatch s)
         {
             //Draw the bar and button
-            s.Draw(bar, RelativePosition, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.01f);
-            s.Draw(button, buttonRect, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            s.Draw(bar, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.01f);
+            s.Draw(button, buttonPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             base.Draw(s);
         }

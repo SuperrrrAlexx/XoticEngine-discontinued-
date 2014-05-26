@@ -11,20 +11,17 @@ namespace ScorpionEngine
         Matrix transform;
         Vector2 position;
         float zoom, rotation;
+        bool applyOnUpdate;
 
-        public Camera()
+        public Camera(bool applyOnUpdate)
         {
+            this.applyOnUpdate = applyOnUpdate;
             Reset();
-            UpdateMatrix();
         }
-        public Camera(Vector2 position, float zoom, float rotation)
+        public Camera(Vector2 position, float zoom, float rotation, bool applyOnUpdate)
         {
-            this.position = position;
-            this.zoom = zoom;
-            this.rotation = rotation;
-
-            //Update the matrix
-            UpdateMatrix();
+            this.applyOnUpdate = applyOnUpdate;
+            UpdateMatrix(position, zoom, rotation);
         }
 
         public void UpdateMatrix()
@@ -33,6 +30,9 @@ namespace ScorpionEngine
                 Matrix.CreateRotationZ(rotation) *
                 Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
                 Matrix.CreateTranslation(new Vector3(SE.Graphics.Viewport.Width * 0.5f, SE.Graphics.Viewport.Height * 0.5f, 0));
+
+            if (applyOnUpdate)
+                SE.Graphics.TransformMatrix = transform;
         }
         public void UpdateMatrix(Vector2 position, float zoom, float rotation)
         {
