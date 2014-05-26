@@ -9,7 +9,6 @@ namespace ScorpionEngine.GameObjects.MenuItems
 {
     public class Slider : GameObject
     {
-        #region Fields
         //Background
         Texture2D bar, button;
         //Button
@@ -25,9 +24,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
         //Events
         int prevAmout;
         public event Action OnValueChange;
-        #endregion
 
-        #region Constructors
         public Slider(string name, Vector2 position, Texture2D sliderBar, Texture2D sliderButton, int offsetLeft, int offsetRight, int yOffset, int values)
             : base(name, position)
         {
@@ -43,9 +40,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
             this.offsetRight = offsetRight;
             this.yOffset = yOffset;
         }
-        #endregion
 
-        #region Methods
         public override void Update()
         {
             //Update the previous value
@@ -84,11 +79,8 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
             base.Draw(s);
         }
-        #endregion
 
-        #region Properties
         public int Value
         { get { return amount; } set { amount = value; } }
-        #endregion
     }
 }

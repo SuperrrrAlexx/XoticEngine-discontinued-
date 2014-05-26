@@ -9,7 +9,6 @@ namespace ScorpionEngine
 {
     public static class Input
     {
-        #region Fields
         //Keyboard
         static KeyboardState prevKeyboard;
         static KeyboardState currKeyboard;
@@ -23,9 +22,7 @@ namespace ScorpionEngine
         public static event CharEvent OnCharEntered;
         //A dictionary of keys that can be converted to characters
         static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
-        #endregion
 
-        #region Methods
         public static void Initialize()
         {
             //Add all the keys that can be converted to chars
@@ -195,9 +192,7 @@ namespace ScorpionEngine
         {
             return currKeyboard.GetPressedKeys().Except(prevKeyboard.GetPressedKeys()).ToArray();
         }
-        #endregion
 
-        #region Properties
         //Keyboard state
         public static KeyboardState PreviousKeyboard
         { get { return prevKeyboard; } }
@@ -211,6 +206,5 @@ namespace ScorpionEngine
         //Mouse position
         public static Point MousePosition
         { get { return new Point(currMouse.X, currMouse.Y); } }
-        #endregion
     }
 }

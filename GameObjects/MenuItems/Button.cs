@@ -9,7 +9,6 @@ namespace ScorpionEngine.GameObjects.MenuItems
 {
     public class Button : GameObject
     {
-        #region Fields
         //Background
         Rectangle rect;
         Texture2D texture;
@@ -24,9 +23,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
         bool hovering = false;
         public event Action OnLeftClick, OnRightClick, OnMiddleClick;
         public event Action OnMouseEnter, OnMouseExit;
-        #endregion
 
-        #region Constructors
         public Button(string name, Rectangle rect, SpriteSheet backTexture, bool useHoverTexture, Color backColor, Color backHoverColor, string text, SpriteFont font, Color textColor, Color textHoverColor)
             : base(name, new Vector2(rect.X, rect.Y))
         {
@@ -53,9 +50,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
                 this.hoverTexture = Assets.Get<Texture2D>("DummyTexture");
             }
         }
-        #endregion
 
-        #region Methods
         public override void Update()
         {
             //Update the position
@@ -107,11 +102,8 @@ namespace ScorpionEngine.GameObjects.MenuItems
             if (action != null)
                 action();
         }
-        #endregion
 
-        #region Properties
         public bool Hovering
         { get { return hovering; } }
-        #endregion
     }
 }

@@ -9,15 +9,12 @@ namespace ScorpionEngine.GameObjects.MenuItems
 {
     public class ToggleButton : GameObject
     {
-        #region Fields
         Rectangle rect;
         bool toggled;
         SpriteSheet sheet;
         //Actions
         public event Action OnToggle;
-        #endregion
 
-        #region Constructors
         public ToggleButton(string name, Rectangle rect, SpriteSheet sheet, bool toggled)
             : base(name, new Vector2(rect.X, rect.Y))
         {
@@ -25,9 +22,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
             this.toggled = toggled;
             this.sheet = sheet;
         }
-        #endregion
 
-        #region Methods
         public override void Update()
         {
             //Update the position
@@ -58,11 +53,8 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
             base.Draw(s);
         }
-        #endregion
 
-        #region Properties
         public bool Toggled
         { get { return toggled; } set { toggled = value; } }
-        #endregion
     }
 }

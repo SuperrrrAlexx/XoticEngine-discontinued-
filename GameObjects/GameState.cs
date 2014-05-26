@@ -9,19 +9,14 @@ namespace ScorpionEngine.GameObjects
 {
     public class GameState : List<GameObject>
     {
-        #region Fields
         string name;
-        #endregion
 
-        #region Constructors
         public GameState(string name)
             : base()
         {
             this.name = name;
         }
-        #endregion
 
-        #region Methods
         public virtual void Update()
         {
             //Update each gameobject
@@ -78,11 +73,8 @@ namespace ScorpionEngine.GameObjects
                 if (this[i].Name == name)
                     RemoveAt(i);
         }
-        #endregion
 
-        #region Properties
         public string Name
         { get { return name; } }
-        #endregion
     }
 }

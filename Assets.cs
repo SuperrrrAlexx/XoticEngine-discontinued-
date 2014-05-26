@@ -12,7 +12,6 @@ namespace ScorpionEngine
 {
     public static class Assets
     {
-        #region Fields
         //Content manager
         static ContentManager content;
         //Lists with assets
@@ -25,9 +24,7 @@ namespace ScorpionEngine
         static Dictionary<string, Video> videos = new Dictionary<string, Video>();
         //Prefixes
         static Dictionary<string, string> prefixes;
-        #endregion
 
-        #region Methods
         public static void Initialize(ContentManager c, GraphicsDevice g)
         {
             //Set the content manager
@@ -137,7 +134,6 @@ namespace ScorpionEngine
         {
             Get<SoundEffect>(name).Play(volume, pitch, pan);
         }
-        #endregion
 
         public static ContentManager Content
         { get { return content; } }

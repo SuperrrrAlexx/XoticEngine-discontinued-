@@ -9,16 +9,13 @@ namespace ScorpionEngine.GameObjects
 {
     public class GameObject
     {
-        #region Fields
         string name;
         //The position based on 
         Vector2 relativePosition;
         //Parent and children
         GameObject parent;
         List<GameObject> children = new List<GameObject>();
-        #endregion
 
-        #region Constructors
         public GameObject(string name)
         {
             this.name = name;
@@ -29,9 +26,7 @@ namespace ScorpionEngine.GameObjects
             this.name = name;
             this.relativePosition = position;
         }
-        #endregion
 
-        #region Methods
         public virtual void Update()
         {
             //Update each child
@@ -57,9 +52,7 @@ namespace ScorpionEngine.GameObjects
                 children.Add(g);
             }
         }
-        #endregion
 
-        #region Properties
         public string Name
         { get { return name; } }
         //Position
@@ -88,6 +81,5 @@ namespace ScorpionEngine.GameObjects
         }
         public List<GameObject> Children
         { get { return children; } set { children = value; } }
-        #endregion
     }
 }

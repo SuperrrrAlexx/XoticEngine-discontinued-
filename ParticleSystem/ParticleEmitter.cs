@@ -99,6 +99,12 @@ namespace ScorpionEngine.ParticleSystem
             queue -= spawns;
         }
 
+        public void Move(Vector2 position)
+        {
+            RelativePosition = position;
+            prevPosition = Position;
+        }
+
         public void Shoot(int amount)
         {
             //Create all the particles
@@ -112,15 +118,6 @@ namespace ScorpionEngine.ParticleSystem
             }
         }
 
-        public new Vector2 RelativePosition
-        {
-            get { return base.RelativePosition; }
-            set
-            {
-                prevPosition = Position;
-                base.RelativePosition = value;
-            }
-        }
         //Particles shooting
         public bool Paused
         { get { return paused; } set { paused = value; } }
