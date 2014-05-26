@@ -33,7 +33,7 @@ namespace ScorpionEngine
         {
             transform = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
                 Matrix.CreateRotationZ(rotation) *
-                Matrix.CreateScale(zoom) *
+                Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
                 Matrix.CreateTranslation(new Vector3(bounds.Width * 0.5f, bounds.Height * 0.5f, 0));
         }
         public void UpdateMatrix(Vector2 position, float zoom, float rotation)
