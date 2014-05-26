@@ -14,6 +14,8 @@ namespace ScorpionEngine
 {
     public static class SE
     {
+        //Game class
+        static Game game;
         //Time
         static GameTime gameTime;
         static TimeSpan deltaTime;
@@ -28,15 +30,16 @@ namespace ScorpionEngine
         //Random
         static Random random;
 
-        public static void Initialize(GraphicsDeviceManager g, ContentManager c, string consoleFont)
+        public static void Initialize(Game g, GraphicsDeviceManager device, string consoleFont)
         {
-            graphics = g;
+            game = g;
+            graphics = device;
             //Create a new spritebatch
             spriteBatch = new SpriteBatch(Graphics.Device);
             noCamSpriteBatch = new SpriteBatch(Graphics.Device);
 
             //Initialize the assets, input, console
-            Assets.Initialize(c, Graphics.Device);
+            Assets.Initialize(game.Content, Graphics.Device);
             Input.Initialize();
             if (consoleFont != null)
             {
@@ -132,11 +135,15 @@ namespace ScorpionEngine
             { get { return deltaTime; } }
             public static float GameSpeed
             { get { return gameSpeed; } set { gameSpeed = value; } }
+            public static bool IsFixedtimeStep
+            { get { return game.IsFixedTimeStep; } set { game.IsFixedTimeStep = value; } }
         }
 
         //Graphics, screen
         public struct Graphics
         {
+            public static GraphicsDeviceManager DeviceManager
+            { get { return graphics; } }
             public static GraphicsDevice Device
             { get { return graphics.GraphicsDevice; } }
             public static Point Screen
@@ -144,15 +151,20 @@ namespace ScorpionEngine
             public static Rectangle Viewport
             { get { return Device.Viewport.Bounds; } }
             public static bool Fullscreen
-            { get { return graphics.IsFullScreen; } set { graphics.IsFullScreen = value; } }
+            { get { return graphics.IsFullScreen; } set { graphics.IsFullScreen = value; graphics.ApplyChanges(); } }
             public static Matrix TransformMatrix
             { get { return transformMatrix; } set { transformMatrix = value; } }
             public static void ResetTransformMatrix()
             { transformMatrix = Matrix.Identity; }
             public static SpriteBatch NoCamSpriteBatch
             { get { return noCamSpriteBatch; } }
+            public static bool VSync
+            { get { return graphics.SynchronizeWithVerticalRetrace; } set { graphics.SynchronizeWithVerticalRetrace = value; graphics.ApplyChanges(); } }
         }
-
+        public static bool IsMouseVisible
+        { get { return game.IsMouseVisible; } set { game.IsMouseVisible = value; } }
+        public static string WindowTitle
+        { get { return game.Window.Title; } set { game.Window.Title = value; } }
         //Gamestate
         public static GameState CurrentState
         { get { return currentState; } }
