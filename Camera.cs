@@ -11,7 +11,6 @@ namespace ScorpionEngine
         Matrix transform;
         Vector2 position;
         float zoom, rotation;
-        Rectangle bounds;
 
         public Camera()
         {
@@ -23,7 +22,6 @@ namespace ScorpionEngine
             this.position = position;
             this.zoom = zoom;
             this.rotation = rotation;
-            this.bounds = new Rectangle(SE.Graphics.Viewport.Width / 2, SE.Graphics.Viewport.Height / 2, SE.Graphics.Viewport.Width, SE.Graphics.Viewport.Height);
 
             //Update the matrix
             UpdateMatrix();
@@ -34,7 +32,7 @@ namespace ScorpionEngine
             transform = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0)) *
                 Matrix.CreateRotationZ(rotation) *
                 Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
-                Matrix.CreateTranslation(new Vector3(bounds.Width * 0.5f, bounds.Height * 0.5f, 0));
+                Matrix.CreateTranslation(new Vector3(SE.Graphics.Viewport.Width * 0.5f, SE.Graphics.Viewport.Height * 0.5f, 0));
         }
         public void UpdateMatrix(Vector2 position, float zoom, float rotation)
         {
@@ -53,7 +51,6 @@ namespace ScorpionEngine
             position = Vector2.Zero;
             zoom = 1.0f;
             rotation = 0.0f;
-            bounds = new Rectangle(SE.Graphics.Viewport.Width / 2, SE.Graphics.Viewport.Height / 2, SE.Graphics.Viewport.Width, SE.Graphics.Viewport.Height);
 
             //Update the matrix
             UpdateMatrix();
@@ -67,7 +64,5 @@ namespace ScorpionEngine
         { get { return zoom; } set { zoom = value; UpdateMatrix(); } }
         public float Rotation
         { get { return rotation; } set { rotation = value; UpdateMatrix(); } }
-        public Rectangle Bounds
-        { get { return bounds; } set { bounds = value; UpdateMatrix(); } }
     }
 }

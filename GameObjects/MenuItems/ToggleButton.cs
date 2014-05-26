@@ -25,11 +25,12 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
         public override void Update()
         {
-            //Update the position
-            rect.Location = new Point((int)RelativePosition.X, (int)RelativePosition.Y);
+            //Update the bouding box
+            Rectangle boundingBox = rect;
+            boundingBox.Location = Vector2.Transform(rect.Location.ToVector2(), SE.Graphics.TransformMatrix).ToPoint();
 
             //Check if the mouse is within the rectangle
-            if (rect.Contains(Input.MousePosition))
+            if (boundingBox.Contains(Input.MousePosition))
             {
                 //Check for clicks
                 if (Input.LeftClicked())

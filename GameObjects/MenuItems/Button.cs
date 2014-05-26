@@ -11,8 +11,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
     {
         //Background
         Rectangle rect;
-        Texture2D texture;
-        Texture2D hoverTexture;
+        Texture2D texture, hoverTexture;
         //Colors
         Color backColor, backHoverColor;
         Color textColor, textHoverColor;
@@ -53,11 +52,12 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
         public override void Update()
         {
-            //Update the position
-            rect.Location = new Point((int)RelativePosition.X, (int)RelativePosition.Y);
+            //Update the bouding box
+            Rectangle boundingBox = rect;
+            boundingBox.Location = Vector2.Transform(rect.Location.ToVector2(), SE.Graphics.TransformMatrix).ToPoint();
 
             //Check if the mouse is within the rectangle
-            if (rect.Contains(Input.MousePosition))
+            if (boundingBox.Contains(Input.MousePosition))
             {
                 //If the mouse was previously not hovering, call OnMouseEnter
                 if (!hovering)

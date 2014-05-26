@@ -46,9 +46,13 @@ namespace ScorpionEngine.GameObjects.MenuItems
             //Update the previous value
             prevAmout = amount;
 
+            //Update the bouding box
+            Rectangle boundingBox = buttonRect;
+            boundingBox.Location = Vector2.Transform(buttonRect.Location.ToVector2(), SE.Graphics.TransformMatrix).ToPoint();
+
             //Start dragging
             if (Input.LeftClicked())
-                if (buttonRect.Contains(Input.MousePosition))
+                if (boundingBox.Contains(Input.MousePosition))
                     dragging = true;
             //Stop dragging
             if (!Input.LeftMousePressed())
@@ -56,12 +60,12 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
             //Drag the button
             if (dragging)
-                amount = (int)MathHelper.Clamp((Input.MousePosition.X - ((RelativePosition.X + offsetLeft) - valueWidth / 2)) / valueWidth, 0, maxValue);
+                amount = (int)MathHelper.Clamp((Input.MousePosition.X - ((boundingBox.X + offsetLeft) - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position
             buttonPos = new Vector2(amount * valueWidth - button.Width / 2 + offsetLeft, (bar.Height / 2 - button.Height / 2) + yOffset);
             //Update the button rectangle
-            buttonRect = new Rectangle((int)(RelativePosition.X + buttonPos.X), (int)(RelativePosition.Y + buttonPos.Y), button.Width, button.Height);
+            buttonRect.Location = (RelativePosition + buttonPos).ToPoint();
 
             //Call the OnValueChange event
             if (prevAmout != amount)
