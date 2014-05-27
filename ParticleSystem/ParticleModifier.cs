@@ -32,7 +32,6 @@ namespace ScorpionEngine.ParticleSystem
             this.minAngle = 0;
             this.maxAngle = 2 * Math.PI;
         }
-
         public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed, double minAngle, double maxAngle)
         {
             this.maxSpeed = minSpeed;
@@ -139,6 +138,23 @@ namespace ScorpionEngine.ParticleSystem
         }
 
         public override bool UpdateOnce { get { return true; } }
+    }
+
+    public class RotateBySpeedModifier : ParticleModifier
+    {
+        double rotOffset;
+
+        public RotateBySpeedModifier(double rotationOffset)
+        {
+            this.rotOffset = rotationOffset;
+        }
+
+        public override void Update(Particle p)
+        {
+            p.Rotation = p.Speed.GetAngle() + rotOffset;
+        }
+
+        public override bool UpdateOnce { get { return false; } }
     }
     #endregion
 

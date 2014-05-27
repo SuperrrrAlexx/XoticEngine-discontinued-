@@ -36,6 +36,16 @@ namespace ScorpionEngine
             return new Point((int)(v.X + 0.5f), (int)(v.Y + 0.5f));
         }
 
+        public static double GetAngle(this Vector2 v)
+        {
+            return Math.Atan2(v.X / v.Length(), -v.Y / v.Length());
+        }
+
+        public static Vector2 GetDirection(this double a)
+        {
+            return new Vector2((float)Math.Sin(a), (float)-Math.Cos(a));
+        }
+
         //Random
         public static float NextFloat(this Random r)
         {
