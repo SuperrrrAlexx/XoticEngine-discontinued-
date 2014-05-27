@@ -12,7 +12,7 @@ namespace ScorpionEngine.ParticleSystem
         public abstract bool UpdateOnce { get; }
     }
 
-    //Random spawn modifiers
+    #region Speed
     public class RandomSpawnDirectionModifier : ParticleModifier
     {
         float minSpeed, maxSpeed;
@@ -33,7 +33,7 @@ namespace ScorpionEngine.ParticleSystem
             this.maxAngle = 2 * Math.PI;
         }
 
-        public RandomSpawnDirectionModifier(float minSpeed,float maxSpeed, double minAngle, double maxAngle)
+        public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed, double minAngle, double maxAngle)
         {
             this.maxSpeed = minSpeed;
             this.minSpeed = maxSpeed;
@@ -74,6 +74,25 @@ namespace ScorpionEngine.ParticleSystem
         public override bool UpdateOnce { get { return true; } }
     }
 
+    public class AccelerationModifier : ParticleModifier
+    {
+        Vector2 acceleration;
+
+        public AccelerationModifier(Vector2 acceleration)
+        {
+            this.acceleration = acceleration;
+        }
+
+        public override void Update(Particle p)
+        {
+            p.Speed += acceleration * (float)SE.Time.DeltaTime.TotalSeconds;
+        }
+
+        public override bool UpdateOnce { get { return false; } }
+    }
+    #endregion
+
+    #region Rotation
     public class RandomSpawnRotationModifier : ParticleModifier
     {
         double minRot, maxRot;
@@ -121,8 +140,9 @@ namespace ScorpionEngine.ParticleSystem
 
         public override bool UpdateOnce { get { return true; } }
     }
+    #endregion
 
-    //Lerp modifiers
+    #region LerpModifiers
     public class ColorLerpModifier : ParticleModifier
     {
         Color color1, color2;
@@ -188,26 +208,9 @@ namespace ScorpionEngine.ParticleSystem
 
         public override bool UpdateOnce { get { return false; } }
     }
+    #endregion
 
-    //Other modifiers
-    public class AccelerationModifier : ParticleModifier
-    {
-        Vector2 acceleration;
-
-        public AccelerationModifier(Vector2 acceleration)
-        {
-            this.acceleration = acceleration;
-        }
-
-        public override void Update(Particle p)
-        {
-            p.Speed += acceleration * (float)SE.Time.DeltaTime.TotalSeconds;
-        }
-
-        public override bool UpdateOnce { get { return false; } }
-    }
-
-    //Spawn shape modifiers
+    #region SpawnShapes
     public class FilledRectangleModifier : ParticleModifier
     {
         int width, height;
@@ -302,4 +305,5 @@ namespace ScorpionEngine.ParticleSystem
         public override bool UpdateOnce
         { get { return true; } }
     }
+    #endregion
 }
