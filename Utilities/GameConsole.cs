@@ -244,14 +244,14 @@ namespace ScorpionEngine.Utilities
                 if (visible)
                 {
                     //Draw the background
-                    s.Draw(Assets.Get<Texture2D>("DummyTexture"), backRect, Color.Black * 0.6f);
+                    s.Draw(Assets.Get<Texture2D>("DummyTexture"), backRect, null, Color.Black * 0.6f, 0, Vector2.Zero, SpriteEffects.None, float.Epsilon);
 
                     //Draw the '>' and input
                     s.DrawString(font, ">", new Vector2(5, textPos.Y), Color.LightGray);
                     s.DrawString(font, input, textPos, Color.White);
                     //Draw the blinking text cursor
                     if (cursorVisible)
-                        s.DrawString(font, "|", textPos + new Vector2(font.MeasureString(input.Substring(0, cursorPos)).X - 5, 0), Color.LightGray);
+                        s.DrawString(font, "|", textPos + new Vector2(font.MeasureString(input.Substring(0, cursorPos)).X - 5, 0), Color.LightGray, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
                     //Draw the log
                     for (int i = log.Count - 1; i >= 0; i--)
@@ -259,7 +259,7 @@ namespace ScorpionEngine.Utilities
                         //Calculate the text position
                         Vector2 linePos = new Vector2(5, textPos.Y - font.LineSpacing * (log.Count - i));
                         //Draw the text
-                        s.DrawString(font, log[i].Item1, linePos, log[i].Item2);
+                        s.DrawString(font, log[i].Item1, linePos, log[i].Item2, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                     }
                 }
             }

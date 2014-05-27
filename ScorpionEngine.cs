@@ -81,8 +81,8 @@ namespace ScorpionEngine
             Graphics.Device.Clear(Color.Black);
 
             //Begin the spritebatches
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, transformMatrix);
-            noCamSpriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, transformMatrix);
+            noCamSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
             //If the current game state is not null, draw it
             if (currentState != null)

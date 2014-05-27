@@ -48,7 +48,7 @@ namespace ScorpionEngine
         public void Reset()
         {
             //Reset all the variables
-            position = Vector2.Zero;
+            position = SE.Graphics.Viewport.Center.ToVector2();
             zoom = 1.0f;
             rotation = 0.0f;
             shake = Vector2.Zero;
