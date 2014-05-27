@@ -45,7 +45,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
             prevAmout = amount;
 
             //Update the bouding box
-            boundingBox.Location = Vector2.Transform(buttonPos, SE.Graphics.TransformMatrix).ToPoint();
+            boundingBox.Location = buttonPos.ToPoint();
 
             //Start dragging
             if (Input.LeftClicked())

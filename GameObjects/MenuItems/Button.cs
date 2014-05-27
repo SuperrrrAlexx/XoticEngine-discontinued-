@@ -52,12 +52,8 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
         public override void Update()
         {
-            //Update the bouding box
-            Rectangle boundingBox = rect;
-            boundingBox.Location = Vector2.Transform(rect.Location.ToVector2(), SE.Graphics.TransformMatrix).ToPoint();
-
             //Check if the mouse is within the rectangle
-            if (boundingBox.Contains(Input.MousePosition))
+            if (rect.Contains(Input.MousePosition))
             {
                 //If the mouse was previously not hovering, call OnMouseEnter
                 if (!hovering)
