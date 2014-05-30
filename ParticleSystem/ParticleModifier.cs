@@ -89,6 +89,23 @@ namespace ScorpionEngine.ParticleSystem
 
         public override bool UpdateOnce { get { return false; } }
     }
+
+    public class ScaleBySpeedModifier : ParticleModifier
+    {
+        Vector2 scaleFactor;
+
+        public ScaleBySpeedModifier(Vector2 scaleFactor)
+        {
+            this.scaleFactor = scaleFactor / 1000;
+        }
+
+        public override void Update(Particle p)
+        {
+            p.Scale = p.Speed.Length() * scaleFactor;
+        }
+
+        public override bool UpdateOnce { get { return false; } }
+    }
     #endregion
 
     #region Rotation
