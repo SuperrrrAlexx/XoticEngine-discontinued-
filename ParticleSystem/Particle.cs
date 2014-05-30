@@ -14,7 +14,7 @@ namespace ScorpionEngine.ParticleSystem
         Vector2 speed;
         double rotation;
         double rotationSpeed;
-        Vector2 scale = Vector2.One;
+        Vector2 scale;
         float depth;
         //Alive or dead
         bool alive = true;
@@ -26,11 +26,12 @@ namespace ScorpionEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public Particle(Vector2 position, float depth, Vector2 speed, double rotation, double rotationSpeed, Texture2D texture, Color color, double ttl, List<ParticleModifier> modList)
+        public Particle(Vector2 position, float depth, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double ttl, List<ParticleModifier> modList)
         {
             //Position, speed, rotation
             this.position = position;
             this.speed = speed;
+            this.scale = scale;
             this.rotation = rotation;
             this.rotationSpeed = rotationSpeed;
             //Texture

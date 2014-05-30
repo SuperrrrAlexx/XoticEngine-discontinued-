@@ -15,6 +15,7 @@ namespace ScorpionEngine.ParticleSystem
         //Position, rotation, speed
         Vector2 prevPosition;
         Vector2 speed;
+        Vector2 scale;
         double rotation;
         double rotationSpeed;
         float depth;
@@ -28,7 +29,7 @@ namespace ScorpionEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, double rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
+        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
             : base(name, position)
         {
             //Position
@@ -39,6 +40,7 @@ namespace ScorpionEngine.ParticleSystem
             //Particles
             this.depth = depth;
             this.speed = speed;
+            this.scale = scale;
             this.texture = texture;
             this.ParticleColor = color;
             this.pps = particlesPerSecond;
@@ -93,7 +95,7 @@ namespace ScorpionEngine.ParticleSystem
                 //Calculate the particle position between the old and new position
                 Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / spawns), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / spawns));
                 //Create a new particle and add it to the list
-                Particle p = new Particle(pos, depth, speed, rotation, rotationSpeed, texture, particleColor, ttl, modList);
+                Particle p = new Particle(pos, depth, speed, scale, rotation, rotationSpeed, texture, particleColor, ttl, modList);
                 particles.Add(p);
             }
             queue -= spawns;
@@ -113,7 +115,7 @@ namespace ScorpionEngine.ParticleSystem
                 //Calculate the particle position between the old and new position
                 Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / amount), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / amount));
                 //Create a new particle and add it to the list
-                Particle p = new Particle(pos, depth, speed, rotation, rotationSpeed, texture, particleColor, ttl, modList);
+                Particle p = new Particle(pos, depth, speed, scale, rotation, rotationSpeed, texture, particleColor, ttl, modList);
                 particles.Add(p);
             }
         }
