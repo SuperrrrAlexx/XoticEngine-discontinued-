@@ -106,87 +106,75 @@ namespace XoticEngine
         //Mouse clicks
         public static bool LeftClicked()
         {
-            if (currMouse.LeftButton == ButtonState.Pressed && prevMouse.LeftButton == ButtonState.Released)
-                return true;
-            return false;
-        }
-        public static bool RightClicked()
-        {
-            if (currMouse.RightButton == ButtonState.Pressed && prevMouse.RightButton == ButtonState.Released)
-                return true;
-            return false;
+            return currMouse.LeftButton == ButtonState.Released && prevMouse.LeftButton == ButtonState.Pressed;
         }
         public static bool MiddleClicked()
         {
-            if (currMouse.MiddleButton == ButtonState.Pressed && prevMouse.MiddleButton == ButtonState.Released)
-                return true;
-            return false;
+            return currMouse.MiddleButton == ButtonState.Released && prevMouse.MiddleButton == ButtonState.Pressed;
+        }
+        public static bool RightClicked()
+        {
+            return currMouse.LeftButton == ButtonState.Released && prevMouse.LeftButton == ButtonState.Pressed;
         }
 
         //Mouse buttons pressed
-        public static bool LeftMousePressed()
+        public static bool LeftDown()
         {
-            if (currMouse.LeftButton == ButtonState.Pressed)
-                return true;
-            return false;
+            return currMouse.LeftButton == ButtonState.Pressed;
         }
-        public static bool RightMousePressed()
+        public static bool MiddleDown()
         {
-            if (currMouse.RightButton == ButtonState.Pressed)
-                return true;
-            return false;
+            return currMouse.MiddleButton == ButtonState.Pressed;
         }
-        public static bool MiddleMousePressed()
+        public static bool RightDown()
         {
-            if (currMouse.MiddleButton == ButtonState.Pressed)
-                return true;
-            return false;
+            return currMouse.RightButton == ButtonState.Pressed;
+        }
+
+        //Mouse buttons released
+        public static bool LeftReleased()
+        {
+            return currMouse.LeftButton == ButtonState.Pressed && prevMouse.LeftButton == ButtonState.Released;
+        }
+        public static bool MiddleReleased()
+        {
+            return currMouse.MiddleButton == ButtonState.Pressed && prevMouse.MiddleButton == ButtonState.Released;
+        }
+        public static bool RightReleased()
+        {
+            return currMouse.RightButton == ButtonState.Pressed && prevMouse.RightButton == ButtonState.Released;
         }
 
         //Scroll wheel
         public static bool ScrolledUp()
         {
-            if (currMouse.ScrollWheelValue > prevMouse.ScrollWheelValue)
-                return true;
-            return false;
+            return currMouse.ScrollWheelValue > prevMouse.ScrollWheelValue;
         }
         public static bool ScrolledDown()
         {
-            if (currMouse.ScrollWheelValue < prevMouse.ScrollWheelValue)
-                return true;
-            return false;
+            return currMouse.ScrollWheelValue < prevMouse.ScrollWheelValue;
         }
         public static bool Scrolled()
         {
-            if (currMouse.ScrollWheelValue != prevMouse.ScrollWheelValue)
-                return true;
-            return false;
+            return currMouse.ScrollWheelValue != prevMouse.ScrollWheelValue;
         }
 
         //Keyboard buttons
         public static bool KeyPressed(Keys k)
         {
-            if (currKeyboard.IsKeyDown(k) && prevKeyboard.IsKeyUp(k))
-                return true;
-            return false;
+            return currKeyboard.IsKeyDown(k) && prevKeyboard.IsKeyUp(k);
         }
         public static bool KeyReleased(Keys k)
         {
-            if (currKeyboard.IsKeyUp(k) && prevKeyboard.IsKeyDown(k))
-                return true;
-            return false;
+            return currKeyboard.IsKeyUp(k) && prevKeyboard.IsKeyDown(k);
         }
         public static bool KeyDown(Keys k)
         {
-            if (currKeyboard.IsKeyDown(k))
-                return true;
-            return false;
+            return currKeyboard.IsKeyDown(k);
         }
         public static bool AnyKeyPressed()
         {
-            if (currKeyboard.GetPressedKeys().Length > prevKeyboard.GetPressedKeys().Length)
-                return true;
-            return false;
+            return currKeyboard.GetPressedKeys().Length > prevKeyboard.GetPressedKeys().Length;
         }
         public static Keys[] PressedKeys()
         {
