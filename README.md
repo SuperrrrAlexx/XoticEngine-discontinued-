@@ -1,10 +1,11 @@
-#XoticEnigne
+#XoticEngine
 
 ###Index
 - Getting started
 - GameStates and GameObjects
 - Assets
 - Particle System
+- Input
 
 ###Getting started
 In the Initialize method of your game class is where you initialize the engine.
@@ -89,6 +90,18 @@ ParticleEmitter emitter = new ParticleEmitter("emitter", new Vector2(100), 1, Ve
 Add(emitter);
 ```
 There are quite some different kinds of built-in particle modifiers, and the best way to find out about the emitter and modifiers is to play around with them and trying different things.
+
+###Input
+The engine contains an extensive Input class, which makes it easy to track keyboard and mouse actions. There are a lot of methods that will tell you if for example a key is pressed.
+```
+//Some example methods from the Input class
+//All of these return booleans and are static
+LeftClicked();
+ScrolledUp();
+KeyPressed(Keys.A);
+AnyKeyPressed();
+```
+There are also 2 events which you can hook into: OnCharEntered and OnKeyPressed, with respectively a char and a key as parameters.
 
 Namespaces:<br>
 XoticEngine<br>
