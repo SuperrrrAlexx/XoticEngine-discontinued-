@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace ScorpionEngine
+namespace XoticEngine
 {
     public class Camera
     {
@@ -29,10 +29,10 @@ namespace ScorpionEngine
             transform = Matrix.CreateTranslation(new Vector3(-position.X - shake.X, -position.Y - shake.Y, 0)) *
                 Matrix.CreateRotationZ(rotation) *
                 Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
-                Matrix.CreateTranslation(new Vector3(SE.Graphics.Viewport.Width * 0.5f, SE.Graphics.Viewport.Height * 0.5f, 0));
+                Matrix.CreateTranslation(new Vector3(X.Graphics.Viewport.Width * 0.5f, X.Graphics.Viewport.Height * 0.5f, 0));
 
             if (applyOnUpdate)
-                SE.Graphics.TransformMatrix = transform;
+                X.Graphics.TransformMatrix = transform;
         }
         public void UpdateMatrix(Vector2 position, float zoom, float rotation)
         {
@@ -48,7 +48,7 @@ namespace ScorpionEngine
         public void Reset()
         {
             //Reset all the variables
-            position = SE.Graphics.Viewport.Center.ToVector2();
+            position = X.Graphics.Viewport.Center.ToVector2();
             zoom = 1.0f;
             rotation = 0.0f;
             shake = Vector2.Zero;
@@ -59,7 +59,7 @@ namespace ScorpionEngine
 
         public void Shake(Vector2 amount)
         {
-            shake = new Vector2(SE.Random.NextFloat() * SE.Random.NextParity() * amount.X, SE.Random.NextFloat() * SE.Random.NextParity() * amount.Y);
+            shake = new Vector2(X.Random.NextFloat() * X.Random.NextParity() * amount.X, X.Random.NextFloat() * X.Random.NextParity() * amount.Y);
             UpdateMatrix();
         }
         public void Shake(float amount)

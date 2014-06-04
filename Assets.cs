@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 
-namespace ScorpionEngine
+namespace XoticEngine
 {
     public static class Assets
     {

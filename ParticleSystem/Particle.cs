@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ScorpionEngine.ParticleSystem
+namespace XoticEngine.ParticleSystem
 {
     public class Particle
     {
@@ -64,15 +64,15 @@ namespace ScorpionEngine.ParticleSystem
             if (alive)
             {
                 //Move and rotate the particle
-                position += speed * (float)SE.Time.DeltaTime.TotalSeconds;
-                rotation += rotationSpeed * SE.Time.DeltaTime.TotalSeconds;
+                position += speed * (float)X.Time.DeltaTime.TotalSeconds;
+                rotation += rotationSpeed * X.Time.DeltaTime.TotalSeconds;
 
                 //Update each particle modifier
                 foreach (ParticleModifier p in modList)
                     p.Update(this);
 
                 //Update the time to live
-                ttl -= SE.Time.DeltaTime.TotalSeconds;
+                ttl -= X.Time.DeltaTime.TotalSeconds;
                 //If the ttl <= 0, let the particle die
                 if (ttl <= 0)
                     alive = false;

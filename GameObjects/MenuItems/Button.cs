@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ScorpionEngine.GameObjects.MenuItems
+namespace XoticEngine.GameObjects.MenuItems
 {
     public class Button : GameObject
     {

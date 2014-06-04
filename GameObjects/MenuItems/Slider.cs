@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ScorpionEngine.GameObjects.MenuItems
+namespace XoticEngine.GameObjects.MenuItems
 {
     public class Slider : GameObject
     {
@@ -57,7 +57,7 @@ namespace ScorpionEngine.GameObjects.MenuItems
 
             //Drag the button
             if (dragging)
-                amount = (int)MathHelper.Clamp((Input.MousePosition.X - (Vector2.Transform(Position, SE.Graphics.TransformMatrix).X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
+                amount = (int)MathHelper.Clamp((Input.MousePosition.X - (Vector2.Transform(Position, X.Graphics.TransformMatrix).X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position
             buttonPos = Position + new Vector2(amount * valueWidth - button.Width / 2 + buttonOffset.X, (bar.Height / 2 - button.Height / 2) + buttonOffset.Y);

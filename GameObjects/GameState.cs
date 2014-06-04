@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
-using ScorpionEngine.Utilities;
+using XoticEngine.Utilities;
 
-namespace ScorpionEngine.GameObjects
+namespace XoticEngine.GameObjects
 {
     public class GameState : List<GameObject>
     {

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ScorpionEngine.Utilities
+namespace XoticEngine.Utilities
 {
     public static class GameConsole
     {
@@ -34,10 +34,10 @@ namespace ScorpionEngine.Utilities
         {
             //Set the text font and position
             font = Assets.Get<SpriteFont>(fontName);
-            textPos = new Vector2(font.MeasureString(">").X + 5, (int)(SE.Graphics.Viewport.Height * 0.6) - font.LineSpacing);
+            textPos = new Vector2(font.MeasureString(">").X + 5, (int)(X.Graphics.Viewport.Height * 0.6) - font.LineSpacing);
             
             //Set the back rectangle
-            backRect = new Rectangle(0, 0, SE.Graphics.Viewport.Width, (int)(SE.Graphics.Viewport.Height * 0.6));
+            backRect = new Rectangle(0, 0, X.Graphics.Viewport.Width, (int)(X.Graphics.Viewport.Height * 0.6));
 
             //Add the help text
             Write("Type \"commands\" for a list of commands.");
@@ -136,15 +136,15 @@ namespace ScorpionEngine.Utilities
             //Show the total gametime
             Action<string[]> gameTime = (args) =>
                 {
-                    if (SE.Time.GameTime != null)
-                        Write("Total gametime: " + SE.Time.GameTime.TotalGameTime.ToString());
+                    if (X.Time.GameTime != null)
+                        Write("Total gametime: " + X.Time.GameTime.TotalGameTime.ToString());
                 };
             commands.Add("gametime", gameTime);
 
             //Show the current gamestate
             Action<string[]> gameState = (args) =>
                 {
-                    Write("Current gamestate: " + SE.CurrentStateName.ToString());
+                    Write("Current gamestate: " + X.CurrentStateName.ToString());
                 };
             commands.Add("gamestate", gameState);
 
@@ -152,7 +152,7 @@ namespace ScorpionEngine.Utilities
             Action<string[]> stateList = (args) =>
                 {
                     Write("Gamestates:");
-                    List<string> states = SE.GameStateNameList;
+                    List<string> states = X.GameStateNameList;
                     for (int i = 0; i < states.Count; i++)
                         Write(states[i]);
                 };
@@ -163,8 +163,8 @@ namespace ScorpionEngine.Utilities
                 {
                     try
                     {
-                        if (SE.CurrentStateName != args[0])
-                            SE.SwitchTo(args[0]);
+                        if (X.CurrentStateName != args[0])
+                            X.SwitchTo(args[0]);
                         else
                             Error(args[0] + " is already the current state.");
                     }
@@ -177,7 +177,7 @@ namespace ScorpionEngine.Utilities
             Action<string[]> currentObjects = (args) =>
                 {
                     Write("Gameobjects:");
-                    List<string> names = SE.GameObjectNameList;
+                    List<string> names = X.GameObjectNameList;
                     for (int i = 0; i < names.Count; i++)
                         Write(names[i]);
                 };
@@ -186,8 +186,8 @@ namespace ScorpionEngine.Utilities
             //Reset the gamestate
             Action<string[]> resetState = (args) =>
                 {
-                    if (SE.CurrentStateName != "null")
-                        SE.SwitchTo(SE.CurrentStateName);
+                    if (X.CurrentStateName != "null")
+                        X.SwitchTo(X.CurrentStateName);
                 };
             commands.Add("reset", resetState);
 
@@ -197,8 +197,8 @@ namespace ScorpionEngine.Utilities
                     try
                     {
                         float gs = float.Parse(args[0]);
-                        SE.Time.GameSpeed = gs;
-                        Write("Current game speed: " + SE.Time.GameSpeed.ToString());
+                        X.Time.GameSpeed = gs;
+                        Write("Current game speed: " + X.Time.GameSpeed.ToString());
                     }
                     catch (Exception)
                     { Error("That is not a valid game speed. Example: gamespeed 0,5"); }
@@ -212,7 +212,7 @@ namespace ScorpionEngine.Utilities
             if (enabled)
             {
                 //Make the text cursor blink
-                blinkTimeLeft -= SE.Time.GameTime.ElapsedGameTime.Milliseconds;
+                blinkTimeLeft -= X.Time.GameTime.ElapsedGameTime.Milliseconds;
                 if (blinkTimeLeft <= 0)
                 {
                     cursorVisible = !cursorVisible;

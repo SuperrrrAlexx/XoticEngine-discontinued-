@@ -107,7 +107,7 @@
     <Compile Include="ParticleSystem\Particle.cs" />
     <Compile Include="ParticleSystem\ParticleEmitter.cs" />
     <Compile Include="ParticleSystem\ParticleModifier.cs" />
-    <Compile Include="ScorpionEngine.cs" />
+    <Compile Include="XoticEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\Line.cs" />

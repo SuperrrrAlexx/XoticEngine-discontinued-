@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using ScorpionEngine.GameObjects;
-using ScorpionEngine.Utilities;
+using XoticEngine.GameObjects;
+using XoticEngine.Utilities;
 
-namespace ScorpionEngine
+namespace XoticEngine
 {
-    public static class SE
+    public static class X
     {
         //Game class
         static Game game;

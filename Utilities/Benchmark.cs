@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace ScorpionEngine.Utilities
+namespace XoticEngine.Utilities
 {
     public class Benchmark
     {

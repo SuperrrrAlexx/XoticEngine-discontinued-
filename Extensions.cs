@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ScorpionEngine.Shapes;
+using XoticEngine.Shapes;
 
-namespace ScorpionEngine
+namespace XoticEngine
 {
     public static class Extensions
     {

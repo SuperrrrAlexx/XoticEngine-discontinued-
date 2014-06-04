@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ScorpionEngine.GameObjects;
+using XoticEngine.GameObjects;
 
-namespace ScorpionEngine.ParticleSystem
+namespace XoticEngine.ParticleSystem
 {
     public class ParticleEmitter : GameObject
     {
@@ -87,7 +87,7 @@ namespace ScorpionEngine.ParticleSystem
         public void Shoot()
         {
             //Update the queue and the actual amount of particles to be spawned this tick
-            queue += pps * SE.Time.DeltaTime.TotalSeconds;
+            queue += pps * X.Time.DeltaTime.TotalSeconds;
             int spawns = (int)queue;
             //Create all the particles
             for (int n = spawns; n > 0; n--)

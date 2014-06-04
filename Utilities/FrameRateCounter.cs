@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ScorpionEngine.Utilities
+namespace XoticEngine.Utilities
 {
     public static class FrameRateCounter
     {
@@ -11,9 +11,9 @@ namespace ScorpionEngine.Utilities
 
         public static void Update()
         {
-            if (secondsPassed != SE.Time.GameTime.TotalGameTime.Seconds)
+            if (secondsPassed != X.Time.GameTime.TotalGameTime.Seconds)
             {
-                secondsPassed = SE.Time.GameTime.TotalGameTime.Seconds;
+                secondsPassed = X.Time.GameTime.TotalGameTime.Seconds;
                 frameRate = frames;
                 //Reset the amount of frames
                 frames = 0;

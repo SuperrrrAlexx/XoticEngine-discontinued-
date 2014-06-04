@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace ScorpionEngine
+namespace XoticEngine
 {
     public static class Input
     {

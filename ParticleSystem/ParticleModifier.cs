@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace ScorpionEngine.ParticleSystem
+namespace XoticEngine.ParticleSystem
 {
     public abstract class ParticleModifier
     {
@@ -42,9 +42,9 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            double random = SE.Random.NextDouble();
+            double random = X.Random.NextDouble();
             Vector2 angle = new Vector2((float)(Math.Cos(random * (maxAngle - minAngle) + minAngle)), (float)(Math.Sin(random * (maxAngle - minAngle) + minAngle)));
-            p.Speed = (SE.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angle;
+            p.Speed = (X.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angle;
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -67,7 +67,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Speed = new Vector2(SE.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, SE.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
+            p.Speed = new Vector2(X.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, X.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -84,7 +84,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Speed += acceleration * (float)SE.Time.DeltaTime.TotalSeconds;
+            p.Speed += acceleration * (float)X.Time.DeltaTime.TotalSeconds;
         }
 
         public override bool UpdateOnce { get { return false; } }
@@ -127,7 +127,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Rotation = SE.Random.NextDouble() * (maxRot - minRot) + minRot;
+            p.Rotation = X.Random.NextDouble() * (maxRot - minRot) + minRot;
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -151,7 +151,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.RotationSpeed = SE.Random.NextDouble() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
+            p.RotationSpeed = X.Random.NextDouble() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -261,7 +261,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Position += new Vector2(SE.Random.NextFloat() * width, SE.Random.NextFloat() * height);
+            p.Position += new Vector2(X.Random.NextFloat() * width, X.Random.NextFloat() * height);
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -279,10 +279,10 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            if (SE.Random.NextParity() == 1)
-                p.Position += new Vector2(SE.Random.NextFloat() * width, SE.Random.Next(2) * height);
+            if (X.Random.NextParity() == 1)
+                p.Position += new Vector2(X.Random.NextFloat() * width, X.Random.Next(2) * height);
             else
-                p.Position += new Vector2(SE.Random.Next(2) * width, SE.Random.NextFloat() * height);
+                p.Position += new Vector2(X.Random.Next(2) * width, X.Random.NextFloat() * height);
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -305,8 +305,8 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            double angle = SE.Random.NextDouble() * Math.PI * 2;
-            float random = SE.Random.NextFloat();
+            double angle = X.Random.NextDouble() * Math.PI * 2;
+            float random = X.Random.NextFloat();
             p.Position += new Vector2((float)Math.Cos(angle) * width * random, (float)Math.Sin(angle) * height * random);
         }
 
@@ -331,7 +331,7 @@ namespace ScorpionEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            double angle = SE.Random.NextDouble() * Math.PI * 2;
+            double angle = X.Random.NextDouble() * Math.PI * 2;
             p.Position += new Vector2((float)Math.Cos(angle) * width, (float)Math.Sin(angle) * height);
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ScorpionEngine
+namespace XoticEngine
 {
     public class SpriteSheet
     {
@@ -63,7 +63,7 @@ namespace ScorpionEngine
                 {
                     //The sprite texture
                     Rectangle sourceRect = new Rectangle(c * spriteWidth, r * spriteHeight, spriteWidth, spriteHeight);
-                    Texture2D sprite = new Texture2D(SE.Graphics.Device, spriteWidth, spriteHeight);
+                    Texture2D sprite = new Texture2D(X.Graphics.Device, spriteWidth, spriteHeight);
 
                     //Get the data from the sheet
                     Color[] data = new Color[spriteWidth * spriteHeight];
