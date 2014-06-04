@@ -1,42 +1,42 @@
-#ScorpionEngine
+#XoticEnigne
 
 ###Index
-- [Getting started](#getting-started)
-- [GameStates and GameObjects](#gamestates-and-gameobjects)
-- [Assets](#assets)
-- [Particle System](#particle-system)
+- Getting started
+- GameStates and GameObjects
+- Assets
+- Particle System
 
 ###Getting started
-In the Initialize method of your game class is where you initialize the engine (which I will be referring to as SE).
+In the Initialize method of your game class is where you initialize the engine.
 It needs the graphics device manager, content manager, and the name of the spritefont it will use as a console font. Leave this null if you don't wan't to use the game console.<br>
-In your Update and Draw methods you need to respectively update and draw the SE too. The SE creates its own spritebatch, so you don't need to pass that as a parameter.
+In your Update and Draw methods you need to respectively update and draw the engine too. The engine creates its own spritebatch, so you don't need to pass that as a parameter.
 ```
 protected override void Initialize()
 {
-  SE.Initialize(graphics, Content, "consoleFont");
+  X.Initialize(graphics, Content, "consoleFont");
   base.Initialize();
 }
 
 protected override void Update(GameTime gameTime)
 {
-  SE.Update(gameTime);
+  X.Update(gameTime);
   base.Update(gameTime);
 }
 
 protected override void Draw(GameTime gameTime)
 {
-  SE.Draw();
+  X.Draw();
   base.Draw(gameTime);
 }
 ```
 
 ###GameStates and GameObjects
-By calling Update and Draw, the SE will update and draw all GameObjects in the current GameState. Objects in a gamestate other than the current one are not updated or drawn.
+By calling Update and Draw, the engine will update and draw all GameObjects in the current GameState. Objects in a gamestate other than the current one are not updated or drawn.
 
 You can create your own gamestate classes by inheriting them from the GameState class. In the constructor you then need to call the base constructor with the name of the gamestate. This name will be used to switch between states.
 ```
 //Note that GameState is part of the GameObjects namespace
-using ScorpionEngine.GameObjects;
+using XoticEngine.GameObjects;
 
 public class PlayingState : GameState
 {
@@ -74,7 +74,7 @@ Texture2D tex = Assets.Get<Texture2D>("name");
 ```
 
 ###Particle System
-The SE has a built-in particle system. This consists of a ParticleEmitter, Particles and ParticleModifiers. However, you only need to use the ParticleEmitter and ParticleModifiers because the Particles are created by the emitter. The ParticleEmitter is also a GameObject, which means you can add it to the GameState and don't have to worry about updating or drawing it.
+The engine has a built-in particle system. This consists of a ParticleEmitter, Particles and ParticleModifiers. However, you only need to use the ParticleEmitter and ParticleModifiers because the Particles are created by the emitter. The ParticleEmitter is also a GameObject, which means you can add it to the GameState and don't have to worry about updating or drawing it.
 ```
 //Create a list of modifiers
 List<ParticleModifier> modifiers = new List<ParticleModifier>
@@ -91,7 +91,7 @@ Add(emitter);
 There are quite some different kinds of built-in particle modifiers, and the best way to find out about the emitter and modifiers is to play around with them and trying different things.
 
 Namespaces:<br>
-ScorpionEngine<br>
+XoticEngine<br>
 .GameObjects<br>
 .GameObjects.MenuItems<br>
 .ParticleSystem<br>
@@ -99,29 +99,29 @@ ScorpionEngine<br>
 
 
 Classes by namespace:  
-- ScorpionEngine:  
-SE (The main class)  
+- XoticEngine:  
+X (The main class)  
 Assets  
 Benchmark  
-Camera2D  
+Camera  
 Extensions  
 GameConsole  
 Input  
 SpriteSheet
 
-- ScorpionEngine.GameObjects:  
+- XoticEngine.GameObjects:  
 GameObject  
 GameState
 
-- ScorpionEngine.GameObjects.MenuItems:  
+- XoticEngine.GameObjects.MenuItems:  
 Button  
 Slider  
 ToggleButton
 
-- ScorpionEngine.ParticleSystem:  
+- XoticEngine.ParticleSystem:  
 Particle  
 ParticleEmitter  
 ParticleModifier
 
-- ScorpionEngine.Shapes:  
+- XoticEngine.Shapes:  
 Line
