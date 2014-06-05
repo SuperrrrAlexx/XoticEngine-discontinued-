@@ -117,5 +117,7 @@ namespace XoticEngine.ParticleSystem
         { get { return scale; } set { scale = value; } }
         public Color ParticleColor
         { get { return particleColor; } set { particleColor = value; } }
+        public float Depth
+        { get { return depth; } set { depth = value; } }
     }
 }

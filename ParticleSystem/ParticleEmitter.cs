@@ -37,14 +37,15 @@ namespace XoticEngine.ParticleSystem
             //Rotation
             this.rotation = rotation;
             this.rotationSpeed = rotationSpeed;
-            //Particles
+            //Particle properties
             this.depth = depth;
             this.speed = speed;
             this.scale = scale;
             this.texture = texture;
             this.ParticleColor = color;
-            this.pps = particlesPerSecond;
             this.ttl = secondsToLive;
+            //Particles
+            this.pps = particlesPerSecond;
             this.modList = modifierList;
             this.particles = new List<Particle>();
         }
@@ -59,11 +60,14 @@ namespace XoticEngine.ParticleSystem
             if (particles.Count() > 0)
             {
                 //Update all particles
-                for (int i = particles.Count() - 1; i >= 0; i--)
+                for (int i = 0; i < particles.Count(); i++)
                 {
                     //If the particle is alive, update it, else remove it
                     if (particles[i].Alive)
+                    {
+                        particles[i].Depth = depth - (float)(particles[i].RealLifeTime / 100000f);
                         particles[i].Update();
+                    }
                     else
                         particles.RemoveAt(i);
                 }
@@ -75,13 +79,9 @@ namespace XoticEngine.ParticleSystem
 
         public override void Draw(SpriteBatch s)
         {
-            //If there are particles
-            if (particles.Count() > 0)
-            {
-                //Draw each particle (last added particles first)
-                for (int i = particles.Count() - 1; i >= 0; i--)
-                    particles[i].Draw(s);
-            }
+            //Draw each particle
+            for (int i = 0; i < particles.Count(); i++)
+                particles[i].Draw(s);
         }
 
         public void Shoot()
