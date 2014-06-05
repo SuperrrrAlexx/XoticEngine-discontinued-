@@ -18,6 +18,8 @@ namespace XoticEngine.ParticleSystem
         Vector2 scale;
         double rotation;
         double rotationSpeed;
+        //Depth
+        bool oldestInFront;
         float depth;
         //Particles
         List<Particle> particles;
@@ -29,17 +31,17 @@ namespace XoticEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
+        public ParticleEmitter(string name, Vector2 position, float depth, bool oldestInFront, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
             : base(name, position)
         {
-            //Position
             this.prevPosition = position;
-            //Rotation
+            //Depth
+            this.depth = depth;
+            this.oldestInFront = oldestInFront;
+            //Particle properties
+            this.speed = speed;
             this.rotation = rotation;
             this.rotationSpeed = rotationSpeed;
-            //Particle properties
-            this.depth = depth;
-            this.speed = speed;
             this.scale = scale;
             this.texture = texture;
             this.ParticleColor = color;
@@ -65,7 +67,12 @@ namespace XoticEngine.ParticleSystem
                     //If the particle is alive, update it, else remove it
                     if (particles[i].Alive)
                     {
-                        particles[i].Depth = depth - (float)(particles[i].RealLifeTime / 100000f);
+                        //Set the depth
+                        if (oldestInFront)
+                            particles[i].Depth = depth - (float)(particles[i].RealLifeTime / 100000f);
+                        else
+                            particles[i].Depth = depth + (float)(particles[i].RealLifeTime / 100000f);
+                        //Update the particle
                         particles[i].Update();
                     }
                     else
@@ -129,6 +136,8 @@ namespace XoticEngine.ParticleSystem
         { get { return ttl; } set { ttl = value; } }
         public List<ParticleModifier> ModifierList
         { get { return modList; } set { modList = value; } }
+        public bool OldestInFront
+        { get { return oldestInFront; } set { oldestInFront = value; } }
         //Particle properties
         public Vector2 Speed
         { get { return speed; } set { speed = value; } }
