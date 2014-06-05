@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScorpionEngine</RootNamespace>
-    <AssemblyName>ScorpionEngine</AssemblyName>
+    <RootNamespace>XoticEngine</RootNamespace>
+    <AssemblyName>XoticEngine</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Assets.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Time.cs" />
     <Compile Include="Utilities\Benchmark.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Utilities\FrameRateCounter.cs" />

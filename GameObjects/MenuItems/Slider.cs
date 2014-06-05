@@ -52,7 +52,7 @@ namespace XoticEngine.GameObjects.MenuItems
                 if (boundingBox.Contains(Input.MousePosition))
                     dragging = true;
             //Stop dragging
-            if (!Input.LeftMousePressed())
+            if (!Input.LeftDown())
                 dragging = false;
 
             //Drag the button

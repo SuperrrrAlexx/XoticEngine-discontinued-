@@ -16,10 +16,6 @@ namespace XoticEngine
     {
         //Game class
         static Game game;
-        //Time
-        static GameTime gameTime;
-        static TimeSpan deltaTime;
-        static float gameSpeed = 1.0f;
         //Graphics
         static GraphicsDeviceManager graphics;
         static SpriteBatch spriteBatch, noCamSpriteBatch;
@@ -59,9 +55,7 @@ namespace XoticEngine
         public static void Update(GameTime g)
         {
             //Update the gametime
-            gameTime = g;
-            //Update the delta time
-            deltaTime = TimeSpan.FromMilliseconds(g.ElapsedGameTime.TotalMilliseconds * gameSpeed);
+            Time.Update(g);
 
             //If the current game state is not null, update it
             if (currentState != null)
@@ -81,7 +75,7 @@ namespace XoticEngine
             Graphics.Device.Clear(Color.Black);
 
             //Begin the spritebatches
-            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, transformMatrix);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied, null, null, null, null, transformMatrix);
             noCamSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
             //If the current game state is not null, draw it
@@ -126,19 +120,6 @@ namespace XoticEngine
             }
         }
 
-        //Time
-        public struct Time
-        {
-            public static GameTime GameTime
-            { get { return gameTime; } }
-            public static TimeSpan DeltaTime
-            { get { return deltaTime; } }
-            public static float GameSpeed
-            { get { return gameSpeed; } set { gameSpeed = value; } }
-            public static bool IsFixedtimeStep
-            { get { return game.IsFixedTimeStep; } set { game.IsFixedTimeStep = value; } }
-        }
-
         //Graphics, screen
         public struct Graphics
         {
@@ -159,7 +140,15 @@ namespace XoticEngine
             public static SpriteBatch NoCamSpriteBatch
             { get { return noCamSpriteBatch; } }
             public static bool VSync
-            { get { return graphics.SynchronizeWithVerticalRetrace; } set { graphics.SynchronizeWithVerticalRetrace = value; graphics.ApplyChanges(); } }
+            {
+                get { return graphics.SynchronizeWithVerticalRetrace; }
+                set
+                {
+                    graphics.SynchronizeWithVerticalRetrace = value;
+                    game.IsFixedTimeStep = !value;
+                    graphics.ApplyChanges();
+                }
+            }
         }
         public static bool IsMouseVisible
         { get { return game.IsMouseVisible; } set { game.IsMouseVisible = value; } }

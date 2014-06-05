@@ -87,7 +87,7 @@ namespace XoticEngine.ParticleSystem
         public void Shoot()
         {
             //Update the queue and the actual amount of particles to be spawned this tick
-            queue += pps * X.Time.DeltaTime.TotalSeconds;
+            queue += pps * Time.DeltaTime;
             int spawns = (int)queue;
             //Create all the particles
             for (int n = spawns; n > 0; n--)

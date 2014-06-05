@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using XoticEngine.Utilities;
 
 namespace XoticEngine.ParticleSystem
 {
@@ -10,6 +11,35 @@ namespace XoticEngine.ParticleSystem
     {
         public abstract void Update(Particle p);
         public abstract bool UpdateOnce { get; }
+    }
+
+    public class LifetimeModifier : ParticleModifier
+    {
+        ParticleModifier modifier;
+        double startTime, endTime, length;
+
+        public LifetimeModifier(ParticleModifier modifier, double startTime, double endTime)
+        {
+            this.modifier = modifier;
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.length = endTime - startTime;
+        }
+
+        public override void Update(Particle p)
+        {
+            //Only update if the particle lifetime is within the begin and end times
+            if (p.RealLifeTime >= startTime && p.RealLifeTime <= endTime)
+            {
+                p.LifeTime = (p.RealLifeTime - startTime) / length;
+                //Update the modifier
+                modifier.Update(p);
+                //Reset the lifetime
+                p.LifeTime = p.RealLifeTime;
+            }
+        }
+
+        public override bool UpdateOnce { get { return false; } }
     }
 
     #region Speed
@@ -43,8 +73,9 @@ namespace XoticEngine.ParticleSystem
         public override void Update(Particle p)
         {
             double random = X.Random.NextDouble();
-            Vector2 angle = new Vector2((float)(Math.Cos(random * (maxAngle - minAngle) + minAngle)), (float)(Math.Sin(random * (maxAngle - minAngle) + minAngle)));
-            p.Speed = (X.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angle;
+            double angle = random * (maxAngle - minAngle) + minAngle;
+            Vector2 angleVector = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+            p.Speed = (X.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angleVector;
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -84,7 +115,7 @@ namespace XoticEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Speed += acceleration * (float)X.Time.DeltaTime.TotalSeconds;
+            p.Speed += acceleration * (float)Time.DeltaTime;
         }
 
         public override bool UpdateOnce { get { return false; } }
@@ -188,7 +219,7 @@ namespace XoticEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.ParticleColor = Color.Lerp(color2, color1, (float)(p.TimeToLive / p.InitalTimeToLive));
+            p.ParticleColor = Color.Lerp(color1, color2, (float)p.LifeTime);
         }
 
         public override bool UpdateOnce { get { return false; } }
@@ -198,12 +229,6 @@ namespace XoticEngine.ParticleSystem
     {
         Vector2 scale1, scale2;
 
-        public SizeLerpModifier()
-        {
-            this.scale1 = Vector2.One;
-            this.scale2 = Vector2.Zero;
-        }
-
         public SizeLerpModifier(Vector2 scale1, Vector2 scale2)
         {
             this.scale1 = scale1;
@@ -212,31 +237,7 @@ namespace XoticEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Scale = Vector2.Lerp(scale2, scale1, (float)(p.TimeToLive / p.InitalTimeToLive));
-        }
-
-        public override bool UpdateOnce { get { return false; } }
-    }
-
-    public class FadeOutModifier : ParticleModifier
-    {
-        double fadeTime;
-        Color startColor = Color.Transparent;
-
-        public FadeOutModifier(double fadeTime)
-        {
-            this.fadeTime = fadeTime;
-        }
-
-        public override void Update(Particle p)
-        {
-            if (p.TimeToLive <= fadeTime)
-            {
-                if (startColor == Color.Transparent)
-                    startColor = p.ParticleColor;
-
-                p.ParticleColor = Color.Lerp(Color.Transparent, startColor, (float)(p.TimeToLive / fadeTime));
-            }
+            p.Scale = Vector2.Lerp(scale1, scale2, (float)p.LifeTime);
         }
 
         public override bool UpdateOnce { get { return false; } }
@@ -271,6 +272,11 @@ namespace XoticEngine.ParticleSystem
     {
         int width, height;
 
+        public OutlineRectangleModifier(int length)
+        {
+            this.width = length;
+            this.height = length;
+        }
         public OutlineRectangleModifier(int width, int height)
         {
             this.width = width;
@@ -306,8 +312,8 @@ namespace XoticEngine.ParticleSystem
         public override void Update(Particle p)
         {
             double angle = X.Random.NextDouble() * Math.PI * 2;
-            float random = X.Random.NextFloat();
-            p.Position += new Vector2((float)Math.Cos(angle) * width * random, (float)Math.Sin(angle) * height * random);
+            float radius = X.Random.NextFloat();
+            p.Position += new Vector2((float)Math.Cos(angle) * width * radius, (float)Math.Sin(angle) * height * radius);
         }
 
         public override bool UpdateOnce

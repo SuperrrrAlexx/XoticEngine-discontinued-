@@ -136,8 +136,8 @@ namespace XoticEngine.Utilities
             //Show the total gametime
             Action<string[]> gameTime = (args) =>
                 {
-                    if (X.Time.GameTime != null)
-                        Write("Total gametime: " + X.Time.GameTime.TotalGameTime.ToString());
+                    if (Time.GameTime != null)
+                        Write("Total gametime: " + Time.GameTime.TotalGameTime.ToString());
                 };
             commands.Add("gametime", gameTime);
 
@@ -194,14 +194,15 @@ namespace XoticEngine.Utilities
             //Show or set the gamespeed
             Action<string[]> gameSpeed = (args) =>
                 {
-                    try
+                    if (args.Length > 0)
                     {
-                        float gs = float.Parse(args[0]);
-                        X.Time.GameSpeed = gs;
-                        Write("Current game speed: " + X.Time.GameSpeed.ToString());
+                        double gs;
+                        if (double.TryParse(args[0], out gs))
+                            Time.GameSpeed = gs;
+                        else
+                            Error("That is not a valid game speed. Example: gamespeed 0,5");
                     }
-                    catch (Exception)
-                    { Error("That is not a valid game speed. Example: gamespeed 0,5"); }
+                    Write("Current game speed: " + Time.GameSpeed.ToString());
                 };
             commands.Add("gamespeed", gameSpeed);
         }
@@ -212,7 +213,7 @@ namespace XoticEngine.Utilities
             if (enabled)
             {
                 //Make the text cursor blink
-                blinkTimeLeft -= X.Time.GameTime.ElapsedGameTime.Milliseconds;
+                blinkTimeLeft -= Time.GameTime.ElapsedGameTime.Milliseconds;
                 if (blinkTimeLeft <= 0)
                 {
                     cursorVisible = !cursorVisible;

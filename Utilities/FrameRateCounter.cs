@@ -11,9 +11,9 @@ namespace XoticEngine.Utilities
 
         public static void Update()
         {
-            if (secondsPassed != X.Time.GameTime.TotalGameTime.Seconds)
+            if (secondsPassed != Time.GameTime.TotalGameTime.Seconds)
             {
-                secondsPassed = X.Time.GameTime.TotalGameTime.Seconds;
+                secondsPassed = Time.GameTime.TotalGameTime.Seconds;
                 frameRate = frames;
                 //Reset the amount of frames
                 frames = 0;

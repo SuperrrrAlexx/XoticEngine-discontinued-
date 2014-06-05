@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.Utilities;
 
 namespace XoticEngine.ParticleSystem
 {
@@ -22,6 +23,8 @@ namespace XoticEngine.ParticleSystem
         //Modifiers
         List<ParticleModifier> modList;
         double initialTTL;
+        double lifeTime;
+        double realLifeTime;
         //Texture
         Texture2D texture;
         Color particleColor;
@@ -41,6 +44,9 @@ namespace XoticEngine.ParticleSystem
             //Time to live
             this.initialTTL = ttl;
             this.ttl = ttl;
+            //Lifetime
+            realLifeTime = 1 - (ttl / initialTTL);
+            lifeTime = realLifeTime;
 
             //Particle modifiers
             if (modList != null)
@@ -50,13 +56,11 @@ namespace XoticEngine.ParticleSystem
 
             //Update all modifiers
             for (int i = this.modList.Count() - 1; i >= 0; i--)
-            {
                 if (this.modList[i].UpdateOnce)
                 {
                     this.modList[i].Update(this);
                     this.modList.RemoveAt(i);
                 }
-            }
         }
 
         public void Update()
@@ -64,15 +68,19 @@ namespace XoticEngine.ParticleSystem
             if (alive)
             {
                 //Move and rotate the particle
-                position += speed * (float)X.Time.DeltaTime.TotalSeconds;
-                rotation += rotationSpeed * X.Time.DeltaTime.TotalSeconds;
+                position += speed * (float)Time.DeltaTime;
+                rotation += rotationSpeed * Time.DeltaTime;
+
+                //Calculate the lifetime
+                realLifeTime = 1f - (ttl / initialTTL);
+                lifeTime = realLifeTime;
 
                 //Update each particle modifier
-                foreach (ParticleModifier p in modList)
-                    p.Update(this);
+                for (int i = 0; i < modList.Count; i++)
+                    modList[i].Update(this);
 
                 //Update the time to live
-                ttl -= X.Time.DeltaTime.TotalSeconds;
+                ttl -= Time.DeltaTime;
                 //If the ttl <= 0, let the particle die
                 if (ttl <= 0)
                     alive = false;
@@ -82,15 +90,21 @@ namespace XoticEngine.ParticleSystem
         public void Draw(SpriteBatch s)
         {
             if (alive)
-                s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2(texture.Bounds.Center.X, texture.Bounds.Center.Y), scale, SpriteEffects.None, depth);
+                s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2((float)texture.Width / 2, (float)texture.Height / 2), scale, SpriteEffects.None, depth);
         }
 
         public bool Alive
         { get { return alive; } }
+        //Time to live
         public double TimeToLive
         { get { return ttl; } }
         public double InitalTimeToLive
         { get { return initialTTL; } }
+        public double RealLifeTime
+        { get { return realLifeTime; } }
+        public double LifeTime
+        { get { return lifeTime; } set { lifeTime = value; } }
+        //Properties
         public Vector2 Position
         { get { return position; } set { position = value; } }
         public Vector2 Speed
