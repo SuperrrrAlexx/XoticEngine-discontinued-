@@ -60,6 +60,11 @@ namespace XoticEngine.Shapes
                 || Intersects(new Line(new Point(rectangle.Bottom, rectangle.Left), new Point(rectangle.Top, rectangle.Left)));
         }
 
+        public bool Intersects(Circle circle)
+        {
+            return circle.Intersects(this);
+        }
+
         public Point P1
         { get { return p1; } set { p1 = value; UpdateBoundingBox(); } }
         public Point P2

@@ -34,6 +34,28 @@ namespace XoticEngine.Shapes
             return Vector2.Distance(center.ToVector2(), circle.Center.ToVector2()) <= radius + circle.Radius;
         }
 
+        public bool Intersects(Line line)
+        {
+            // Translate the space so P1 ends up at the origin:
+            Vector2 lineEnd = line.P2.ToVector2() - line.P1.ToVector2(),
+                    circleCenter = this.center.ToVector2() - line.P1.ToVector2();
+            
+            // Project circleCenter onto lineEnd:
+            try
+            {
+                // Calculate the lambda of the projection (of the form p1 + lambda * (p2 - p1)), and restrict it to [0, 1]
+                float lambda = MathHelper.Clamp(Vector2.Dot(lineEnd, circleCenter) / lineEnd.LengthSquared(), 0, 1);
+                Vector2 closestToLine = lambda * lineEnd - circleCenter;
+
+                return closestToLine.LengthSquared() < this.radius * this.radius;
+            }
+            catch (DivideByZeroException)
+            {
+                // The line is actually a point ..
+                return circleCenter.LengthSquared() < this.radius * this.radius;
+            }
+        }
+
         public Point Center
         { get { return center; } set { center = value; UpdateBoundingBox(); } }
         public int Radius
