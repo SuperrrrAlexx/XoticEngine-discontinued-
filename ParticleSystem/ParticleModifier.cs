@@ -123,16 +123,23 @@ namespace XoticEngine.ParticleSystem
 
     public class ScaleBySpeedModifier : ParticleModifier
     {
-        Vector2 scaleFactor;
+        Vector2 scaleFactor, startScale;
+        bool gotScale = false;
 
         public ScaleBySpeedModifier(Vector2 scaleFactor)
         {
-            this.scaleFactor = scaleFactor / 1000;
+            this.scaleFactor = scaleFactor / 1000f;
         }
 
         public override void Update(Particle p)
         {
-            p.Scale = p.Speed.Length() * scaleFactor;
+            if (!gotScale)
+            {
+                startScale = p.Scale;
+                gotScale = true;
+            }
+
+            p.Scale = startScale + p.Speed.Length() * scaleFactor;
         }
 
         public override bool UpdateOnce { get { return false; } }
