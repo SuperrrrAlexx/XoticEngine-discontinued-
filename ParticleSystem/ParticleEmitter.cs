@@ -107,13 +107,6 @@ namespace XoticEngine.ParticleSystem
             }
             queue -= spawns;
         }
-
-        public void Move(Vector2 position)
-        {
-            RelativePosition = position;
-            prevPosition = Position;
-        }
-
         public void Shoot(int amount)
         {
             //Create all the particles
@@ -125,6 +118,12 @@ namespace XoticEngine.ParticleSystem
                 Particle p = new Particle(pos, depth, speed, scale, rotation, rotationSpeed, texture, particleColor, ttl, modList);
                 particles.Add(p);
             }
+        }
+
+        public void Move(Vector2 position)
+        {
+            RelativePosition = position;
+            prevPosition = Position;
         }
 
         //Particles shooting
