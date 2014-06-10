@@ -23,13 +23,11 @@ namespace XoticEngine.GameObjects.MenuItems
         public event Action OnLeftClick, OnRightClick, OnMiddleClick;
         public event Action OnMouseEnter, OnMouseExit;
 
-        public Button(string name, Rectangle rect, SpriteSheet backTexture, bool useHoverTexture, Color backColor, Color backHoverColor, string text, SpriteFont font, Color textColor, Color textHoverColor)
+        public Button(string name, Rectangle rect, SpriteSheet backTexture, string text, SpriteFont font, Color textColor, Color textHoverColor)
             : base(name, new Vector2(rect.X, rect.Y))
         {
             this.rect = rect;
-            //Color
-            this.backColor = backColor;
-            this.backHoverColor = backHoverColor;
+
             //Text
             this.text = text;
             this.font = font;
@@ -37,17 +35,31 @@ namespace XoticEngine.GameObjects.MenuItems
             this.textColor = textColor;
             this.textHoverColor = textHoverColor;
 
-            //Set the texture
-            if (backTexture != null)
-            {
-                this.texture = backTexture.Get(0);
-                this.hoverTexture = backTexture.Get(useHoverTexture ? 1 : 0);
-            }
-            else
-            {
-                this.texture = Assets.Get<Texture2D>("DummyTexture");
-                this.hoverTexture = Assets.Get<Texture2D>("DummyTexture");
-            }
+            //Back texture
+            this.texture = backTexture.Get(0);
+            this.hoverTexture = backTexture.Get(1);
+            //Back color
+            this.backColor = Color.White;
+            this.backHoverColor = Color.White;
+        }
+        public Button(string name, Rectangle rect, Color[] backColors, string text, SpriteFont font, Color textColor, Color textHoverColor)
+            : base(name, new Vector2(rect.X, rect.Y))
+        {
+            this.rect = rect;
+
+            //Text
+            this.text = text;
+            this.font = font;
+            //Text color
+            this.textColor = textColor;
+            this.textHoverColor = textHoverColor;
+
+            //Back texture
+            this.texture = Assets.DummyTexture;
+            this.hoverTexture = Assets.DummyTexture;
+            //Back color
+            this.backColor = backColors[0];
+            this.backHoverColor = backColors[1];
         }
 
         public override void Update()
@@ -84,11 +96,11 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Draw(SpriteBatch s)
         {
             //Draw the button
-            s.Draw(hovering ? hoverTexture : texture, rect, null, hovering ? backHoverColor : backColor, 0, Vector2.Zero, SpriteEffects.None, 0);
+            s.Draw(hovering ? hoverTexture : texture, rect, null, hovering ? backHoverColor : backColor, 0, Vector2.Zero, SpriteEffects.None, 0 + float.Epsilon);
 
             //Draw the text
             if (font != null)
-                s.DrawString(font, text, new Vector2(rect.Center.X - font.MeasureString(text).X / 2, rect.Center.Y - font.MeasureString(text).Y / 2), hovering ? textHoverColor : textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0.01f);
+                s.DrawString(font, text, new Vector2(rect.Center.X - font.MeasureString(text).X / 2, rect.Center.Y - font.MeasureString(text).Y / 2), hovering ? textHoverColor : textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             base.Draw(s);
         }

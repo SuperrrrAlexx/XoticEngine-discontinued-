@@ -72,7 +72,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Draw(SpriteBatch s)
         {
             //Draw the bar and button
-            s.Draw(bar, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0.01f);
+            s.Draw(bar, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0 + float.Epsilon);
             s.Draw(button, buttonPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             base.Draw(s);
