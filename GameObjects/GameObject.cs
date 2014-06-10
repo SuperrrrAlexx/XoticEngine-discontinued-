@@ -34,7 +34,6 @@ namespace XoticEngine.GameObjects
                 for (int i = 0; i < children.Count; i++)
                     children[i].Update();
         }
-
         public virtual void Draw(SpriteBatch s)
         {
             //Draw each child
@@ -45,12 +44,12 @@ namespace XoticEngine.GameObjects
 
         public void AddChild(GameObject g)
         {
-            //Check if the list already contains the object
-            if (!children.Contains(g))
-            {
-                //Add the child
-                children.Add(g);
-            }
+            g.Parent = this;
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
 
         public string Name
@@ -73,9 +72,13 @@ namespace XoticEngine.GameObjects
             get { return parent; }
             set
             {
+                //Remove from the old parent
                 if (parent != null)
                     parent.Children.Remove(this);
-                value.AddChild(this);
+                //Add to the new parent
+                if (!value.Children.Contains(this))
+                    value.Children.Add(this);
+                //Save the new parent
                 parent = value;
             }
         }
