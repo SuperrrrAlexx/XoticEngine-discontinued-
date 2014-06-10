@@ -9,15 +9,12 @@ namespace XoticEngine
 {
     public class SpriteSheet
     {
-        #region Fields
         Texture2D sheet;
         Texture2D[,] sprites;
         int cols, rows;
         int spriteWidth, spriteHeight;
         int length;
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Create a spritesheet.
         /// </summary>
@@ -78,42 +75,37 @@ namespace XoticEngine
             //Get the amount of sprites
             length = cols * rows;
         }
-        #endregion
 
-        #region Methods
-        /// <summary>
-        /// Get a sprite from the sheet.
-        /// </summary>
-        /// <param name="item">The sprite to return. (zero-based)</param>
-        public Texture2D Get(int item)
+        public Texture2D this[int item]
         {
-            item = item % length;
-            //Get the column and row
-            int col = item % cols;
-            int row = item / cols;
+            get
+            {
+                //If the item is larger than the length, throw an exception
+                if (item >= length)
+                    throw new IndexOutOfRangeException("The spritesheet does not contain item number " + item);
 
-            //Return the sprite
-            return sprites[col, row];
+                //Get the column and row
+                int col = item % cols;
+                int row = item / cols;
+
+                //Return the sprite
+                return sprites[col, row];
+            }
         }
-        /// <summary>
-        /// Get a sprite from the sheet.
-        /// </summary>
-        /// <param name="col">The column in the sheet. (zero-based)</param>
-        /// <param name="row">The row in the sheet. (zero-based)</param>
-        public Texture2D Get(int col, int row)
+        public Texture2D this[int col, int row]
         {
-            //If col or row is not part of the spritesheet, throw an exception
-            if (col >= cols || col < 0 || row >= rows || row < 0)
-                throw new IndexOutOfRangeException("The spritesheet does not contain the coordinates (" + col + ", " + row + ")");
-            
-            //Return the sprite
-            return sprites[col, row];
-        }
-        #endregion
+            get
+            {
+                //If col or row is not part of the spritesheet, throw an exception
+                if (col >= cols || col < 0 || row >= rows || row < 0)
+                    throw new IndexOutOfRangeException("The spritesheet does not contain the coordinates (" + col + ", " + row + ")");
 
-        #region Properties
+                //Return the sprite
+                return sprites[col, row];
+            }
+        }
+
         public int Length
         { get { return length; } }
-        #endregion
     }
 }

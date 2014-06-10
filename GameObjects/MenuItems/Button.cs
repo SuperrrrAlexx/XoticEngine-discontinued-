@@ -36,8 +36,8 @@ namespace XoticEngine.GameObjects.MenuItems
             this.textHoverColor = textHoverColor;
 
             //Back texture
-            this.texture = backTexture.Get(0);
-            this.hoverTexture = backTexture.Get(1);
+            this.texture = backTexture[0];
+            this.hoverTexture = backTexture[1];
             //Back color
             this.backColor = Color.White;
             this.backHoverColor = Color.White;

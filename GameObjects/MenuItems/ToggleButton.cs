@@ -46,7 +46,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Draw(SpriteBatch s)
         {
             //Draw the checkbox
-            s.Draw(sheet.Get(toggled ? 1 : 0), rect, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            s.Draw(sheet[toggled ? 1 : 0], rect, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
 
             base.Draw(s);
         }
