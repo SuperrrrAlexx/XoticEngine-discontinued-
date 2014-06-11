@@ -18,8 +18,10 @@ namespace XoticEngine
         static Game game;
         //Graphics
         static GraphicsDeviceManager graphics;
-        static SpriteBatch spriteBatch, noCamSpriteBatch;
+        static SpriteBatch spriteBatch, guiSpriteBatch;
         static Matrix transformMatrix;
+        static IPostProcessing postProcessing;
+        static RenderTarget2D target;
         //Gamestates
         static Dictionary<string, GameState> gameStates = new Dictionary<string, GameState>();
         static GameState currentState;
@@ -30,9 +32,12 @@ namespace XoticEngine
         {
             game = g;
             graphics = device;
-            //Create a new spritebatch
+            //Create the spritebatches
             spriteBatch = new SpriteBatch(Graphics.Device);
-            noCamSpriteBatch = new SpriteBatch(Graphics.Device);
+            guiSpriteBatch = new SpriteBatch(Graphics.Device);
+
+            //Create a new render target
+            target = new RenderTarget2D(Graphics.Device, Graphics.Viewport.Width, Graphics.Viewport.Height);
 
             //Initialize the assets, input, console
             Assets.Initialize(game.Content, Graphics.Device);
@@ -74,20 +79,34 @@ namespace XoticEngine
             //Clear the graphics device
             Graphics.Device.Clear(Color.Black);
 
+            //Draw to a render target
+            if (postProcessing != null)
+            {
+                Graphics.Device.SetRenderTarget(target);
+                Graphics.Device.Clear(Color.Black);
+            }
+
             //Begin the spritebatches
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied, null, null, null, null, transformMatrix);
-            noCamSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
+            guiSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
             //If the current game state is not null, draw it
             if (currentState != null)
                 currentState.Draw(spriteBatch);
 
             //Draw the console
-            GameConsole.Draw(noCamSpriteBatch);
+            GameConsole.Draw(guiSpriteBatch);
 
             //End the spritebatches
             spriteBatch.End();
-            noCamSpriteBatch.End();
+            guiSpriteBatch.End();
+
+            //Draw the render target with the 
+            if (postProcessing != null)
+            {
+                Graphics.Device.SetRenderTarget(null);
+                postProcessing.Draw(target, Vector2.Zero);
+            }
 
             //Draw the framerate counter
             FrameRateCounter.Draw();
@@ -144,8 +163,8 @@ namespace XoticEngine
             { get { return transformMatrix; } set { transformMatrix = value; } }
             public static void ResetTransformMatrix()
             { transformMatrix = Matrix.Identity; }
-            public static SpriteBatch NoCamSpriteBatch
-            { get { return noCamSpriteBatch; } }
+            public static SpriteBatch GUISpriteBatch
+            { get { return guiSpriteBatch; } }
             public static bool VSync
             {
                 get { return graphics.SynchronizeWithVerticalRetrace; }
@@ -156,6 +175,8 @@ namespace XoticEngine
                     graphics.ApplyChanges();
                 }
             }
+            public static IPostProcessing PostProcessing
+            { get { return postProcessing; } set { postProcessing = value; } }
         }
         public static bool IsMouseVisible
         { get { return game.IsMouseVisible; } set { game.IsMouseVisible = value; } }

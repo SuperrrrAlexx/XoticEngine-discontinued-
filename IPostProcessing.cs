@@ -9,6 +9,6 @@ namespace XoticEngine
 {
     public interface IPostProcessing
     {
-        void Draw(Texture2D texture, SpriteBatch s, Vector2 pos);
+        void Draw(Texture2D texture, Vector2 pos);
     }
 }
