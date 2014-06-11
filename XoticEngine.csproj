@@ -95,7 +95,7 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Animation.cs" />
-    <Compile Include="IPostProcessing.cs" />
+    <Compile Include="PostProcessingEffect.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Utilities\Benchmark.cs" />
     <Compile Include="Camera.cs" />

@@ -20,7 +20,7 @@ namespace XoticEngine
         static GraphicsDeviceManager graphics;
         static SpriteBatch spriteBatch, guiSpriteBatch;
         static Matrix transformMatrix;
-        static IPostProcessing postProcessing;
+        static PostProcessingEffect postProcessing;
         static RenderTarget2D target;
         //Gamestates
         static Dictionary<string, GameState> gameStates = new Dictionary<string, GameState>();
@@ -175,7 +175,7 @@ namespace XoticEngine
                     graphics.ApplyChanges();
                 }
             }
-            public static IPostProcessing PostProcessing
+            public static PostProcessingEffect PostProcessing
             { get { return postProcessing; } set { postProcessing = value; } }
         }
         public static bool IsMouseVisible

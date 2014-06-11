@@ -7,8 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XoticEngine
 {
-    public interface IPostProcessing
+    public abstract class PostProcessingEffect
     {
-        void Draw(Texture2D texture, Vector2 pos);
+        protected SpriteBatch spriteBatch;
+        public abstract void Draw(Texture2D texture, Vector2 pos);
     }
 }
