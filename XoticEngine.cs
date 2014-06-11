@@ -132,7 +132,14 @@ namespace XoticEngine
             public static Rectangle Viewport
             { get { return Device.Viewport.Bounds; } }
             public static bool Fullscreen
-            { get { return graphics.IsFullScreen; } set { graphics.IsFullScreen = value; graphics.ApplyChanges(); } }
+            {
+                get { return graphics.IsFullScreen; }
+                set
+                {
+                    graphics.IsFullScreen = value;
+                    graphics.ApplyChanges();
+                }
+            }
             public static Matrix TransformMatrix
             { get { return transformMatrix; } set { transformMatrix = value; } }
             public static void ResetTransformMatrix()
