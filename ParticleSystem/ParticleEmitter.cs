@@ -26,7 +26,8 @@ namespace XoticEngine.ParticleSystem
         double pps;
         double queue = 0;
         double ttl;
-        List<ParticleModifier> modList;
+        //Modifiers
+        List<ParticleModifier> modList, modOnceList;
         //Texture
         Texture2D texture;
         Color particleColor;
@@ -48,8 +49,17 @@ namespace XoticEngine.ParticleSystem
             this.ttl = secondsToLive;
             //Particles
             this.pps = particlesPerSecond;
-            this.modList = modifierList;
             this.particles = new List<Particle>();
+            //Modifiers
+            this.modList = new List<ParticleModifier>();
+            this.modOnceList = new List<ParticleModifier>();
+            for (int i = 0; i < modifierList.Count; i++)
+            {
+                if (modifierList[i].UpdateOnce)
+                    modOnceList.Add(modifierList[i]);
+                else
+                    modList.Add(modifierList[i]);
+            }
         }
 
         public override void Update()
@@ -58,26 +68,24 @@ namespace XoticEngine.ParticleSystem
             if (!paused)
                 Shoot();
 
-            //If there are particles
-            if (particles.Count() > 0)
+            //Update all particles
+            for (int i = 0; i < particles.Count(); i++)
             {
-                //Update all particles
-                for (int i = 0; i < particles.Count(); i++)
+                //If the particle is alive, update it, else remove it
+                if (particles[i].Alive)
                 {
-                    //If the particle is alive, update it, else remove it
-                    if (particles[i].Alive)
-                    {
-                        //Set the depth
-                        if (oldestInFront)
-                            particles[i].Depth = depth - (float)(particles[i].RealLifeTime / 100000f);
-                        else
-                            particles[i].Depth = depth + (float)(particles[i].RealLifeTime / 100000f);
-                        //Update the particle
-                        particles[i].Update();
-                    }
-                    else
-                        particles.RemoveAt(i);
+                    //Set the depth
+                    particles[i].Depth = oldestInFront ? depth - (float)(particles[i].RealLifeTime / 100000f) : depth + (float)(particles[i].RealLifeTime / 100000f);
+
+                    //Update the particle modifiers
+                    for (int m = 0; m < modList.Count; m++)
+                        modList[m].Update(particles[i]);
+
+                    //Update the particle
+                    particles[i].Update();
                 }
+                else
+                    particles.RemoveAt(i);
             }
 
             //Update the previous position
@@ -96,15 +104,11 @@ namespace XoticEngine.ParticleSystem
             //Update the queue and the actual amount of particles to be spawned this tick
             queue += pps * Time.DeltaTime;
             int spawns = (int)queue;
+
             //Create all the particles
-            for (int n = spawns; n > 0; n--)
-            {
-                //Calculate the particle position between the old and new position
-                Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / spawns), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / spawns));
-                //Create a new particle and add it to the list
-                Particle p = new Particle(pos, depth, speed, scale, rotation, rotationSpeed, texture, particleColor, ttl, modList);
-                particles.Add(p);
-            }
+            Shoot(spawns);
+
+            //Update the queue
             queue -= spawns;
         }
         public void Shoot(int amount)
@@ -114,8 +118,14 @@ namespace XoticEngine.ParticleSystem
             {
                 //Calculate the particle position between the old and new position
                 Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / amount), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / amount));
-                //Create a new particle and add it to the list
-                Particle p = new Particle(pos, depth, speed, scale, rotation, rotationSpeed, texture, particleColor, ttl, modList);
+                //Create a new particle
+                Particle p = new Particle(pos, depth, speed, scale, rotation, rotationSpeed, texture, particleColor, ttl);
+
+                //Update all updateOnce modifiers
+                for (int i = 0; i < modOnceList.Count; i++)
+                    modOnceList[i].Update(p);
+
+                //Add the particle
                 particles.Add(p);
             }
         }

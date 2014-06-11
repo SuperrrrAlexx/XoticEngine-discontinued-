@@ -20,8 +20,7 @@ namespace XoticEngine.ParticleSystem
         //Alive or dead
         bool alive = true;
         double ttl;
-        //Modifiers
-        List<ParticleModifier> modList;
+        //Lifetime
         double initialTTL;
         double lifeTime;
         double realLifeTime;
@@ -29,7 +28,7 @@ namespace XoticEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public Particle(Vector2 position, float depth, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double ttl, List<ParticleModifier> modList)
+        public Particle(Vector2 position, float depth, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double ttl)
         {
             //Position, speed, rotation
             this.position = position;
@@ -47,50 +46,28 @@ namespace XoticEngine.ParticleSystem
             //Lifetime
             realLifeTime = 1 - (ttl / initialTTL);
             lifeTime = realLifeTime;
-
-            //Particle modifiers
-            if (modList != null)
-                this.modList = new List<ParticleModifier>(modList);
-            else
-                this.modList = new List<ParticleModifier>();
-
-            //Update all modifiers
-            for (int i = this.modList.Count() - 1; i >= 0; i--)
-                if (this.modList[i].UpdateOnce)
-                {
-                    this.modList[i].Update(this);
-                    this.modList.RemoveAt(i);
-                }
         }
 
         public void Update()
         {
-            if (alive)
-            {
-                //Move and rotate the particle
-                position += speed * (float)Time.DeltaTime;
-                rotation += rotationSpeed * Time.DeltaTime;
+            //Move and rotate the particle
+            position += speed * (float)Time.DeltaTime;
+            rotation += rotationSpeed * Time.DeltaTime;
 
-                //Calculate the lifetime
-                realLifeTime = 1f - (ttl / initialTTL);
-                lifeTime = realLifeTime;
+            //Calculate the lifetime
+            realLifeTime = 1f - (ttl / initialTTL);
+            lifeTime = realLifeTime;
 
-                //Update each particle modifier
-                for (int i = 0; i < modList.Count; i++)
-                    modList[i].Update(this);
-
-                //Update the time to live
-                ttl -= Time.DeltaTime;
-                //If the ttl <= 0, let the particle die
-                if (ttl <= 0)
-                    alive = false;
-            }
+            //Update the time to live
+            ttl -= Time.DeltaTime;
+            //If the ttl <= 0, let the particle die
+            if (ttl <= 0)
+                alive = false;
         }
 
         public void Draw(SpriteBatch s)
         {
-            if (alive)
-                s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2((float)texture.Width / 2, (float)texture.Height / 2), scale, SpriteEffects.None, depth);
+            s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2((float)texture.Width / 2, (float)texture.Height / 2), scale, SpriteEffects.None, depth);
         }
 
         public bool Alive

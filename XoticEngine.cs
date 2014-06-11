@@ -145,7 +145,7 @@ namespace XoticEngine
                 set
                 {
                     graphics.SynchronizeWithVerticalRetrace = value;
-                    game.IsFixedTimeStep = !value;
+                    game.IsFixedTimeStep = value;
                     graphics.ApplyChanges();
                 }
             }
