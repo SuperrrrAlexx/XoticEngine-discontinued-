@@ -87,15 +87,12 @@ namespace XoticEngine
             }
 
             //Begin the spritebatches
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied, null, null, null, null, transformMatrix);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
             guiSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
             //If the current game state is not null, draw it
             if (currentState != null)
                 currentState.Draw(spriteBatch);
-
-            //Draw the console
-            GameConsole.Draw(guiSpriteBatch);
 
             //End the spritebatches
             spriteBatch.End();
@@ -106,6 +103,14 @@ namespace XoticEngine
             {
                 Graphics.Device.SetRenderTarget(null);
                 postProcessing.Draw(target, Vector2.Zero);
+            }
+
+            //Draw the console
+            if (GameConsole.Enabled)
+            {
+                guiSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+                GameConsole.Draw(guiSpriteBatch);
+                guiSpriteBatch.End();
             }
 
             //Draw the framerate counter
