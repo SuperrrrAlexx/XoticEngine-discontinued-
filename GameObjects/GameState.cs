@@ -23,6 +23,10 @@ namespace XoticEngine.GameObjects
         {
             objects.Add(g.Name, g);
         }
+        public void Remove(string name)
+        {
+            objects.Remove(name);
+        }
 
         public virtual void Update()
         {
