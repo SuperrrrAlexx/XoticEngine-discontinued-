@@ -75,10 +75,10 @@ namespace XoticEngine.Shapes
         public Point Top
         { get { return p1.Y < p2.Y ? p1 : p2; } }
         public Point Bottom
-        { get { return p1.Y > p2.Y ? p1 : p2; } }
+        { get { return p1.Y >= p2.Y ? p1 : p2; } }
         public Point Left
         { get { return p1.X < p2.X ? p1 : p2; } }
         public Point Right
-        { get { return p1.X > p2.X ? p1 : p2; } }
+        { get { return p1.X >= p2.X ? p1 : p2; } }
     }
 }
