@@ -202,8 +202,8 @@ namespace XoticEngine
             {
                 List<string> gameObjectNames = new List<string>();
                 if (currentState != null)
-                    for (int i = 0; i < currentState.Count; i++)
-                        gameObjectNames.Add(currentState[i].Name);
+                    for (int i = 0; i < currentState.Objects.Count; i++)
+                        gameObjectNames.Add(currentState.Objects.ElementAt(i).Key);
                 return gameObjectNames;
             }
         }
