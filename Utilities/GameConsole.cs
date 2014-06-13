@@ -267,21 +267,21 @@ namespace XoticEngine.Utilities
         }
 
         //Write to console
-        public static void WriteColored(string t, Color c)
+        public static void WriteColored(object o, Color c)
         {
-            log.Add(new Tuple<string, Color>(t, c));
+            log.Add(new Tuple<string, Color>(o.ToString(), c));
         }
-        public static void Write(string t)
+        public static void Write(object o)
         {
-            WriteColored(t, Color.White);
+            WriteColored(o, Color.White);
         }
-        public static void Warning(string t)
+        public static void Warning(object o)
         {
-            WriteColored(t, Color.Yellow);
+            WriteColored(o, Color.Yellow);
         }
-        public static void Error(string t)
+        public static void Error(object o)
         {
-            WriteColored(t, Color.Red);
+            WriteColored(o, Color.Red);
         }
 
         //Command input
