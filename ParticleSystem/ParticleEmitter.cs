@@ -156,5 +156,7 @@ namespace XoticEngine.ParticleSystem
         { get { return rotationSpeed; } set { rotationSpeed = value; } }
         public Color ParticleColor
         { get { return particleColor; } set { particleColor = value; } }
+        public List<Particle> Particles
+        { get { return particles; } }
     }
 }
