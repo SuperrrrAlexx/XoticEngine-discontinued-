@@ -34,6 +34,13 @@ namespace XoticEngine.Shapes
             return Vector2.Distance(center.ToVector2(), circle.Center.ToVector2()) <= radius + circle.Radius;
         }
 
+        public bool Intersects(Rectangle rect)
+        {
+            Vector2 closest = new Vector2(MathHelper.Clamp(this.Center.X, rect.Left, rect.Right), MathHelper.Clamp(this.Center.Y, rect.Top, rect.Bottom));
+
+            return (center.ToVector2() - closest).LengthSquared() < this.radius * this.radius;
+        }
+
         public bool Intersects(Line line)
         {
             // Translate the space so P1 ends up at the origin:
