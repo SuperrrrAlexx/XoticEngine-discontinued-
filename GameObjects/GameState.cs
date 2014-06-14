@@ -31,15 +31,15 @@ namespace XoticEngine.GameObjects
         public virtual void Update()
         {
             //Update each gameobject
-            foreach(GameObject obj in objects.Values)
-                obj.Update();
+            for (int i = 0; i < objects.Count; i++)
+                objects.ElementAt(i).Value.Update();
         }
 
         public virtual void Draw(SpriteBatch s)
         {
             //Draw each gameobject
-            foreach (GameObject obj in objects.Values)
-                obj.Draw(s);
+            for (int i = 0; i < objects.Count; i++)
+                objects.ElementAt(i).Value.Draw(s);
         }
 
         public virtual void BeginState()
