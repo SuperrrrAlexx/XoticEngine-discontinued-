@@ -190,28 +190,8 @@ namespace XoticEngine
         //Gamestate
         public static GameState CurrentState
         { get { return currentState; } }
-        public static string CurrentStateName
-        {
-            get
-            {
-                if (currentState != null)
-                    return currentState.Name;
-                return "null";
-            }
-        }
-        public static List<string> GameStateNameList
-        { get { return new List<string>(gameStates.Keys); } }
-        public static List<string> GameObjectNameList
-        {
-            get
-            {
-                List<string> gameObjectNames = new List<string>();
-                if (currentState != null)
-                    for (int i = 0; i < currentState.Objects.Count; i++)
-                        gameObjectNames.Add(currentState.Objects.ElementAt(i).Key);
-                return gameObjectNames;
-            }
-        }
+        public static Dictionary<string, GameState> GameStates
+        { get { return gameStates; } }
         //Random
         public static Random Random
         { get { return random; } }

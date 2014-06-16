@@ -144,7 +144,7 @@ namespace XoticEngine.Utilities
             //Show the current gamestate
             Action<string[]> gameState = (args) =>
                 {
-                    Write("Current gamestate: " + X.CurrentStateName.ToString());
+                    Write("Current gamestate: " + X.CurrentState == null ? "null" : X.CurrentState.Name);
                 };
             commands.Add("gamestate", gameState);
 
@@ -152,7 +152,7 @@ namespace XoticEngine.Utilities
             Action<string[]> stateList = (args) =>
                 {
                     Write("Gamestates:");
-                    List<string> states = X.GameStateNameList;
+                    List<string> states = X.GameStates.Keys.ToList();
                     for (int i = 0; i < states.Count; i++)
                         Write(states[i]);
                 };
@@ -163,7 +163,7 @@ namespace XoticEngine.Utilities
                 {
                     try
                     {
-                        if (X.CurrentStateName != args[0])
+                        if (X.CurrentState.Name != args[0])
                             X.SwitchTo(args[0]);
                         else
                             Error(args[0] + " is already the current state.");
@@ -177,7 +177,7 @@ namespace XoticEngine.Utilities
             Action<string[]> currentObjects = (args) =>
                 {
                     Write("Gameobjects:");
-                    List<string> names = X.GameObjectNameList;
+                    List<string> names = X.CurrentState.Keys.ToList();
                     for (int i = 0; i < names.Count; i++)
                         Write(names[i]);
                 };
@@ -186,8 +186,8 @@ namespace XoticEngine.Utilities
             //Reset the gamestate
             Action<string[]> resetState = (args) =>
                 {
-                    if (X.CurrentStateName != "null")
-                        X.SwitchTo(X.CurrentStateName);
+                    if (X.CurrentState != null)
+                        X.SwitchTo(X.CurrentState.Name);
                 };
             commands.Add("reset", resetState);
 

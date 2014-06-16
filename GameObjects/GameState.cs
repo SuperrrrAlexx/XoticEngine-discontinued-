@@ -7,39 +7,30 @@ using XoticEngine.Utilities;
 
 namespace XoticEngine.GameObjects
 {
-    public class GameState
+    public class GameState : Dictionary<string, List<GameObject>>
     {
         string name;
-        Dictionary<string, GameObject> objects;
 
         public GameState(string name)
             : base()
         {
             this.name = name;
-            objects = new Dictionary<string, GameObject>();
-        }
-
-        public void Add(GameObject g)
-        {
-            objects.Add(g.Name, g);
-        }
-        public void Remove(string name)
-        {
-            objects.Remove(name);
         }
 
         public virtual void Update()
         {
             //Update each gameobject
-            for (int i = 0; i < objects.Count; i++)
-                objects.ElementAt(i).Value.Update();
+            for (int i = 0; i < this.Count; i++)
+                for (int g = 0; g < this.ElementAt(i).Value.Count; g++)
+                    this.ElementAt(i).Value[g].Update();
         }
 
         public virtual void Draw(SpriteBatch s)
         {
             //Draw each gameobject
-            for (int i = 0; i < objects.Count; i++)
-                objects.ElementAt(i).Value.Draw(s);
+            for (int i = 0; i < this.Count; i++)
+                for (int g = 0; g < this.ElementAt(i).Value.Count; g++)
+                    this.ElementAt(i).Value[g].Draw(s);
         }
 
         public virtual void BeginState()
@@ -51,11 +42,12 @@ namespace XoticEngine.GameObjects
             GameConsole.Warning("Gamestate " + name + " ended.");
         }
 
+        public override string ToString()
+        {
+            return name;
+        }
+
         public string Name
         { get { return name; } }
-        public Dictionary<string, GameObject> Objects
-        { get { return objects; } }
-        public GameObject this[string name]
-        { get { return objects[name]; } set { objects[name] = value; } }
     }
 }
