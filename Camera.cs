@@ -9,9 +9,14 @@ namespace XoticEngine
     public class Camera
     {
         Matrix transform;
-        Vector2 position, shake;
+        Vector2 position;
         float zoom, rotation;
         bool applyOnUpdate;
+
+        //Camera shake
+        Vector2 shake, shakeAmount, nextPoint;
+        float shakeSpeed;
+        double shakeTime;
 
         public Camera(bool applyOnUpdate)
         {
@@ -57,23 +62,86 @@ namespace XoticEngine
             UpdateMatrix();
         }
 
-        public void Shake(Vector2 amount)
+        public void Shake(Vector2 shakeAmount, float speed, double time)
         {
-            shake = new Vector2(X.Random.NextFloat() * X.Random.NextParity() * amount.X, X.Random.NextFloat() * X.Random.NextParity() * amount.Y);
-            UpdateMatrix();
+            this.shakeAmount = shakeAmount;
+            this.shakeSpeed = speed;
+            this.shakeTime = time;
         }
-        public void Shake(float amount)
+        public void Update()
         {
-            Shake(new Vector2(amount));
+            if (shakeTime > 0)
+            {
+                //Update the shake time
+                shakeTime -= Time.DeltaTime;
+
+                //Pick a new random point to move to
+                if (shake == nextPoint)
+                    nextPoint = new Vector2(X.Random.NextFloat() * X.Random.NextParity() * shakeAmount.X, X.Random.NextFloat() * X.Random.NextParity() * shakeAmount.Y);
+                MoveToPoint();
+            }
+            else if (shake != Vector2.Zero)
+            {
+                //Move to reset
+                nextPoint = Vector2.Zero;
+                MoveToPoint();
+            }
+        }
+        void MoveToPoint()
+        {
+            //Move the camera to the next point
+            Vector2 move = nextPoint - shake;
+            move.Normalize();
+            move *= shakeSpeed * (float)Time.DeltaTime;
+
+            //Check if move is not overshooting
+            if (move.Length() >= Vector2.Distance(shake, nextPoint))
+                shake = nextPoint;
+            else
+                shake += move;
+
+            UpdateMatrix();
         }
 
         public Matrix TransformMatrix
         { get { return transform; } }
         public Vector2 Position
-        { get { return position; } set { position = value; UpdateMatrix(); } }
+        {
+            get { return position; }
+            set
+            {
+                position = value;
+                UpdateMatrix();
+            }
+        }
         public float Zoom
-        { get { return zoom; } set { zoom = value; UpdateMatrix(); } }
+        {
+            get { return zoom; }
+            set
+            {
+                zoom = value;
+                UpdateMatrix();
+            }
+        }
         public float Rotation
-        { get { return rotation; } set { rotation = value; UpdateMatrix(); } }
+        {
+            get { return rotation; }
+            set
+            {
+                rotation = value;
+                UpdateMatrix();
+            }
+        }
+        public double ShakeTime
+        { get { return shakeTime; } set { shakeTime = value; } }
+        public Vector2 Shake
+        {
+            get { return shake; }
+            set
+            {
+                shake = value;
+                UpdateMatrix();
+            }
+        }
     }
 }
