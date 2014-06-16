@@ -177,7 +177,7 @@ namespace XoticEngine.Utilities
             Action<string[]> currentObjects = (args) =>
                 {
                     Write("Gameobjects:");
-                    List<string> names = X.CurrentState.Keys.ToList();
+                    List<string> names = X.CurrentState.GameObjects.Keys.ToList();
                     for (int i = 0; i < names.Count; i++)
                         Write(names[i]);
                 };
