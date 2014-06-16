@@ -44,7 +44,20 @@ namespace XoticEngine.GameObjects
 
         public void AddChild(GameObject g)
         {
-            g.Parent = this;
+            g.SetParent(this);
+        }
+        public void SetParent(GameObject g)
+        {
+            //Remove from the old parent
+            if (parent != null)
+                parent.Children.Remove(this);
+
+            //Add to the new parent
+            if (!g.Children.Contains(this))
+                g.Children.Add(this);
+
+            //Save the new parent
+            parent = g;
         }
 
         public override string ToString()
@@ -56,32 +69,12 @@ namespace XoticEngine.GameObjects
         { get { return name; } }
         //Position
         public Vector2 Position
-        {
-            get
-            {
-                if (parent != null)
-                    return parent.Position + relativePosition;
-                return relativePosition;
-            }
-        }
+        { get { return parent != null ? parent.Position + relativePosition : relativePosition; } }
         public Vector2 RelativePosition
         { get { return relativePosition; } set { relativePosition = value; } }
         //Parent and children
         public GameObject Parent
-        {
-            get { return parent; }
-            set
-            {
-                //Remove from the old parent
-                if (parent != null)
-                    parent.Children.Remove(this);
-                //Add to the new parent
-                if (!value.Children.Contains(this))
-                    value.Children.Add(this);
-                //Save the new parent
-                parent = value;
-            }
-        }
+        { get { return parent; } }
         public List<GameObject> Children
         { get { return children; } set { children = value; } }
     }
