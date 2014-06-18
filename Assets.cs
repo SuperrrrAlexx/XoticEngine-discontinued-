@@ -22,8 +22,6 @@ namespace XoticEngine
         static Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
         static Dictionary<string, Song> songs = new Dictionary<string, Song>();
         static Dictionary<string, Video> videos = new Dictionary<string, Video>();
-        //Prefixes
-        static Dictionary<string, string> prefixes;
 
         public static void Initialize(ContentManager c, GraphicsDevice g)
         {
@@ -35,26 +33,6 @@ namespace XoticEngine
             DummyTexture.SetData(new Color[] { Color.White });
             //Add the dummy texture to the list
             textures.Add("DummyTexture", DummyTexture);
-
-            //Create the prefixes
-            prefixes = new Dictionary<string, string>
-            {
-                {"Texture2D", "Texture2D_"},
-                {"SpriteFont", "SpriteFont_"},
-                {"Effect", "Effect_"},
-                {"SoundEffect", "SoundEffect_"},
-                {"Song", "Song_"},
-                {"Video", "Video_"},
-            };
-        }
-
-        public static void SetPrefix<T>(string prefix)
-        {
-            if (!prefixes.ContainsKey(typeof(T).Name))
-                throw new NotSupportedException("This type (" + typeof(T).ToString() + ") is not supported");
-
-            //Set the prefix
-            prefixes[typeof(T).Name] = prefix;
         }
 
         public static T Get<T>(string name)
@@ -95,7 +73,7 @@ namespace XoticEngine
             {
                 case "Texture2D":
                     if (!textures.ContainsKey(name))
-                        textures.Add(name, content.Load<Texture2D>(prefixes["Texture2D"] + name));
+                        textures.Add(name, content.Load<Texture2D>(name));
                     break;
                 case "SpriteSheet":
                     if (!sheets.ContainsKey(name))
@@ -103,23 +81,23 @@ namespace XoticEngine
                     break;
                 case "SpriteFont":
                     if (!fonts.ContainsKey(name))
-                        fonts.Add(name, content.Load<SpriteFont>(prefixes["SpriteFont"] + name));
+                        fonts.Add(name, content.Load<SpriteFont>(name));
                     break;
                 case "Effect":
                     if (!effects.ContainsKey(name))
-                        effects.Add(name, content.Load<Effect>(prefixes["Effect"] + name));
+                        effects.Add(name, content.Load<Effect>(name));
                     break;
                 case "SoundEffect":
                     if (!sounds.ContainsKey(name))
-                        sounds.Add(name, content.Load<SoundEffect>(prefixes["SoundEffect"] + name));
+                        sounds.Add(name, content.Load<SoundEffect>(name));
                     break;
                 case "Song":
                     if (!songs.ContainsKey(name))
-                        songs.Add(name, content.Load<Song>(prefixes["Song"] + name));
+                        songs.Add(name, content.Load<Song>(name));
                     break;
                 case "Video":
                     if (!videos.ContainsKey(name))
-                        videos.Add(name, content.Load<Video>(prefixes["Video"] + name));
+                        videos.Add(name, content.Load<Video>(name));
                     break;
                 default:
                     throw new NotSupportedException("This type (" + typeof(T).ToString() + ") is not supported.");
