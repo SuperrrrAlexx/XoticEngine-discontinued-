@@ -47,17 +47,8 @@ namespace XoticEngine
                 Graphics.Device.Clear(Color.Black);
             }
 
-            //Begin the spritebatches
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
-            guiSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
-
-            //If the current game state is not null, draw it
-            if (X.CurrentState != null)
-                X.CurrentState.Draw(spriteBatch, guiSpriteBatch);
-
-            //End the spritebatches
-            spriteBatch.End();
-            guiSpriteBatch.End();
+            //Draw the current game state
+            DrawGameState();
 
             if (postProcessing.Count > 0)
             {
@@ -76,6 +67,20 @@ namespace XoticEngine
 
             //Draw the console
             DrawConsole();
+        }
+        static void DrawGameState()
+        {
+            //Begin the spritebatches
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
+            guiSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
+
+            //If the current game state is not null, draw it
+            if (X.CurrentState != null)
+                X.CurrentState.Draw(spriteBatch, guiSpriteBatch);
+
+            //End the spritebatches
+            spriteBatch.End();
+            guiSpriteBatch.End();
         }
         static void DrawConsole()
         {
