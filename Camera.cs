@@ -134,7 +134,7 @@ namespace XoticEngine
         }
         public double ShakeTime
         { get { return shakeTime; } set { shakeTime = value; } }
-        public Vector2 Shake
+        public Vector2 ShakeAmount
         {
             get { return shake; }
             set
