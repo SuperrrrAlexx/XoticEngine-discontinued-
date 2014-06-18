@@ -60,7 +60,7 @@ namespace XoticEngine
                 {
                     //The sprite texture
                     Rectangle sourceRect = new Rectangle(c * spriteWidth, r * spriteHeight, spriteWidth, spriteHeight);
-                    Texture2D sprite = new Texture2D(X.Graphics.Device, spriteWidth, spriteHeight);
+                    Texture2D sprite = new Texture2D(Graphics.Device, spriteWidth, spriteHeight);
 
                     //Get the data from the sheet
                     Color[] data = new Color[spriteWidth * spriteHeight];

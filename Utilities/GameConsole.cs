@@ -34,10 +34,10 @@ namespace XoticEngine.Utilities
         {
             //Set the text font and position
             font = Assets.Get<SpriteFont>(fontName);
-            textPos = new Vector2(font.MeasureString(">").X + 5, (int)(X.Graphics.Viewport.Height * 0.6) - font.LineSpacing);
+            textPos = new Vector2(font.MeasureString(">").X + 5, (int)(Graphics.Viewport.Height * 0.6) - font.LineSpacing);
             
             //Set the back rectangle
-            backRect = new Rectangle(0, 0, X.Graphics.Viewport.Width, (int)(X.Graphics.Viewport.Height * 0.6));
+            backRect = new Rectangle(0, 0, Graphics.Viewport.Width, (int)(Graphics.Viewport.Height * 0.6));
 
             //Add the help text
             Write("Type \"commands\" for a list of commands.");

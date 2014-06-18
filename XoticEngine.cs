@@ -16,12 +16,6 @@ namespace XoticEngine
     {
         //Game class
         static Game game;
-        //Graphics
-        static GraphicsDeviceManager graphics;
-        static SpriteBatch spriteBatch, guiSpriteBatch, effectSpriteBatch;
-        static Matrix transformMatrix;
-        static List<PostProcessingEffect> postProcessing;
-        static RenderTarget2D target;
         //Gamestates
         static Dictionary<string, GameState> gameStates = new Dictionary<string, GameState>();
         static GameState currentState;
@@ -31,15 +25,7 @@ namespace XoticEngine
         public static void Initialize(Game g, GraphicsDeviceManager device, string consoleFont)
         {
             game = g;
-            graphics = device;
-            //Create the spritebatches
-            spriteBatch = new SpriteBatch(Graphics.Device);
-            guiSpriteBatch = new SpriteBatch(Graphics.Device);
-            effectSpriteBatch = new SpriteBatch(Graphics.Device);
-
-            //Create a new render target
-            postProcessing = new List<PostProcessingEffect>();
-            target = new RenderTarget2D(Graphics.Device, Graphics.Viewport.Width, Graphics.Viewport.Height);
+            Graphics.Initialize(device);
 
             //Initialize the assets, input, console
             Assets.Initialize(game.Content, Graphics.Device);
@@ -54,9 +40,6 @@ namespace XoticEngine
 
             //Randomness
             random = new Random();
-
-            //Set the transform matrix
-            transformMatrix = Matrix.Identity;
         }
 
         public static void Update(GameTime g)
@@ -78,50 +61,7 @@ namespace XoticEngine
 
         public static void Draw()
         {
-            //Clear the graphics device
-            Graphics.Device.Clear(Color.Black);
-
-            //Draw to a render target
-            if (postProcessing.Count > 0)
-            {
-                Graphics.Device.SetRenderTarget(target);
-                Graphics.Device.Clear(Color.Black);
-            }
-
-            //Begin the spritebatches
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
-            guiSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
-
-            //If the current game state is not null, draw it
-            if (currentState != null)
-                currentState.Draw(spriteBatch);
-
-            //End the spritebatches
-            spriteBatch.End();
-            guiSpriteBatch.End();
-
-            if (postProcessing.Count > 0)
-            {
-                effectSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                Graphics.Device.SetRenderTarget(null);
-
-                //Apply all effects
-                for (int i = 0; i < postProcessing.Count; i++)
-                    target = (RenderTarget2D)postProcessing[i].Apply(target, effectSpriteBatch, Vector2.Zero);
-
-                //Draw to the screen
-                Graphics.Device.SetRenderTarget(null);
-                effectSpriteBatch.Draw(target, Vector2.Zero, Color.White);
-                effectSpriteBatch.End();
-            }
-
-            //Draw the console
-            if (GameConsole.Enabled)
-            {
-                guiSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-                GameConsole.Draw(guiSpriteBatch);
-                guiSpriteBatch.End();
-            }
+            Graphics.DrawAll();
 
             //Draw the framerate counter
             FrameRateCounter.Draw();
@@ -152,46 +92,6 @@ namespace XoticEngine
                 //Call beginState on the current state
                 currentState.BeginState();
             }
-        }
-
-        //Graphics, screen
-        public struct Graphics
-        {
-            public static GraphicsDeviceManager DeviceManager
-            { get { return graphics; } }
-            public static GraphicsDevice Device
-            { get { return graphics.GraphicsDevice; } }
-            public static Point Screen
-            { get { return new Point(Device.DisplayMode.Width, Device.DisplayMode.Height); } }
-            public static Rectangle Viewport
-            { get { return Device.Viewport.Bounds; } }
-            public static bool Fullscreen
-            {
-                get { return graphics.IsFullScreen; }
-                set
-                {
-                    graphics.IsFullScreen = value;
-                    graphics.ApplyChanges();
-                }
-            }
-            public static Matrix TransformMatrix
-            { get { return transformMatrix; } set { transformMatrix = value; } }
-            public static void ResetTransformMatrix()
-            { transformMatrix = Matrix.Identity; }
-            public static SpriteBatch GUISpriteBatch
-            { get { return guiSpriteBatch; } }
-            public static bool VSync
-            {
-                get { return graphics.SynchronizeWithVerticalRetrace; }
-                set
-                {
-                    graphics.SynchronizeWithVerticalRetrace = value;
-                    game.IsFixedTimeStep = value;
-                    graphics.ApplyChanges();
-                }
-            }
-            public static List<PostProcessingEffect> PostProcessing
-            { get { return postProcessing; } set { postProcessing = value; } }
         }
         public static bool IsMouseVisible
         { get { return game.IsMouseVisible; } set { game.IsMouseVisible = value; } }

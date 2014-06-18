@@ -34,10 +34,10 @@ namespace XoticEngine
             transform = Matrix.CreateTranslation(new Vector3(-position.X - shake.X, -position.Y - shake.Y, 0)) *
                 Matrix.CreateRotationZ(rotation) *
                 Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
-                Matrix.CreateTranslation(new Vector3(X.Graphics.Viewport.Width * 0.5f, X.Graphics.Viewport.Height * 0.5f, 0));
+                Matrix.CreateTranslation(new Vector3(Graphics.Viewport.Width * 0.5f, Graphics.Viewport.Height * 0.5f, 0));
 
             if (applyOnUpdate)
-                X.Graphics.TransformMatrix = transform;
+                Graphics.TransformMatrix = transform;
         }
         public void UpdateMatrix(Vector2 position, float zoom, float rotation)
         {
@@ -53,7 +53,7 @@ namespace XoticEngine
         public void Reset()
         {
             //Reset all the variables
-            position = X.Graphics.Viewport.Center.ToVector2();
+            position = Graphics.Viewport.Center.ToVector2();
             zoom = 1.0f;
             rotation = 0.0f;
             shake = Vector2.Zero;
