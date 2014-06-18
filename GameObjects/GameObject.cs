@@ -30,16 +30,14 @@ namespace XoticEngine.GameObjects
         public virtual void Update()
         {
             //Update each child
-            if (children.Count > 0)
-                for (int i = 0; i < children.Count; i++)
-                    children[i].Update();
+            for (int i = 0; i < children.Count; i++)
+                children[i].Update();
         }
-        public virtual void Draw(SpriteBatch s)
+        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
         {
             //Draw each child
-            if (children.Count > 0)
-                for (int i = 0; i < children.Count; i++)
-                    children[i].Draw(s);
+            for (int i = 0; i < children.Count; i++)
+                children[i].Draw(gameBatch, guiBatch);
         }
 
         public void AddChild(GameObject g)

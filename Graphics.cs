@@ -53,7 +53,7 @@ namespace XoticEngine
 
             //If the current game state is not null, draw it
             if (X.CurrentState != null)
-                X.CurrentState.Draw(spriteBatch);
+                X.CurrentState.Draw(spriteBatch, guiSpriteBatch);
 
             //End the spritebatches
             spriteBatch.End();
@@ -75,6 +75,10 @@ namespace XoticEngine
             }
 
             //Draw the console
+            DrawConsole();
+        }
+        static void DrawConsole()
+        {
             if (GameConsole.Enabled)
             {
                 guiSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);

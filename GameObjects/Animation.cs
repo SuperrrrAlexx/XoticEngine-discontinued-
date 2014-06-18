@@ -42,12 +42,12 @@ namespace XoticEngine.GameObjects
             base.Update();
         }
 
-        public override void Draw(SpriteBatch s)
+        public override void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
         {
             //Draw the current frame
-            s.Draw(sheet[frame], Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth);
+            gameBatch.Draw(sheet[frame], Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth);
 
-            base.Draw(s);
+            base.Draw(gameBatch, guiBatch);
         }
 
         public void Stop()

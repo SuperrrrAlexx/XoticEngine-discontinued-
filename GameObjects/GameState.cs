@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.GameObjects.MenuItems;
 using XoticEngine.Utilities;
 
 namespace XoticEngine.GameObjects
@@ -27,12 +28,12 @@ namespace XoticEngine.GameObjects
                     gameObjects.ElementAt(i).Value[g].Update();
         }
 
-        public virtual void Draw(SpriteBatch s)
+        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
         {
             //Draw each gameobject
             for (int i = 0; i < gameObjects.Count; i++)
                 for (int g = 0; g < gameObjects.ElementAt(i).Value.Count; g++)
-                    gameObjects.ElementAt(i).Value[g].Draw(s);
+                    gameObjects.ElementAt(i).Value[g].Draw(gameBatch, guiBatch);
         }
 
         public void Add(GameObject g)

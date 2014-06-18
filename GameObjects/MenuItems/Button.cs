@@ -93,16 +93,16 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Update();
         }
 
-        public override void Draw(SpriteBatch s)
+        public override void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
         {
             //Draw the button
-            s.Draw(hovering ? hoverTexture : texture, rect, null, hovering ? backHoverColor : backColor, 0, Vector2.Zero, SpriteEffects.None, 0 + float.Epsilon);
+            guiBatch.Draw(hovering ? hoverTexture : texture, rect, null, hovering ? backHoverColor : backColor, 0, Vector2.Zero, SpriteEffects.None, 0 + float.Epsilon);
 
             //Draw the text
             if (font != null)
-                s.DrawString(font, text, new Vector2(rect.Center.X - font.MeasureString(text).X / 2, rect.Center.Y - font.MeasureString(text).Y / 2), hovering ? textHoverColor : textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                guiBatch.DrawString(font, text, new Vector2(rect.Center.X - font.MeasureString(text).X / 2, rect.Center.Y - font.MeasureString(text).Y / 2), hovering ? textHoverColor : textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
-            base.Draw(s);
+            base.Draw(gameBatch, guiBatch);
         }
 
         void CallAction(Action action)
