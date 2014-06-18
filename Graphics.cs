@@ -52,16 +52,16 @@ namespace XoticEngine
 
             if (postProcessing.Count > 0)
             {
-                effectSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                Graphics.Device.SetRenderTarget(null);
+                Texture2D texture = target;
 
                 //Apply all effects
                 for (int i = 0; i < postProcessing.Count; i++)
-                    target = (RenderTarget2D)postProcessing[i].Apply(target, effectSpriteBatch, Vector2.Zero);
+                    texture = postProcessing[i].Apply(texture, effectSpriteBatch, Vector2.Zero);
 
                 //Draw to the screen
                 Graphics.Device.SetRenderTarget(null);
-                effectSpriteBatch.Draw(target, Vector2.Zero, Color.White);
+                effectSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                effectSpriteBatch.Draw(texture, Vector2.Zero, Color.White);
                 effectSpriteBatch.End();
             }
 
