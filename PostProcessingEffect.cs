@@ -9,7 +9,6 @@ namespace XoticEngine
 {
     public abstract class PostProcessingEffect
     {
-        protected SpriteBatch spriteBatch;
-        public abstract void Draw(Texture2D texture, Vector2 pos);
+        public abstract Texture2D Apply(Texture2D texture, SpriteBatch spriteBatch, Vector2 pos);
     }
 }

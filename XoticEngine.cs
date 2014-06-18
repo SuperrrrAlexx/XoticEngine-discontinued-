@@ -18,9 +18,9 @@ namespace XoticEngine
         static Game game;
         //Graphics
         static GraphicsDeviceManager graphics;
-        static SpriteBatch spriteBatch, guiSpriteBatch;
+        static SpriteBatch spriteBatch, guiSpriteBatch, effectSpriteBatch;
         static Matrix transformMatrix;
-        static PostProcessingEffect postProcessing;
+        static List<PostProcessingEffect> postProcessing;
         static RenderTarget2D target;
         //Gamestates
         static Dictionary<string, GameState> gameStates = new Dictionary<string, GameState>();
@@ -35,8 +35,10 @@ namespace XoticEngine
             //Create the spritebatches
             spriteBatch = new SpriteBatch(Graphics.Device);
             guiSpriteBatch = new SpriteBatch(Graphics.Device);
+            effectSpriteBatch = new SpriteBatch(Graphics.Device);
 
             //Create a new render target
+            postProcessing = new List<PostProcessingEffect>();
             target = new RenderTarget2D(Graphics.Device, Graphics.Viewport.Width, Graphics.Viewport.Height);
 
             //Initialize the assets, input, console
@@ -80,7 +82,7 @@ namespace XoticEngine
             Graphics.Device.Clear(Color.Black);
 
             //Draw to a render target
-            if (postProcessing != null)
+            if (postProcessing.Count > 0)
             {
                 Graphics.Device.SetRenderTarget(target);
                 Graphics.Device.Clear(Color.Black);
@@ -98,11 +100,19 @@ namespace XoticEngine
             spriteBatch.End();
             guiSpriteBatch.End();
 
-            //Draw the render target with the 
-            if (postProcessing != null)
+            if (postProcessing.Count > 0)
             {
+                effectSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 Graphics.Device.SetRenderTarget(null);
-                postProcessing.Draw(target, Vector2.Zero);
+
+                //Apply all effects
+                for (int i = 0; i < postProcessing.Count; i++)
+                    target = (RenderTarget2D)postProcessing[i].Apply(target, effectSpriteBatch, Vector2.Zero);
+
+                //Draw to the screen
+                Graphics.Device.SetRenderTarget(null);
+                effectSpriteBatch.Draw(target, Vector2.Zero, Color.White);
+                effectSpriteBatch.End();
             }
 
             //Draw the console
@@ -180,7 +190,7 @@ namespace XoticEngine
                     graphics.ApplyChanges();
                 }
             }
-            public static PostProcessingEffect PostProcessing
+            public static List<PostProcessingEffect> PostProcessing
             { get { return postProcessing; } set { postProcessing = value; } }
         }
         public static bool IsMouseVisible
