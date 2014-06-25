@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -271,8 +272,7 @@ namespace XoticEngine.Utilities
         //Write to console
         public static void WriteColored(object o, Color c)
         {
-            if (enabled)
-                log.Add(new Tuple<string, Color>(o.ToString(), c));
+            log.Add(new Tuple<string, Color>(o.ToString(), c));
         }
         public static void Write(object o)
         {
@@ -304,6 +304,16 @@ namespace XoticEngine.Utilities
                 commands[command](parameters);
             else
                 Error("This command (" + command + ") does not exist. Type \"commands\" for a list of commands.");
+        }
+
+        //Save log to file
+        public static void SaveLog(string path, bool append)
+        {
+            using (StreamWriter writer = new StreamWriter(path, append))
+            {
+                for (int i = 0; i < log.Count; i++)
+                    writer.WriteLine(log.ElementAt(i).Item1);
+            }
         }
 
         public static bool Visible
