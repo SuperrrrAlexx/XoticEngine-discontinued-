@@ -23,13 +23,13 @@ namespace XoticEngine
         static Dictionary<string, Song> songs = new Dictionary<string, Song>();
         static Dictionary<string, Video> videos = new Dictionary<string, Video>();
 
-        public static void Initialize(ContentManager c, GraphicsDevice g)
+        public static void Initialize(ContentManager c)
         {
             //Set the content manager
             content = c;
 
             //Create a dummy texture
-            Texture2D DummyTexture = new Texture2D(g, 1, 1);
+            Texture2D DummyTexture = new Texture2D(Graphics.Device, 1, 1);
             DummyTexture.SetData(new Color[] { Color.White });
             //Add the dummy texture to the list
             textures.Add("DummyTexture", DummyTexture);

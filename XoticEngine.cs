@@ -22,21 +22,10 @@ namespace XoticEngine
         //Random
         static Random random;
 
-        public static void Initialize(Game g, GraphicsDeviceManager device, string consoleFont)
+        public static void Initialize(Game g)
         {
+            //Save the game
             game = g;
-            Graphics.Initialize(device);
-
-            //Initialize the assets, input, console
-            Assets.Initialize(game.Content, Graphics.Device);
-            Input.Initialize();
-            if (consoleFont != null)
-            {
-                GameConsole.Enabled = true;
-                GameConsole.Initialize(consoleFont);
-            }
-            else
-                GameConsole.Enabled = false;
 
             //Randomness
             random = new Random();
@@ -57,14 +46,6 @@ namespace XoticEngine
 
             //Update the framerate counter
             FrameRateCounter.Update();
-        }
-
-        public static void Draw()
-        {
-            Graphics.DrawAll();
-
-            //Draw the framerate counter
-            FrameRateCounter.Draw();
         }
 
         public static void AddGameState(GameState g)

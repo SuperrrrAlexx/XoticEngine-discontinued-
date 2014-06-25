@@ -10,7 +10,7 @@ namespace XoticEngine.Utilities
 {
     public static class GameConsole
     {
-        static bool enabled;
+        static bool enabled = false;
         //Input, log
         static List<Tuple<string, Color>> log = new List<Tuple<string,Color>>();
         static string input = "";
@@ -30,10 +30,12 @@ namespace XoticEngine.Utilities
         //Commands
         static Dictionary<string, Action<string[]>> commands = new Dictionary<string, Action<string[]>>();
 
-        public static void Initialize(string fontName)
+        public static void Initialize(SpriteFont consoleFont)
         {
+            enabled = true;
+
             //Set the text font and position
-            font = Assets.Get<SpriteFont>(fontName);
+            font = consoleFont;
             textPos = new Vector2(font.MeasureString(">").X + 5, (int)(Graphics.Viewport.Height * 0.6) - font.LineSpacing);
             
             //Set the back rectangle
@@ -269,7 +271,8 @@ namespace XoticEngine.Utilities
         //Write to console
         public static void WriteColored(object o, Color c)
         {
-            log.Add(new Tuple<string, Color>(o.ToString(), c));
+            if (enabled)
+                log.Add(new Tuple<string, Color>(o.ToString(), c));
         }
         public static void Write(object o)
         {

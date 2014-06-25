@@ -18,18 +18,19 @@ namespace XoticEngine
         static List<PostProcessingEffect> postProcessing;
         static RenderTarget2D target;
 
-        public static void Initialize(GraphicsDeviceManager device)
+        public static void Initialize(GraphicsDeviceManager gr)
         {
-            graphics = device;
+            //Create the graphics device manager
+            graphics = gr;
 
             //Create the spritebatches
-            spriteBatch = new SpriteBatch(Graphics.Device);
-            guiSpriteBatch = new SpriteBatch(Graphics.Device);
-            effectSpriteBatch = new SpriteBatch(Graphics.Device);
+            spriteBatch = new SpriteBatch(Device);
+            guiSpriteBatch = new SpriteBatch(Device);
+            effectSpriteBatch = new SpriteBatch(Device);
 
             //Create a new list and render target
             postProcessing = new List<PostProcessingEffect>();
-            target = new RenderTarget2D(Graphics.Device, Graphics.Viewport.Width, Graphics.Viewport.Height);
+            target = new RenderTarget2D(Device, Viewport.Width, Viewport.Height);
 
             //Set the transform matrix
             transformMatrix = Matrix.Identity;
@@ -38,13 +39,13 @@ namespace XoticEngine
         public static void DrawAll()
         {
             //Clear the graphics device
-            Graphics.Device.Clear(Color.Black);
+            Graphics.Device.Clear(Color.Transparent);
 
             //Draw to a render target
             if (postProcessing.Count > 0)
             {
-                Graphics.Device.SetRenderTarget(target);
-                Graphics.Device.Clear(Color.Black);
+                Device.SetRenderTarget(target);
+                Device.Clear(Color.Transparent);
             }
 
             //Draw the current game state
@@ -59,7 +60,7 @@ namespace XoticEngine
                     texture = postProcessing[i].Apply(texture, effectSpriteBatch, Vector2.Zero);
 
                 //Draw to the screen
-                Graphics.Device.SetRenderTarget(null);
+                Device.SetRenderTarget(null);
                 effectSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 effectSpriteBatch.Draw(texture, Vector2.Zero, Color.White);
                 effectSpriteBatch.End();
@@ -67,6 +68,9 @@ namespace XoticEngine
 
             //Draw the console
             DrawConsole();
+
+            //Draw the framerate counter
+            FrameRateCounter.Draw();
         }
         static void DrawGameState()
         {
@@ -92,6 +96,7 @@ namespace XoticEngine
             }
         }
 
+        //Properties
         public static GraphicsDeviceManager DeviceManager
         { get { return graphics; } }
         public static GraphicsDevice Device
