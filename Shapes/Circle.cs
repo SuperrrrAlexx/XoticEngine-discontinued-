@@ -33,45 +33,63 @@ namespace XoticEngine.Shapes
         {
             return Vector2.Distance(center.ToVector2(), circle.Center.ToVector2()) <= radius + circle.Radius;
         }
-
         public bool Intersects(Rectangle rect)
         {
-            Vector2 closest = new Vector2(MathHelper.Clamp(this.Center.X, rect.Left, rect.Right), MathHelper.Clamp(this.Center.Y, rect.Top, rect.Bottom));
+            Vector2 closest = new Vector2(MathHelper.Clamp(center.X, rect.Left, rect.Right), MathHelper.Clamp(center.Y, rect.Top, rect.Bottom));
 
-            return (center.ToVector2() - closest).LengthSquared() < this.radius * this.radius;
+            return (center.ToVector2() - closest).LengthSquared() < radius * radius;
         }
-
         public bool Intersects(Line line)
         {
-            // Translate the space so P1 ends up at the origin:
-            Vector2 lineEnd = line.P2.ToVector2() - line.P1.ToVector2(),
-                    circleCenter = this.center.ToVector2() - line.P1.ToVector2();
-            
-            // Project circleCenter onto lineEnd:
-            try
-            {
-                // Calculate the lambda of the projection (of the form p1 + lambda * (p2 - p1)), and restrict it to [0, 1]
-                float lambda = MathHelper.Clamp(Vector2.Dot(lineEnd, circleCenter) / lineEnd.LengthSquared(), 0, 1);
-                Vector2 closestToLine = lambda * lineEnd - circleCenter;
+            //Check if the bounding boxes intersect
+            if (!boundingBox.Intersects(line.BoundingBox))
+                return false;
 
-                return closestToLine.LengthSquared() < this.radius * this.radius;
-            }
-            catch (DivideByZeroException)
-            {
-                // The line is actually a point ..
+            //Translate the space so P1 ends up at the origin:
+            Vector2 lineEnd = line.P2.ToVector2() - line.P1.ToVector2();
+            Vector2 circleCenter = center.ToVector2() - line.P1.ToVector2();
+
+            //Check if the line is a point
+            if (lineEnd.Length() == 0)
                 return circleCenter.LengthSquared() < this.radius * this.radius;
-            }
+
+            //Project circleCenter onto lineEnd:
+            //Calculate the lambda of the projection (of the form p1 + lambda * (p2 - p1)), and restrict it to [0, 1]
+            float lambda = MathHelper.Clamp(Vector2.Dot(lineEnd, circleCenter) / lineEnd.LengthSquared(), 0, 1);
+            Vector2 closestToLine = lambda * lineEnd - circleCenter;
+
+            return closestToLine.LengthSquared() < this.radius * this.radius;
         }
 
         public Point Center
-        { get { return center; } set { center = value; UpdateBoundingBox(); } }
+        {
+            get { return center; }
+            set
+            {
+                center = value;
+                UpdateBoundingBox();
+            }
+        }
         public int Radius
-        { get { return radius; } set { radius = value; UpdateBoundingBox(); } }
-
+        {
+            get { return radius; }
+            set
+            {
+                radius = value;
+                UpdateBoundingBox();
+            }
+        }
+        public int Diameter
+        {
+            get { return radius * 2; }
+            set
+            {
+                radius = value / 2;
+                UpdateBoundingBox();
+            }
+        }
         public Rectangle BoundingBox
         { get { return boundingBox; } }
-        public int Diameter
-        { get { return radius * 2; } set { radius = value / 2; } }
         public int Surface
         { get { return (int)(radius * radius * Math.PI); } }
         public int Circumference

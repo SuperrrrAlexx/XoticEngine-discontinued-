@@ -37,6 +37,9 @@ namespace XoticEngine
 
         protected override void Draw(GameTime gameTime)
         {
+            //Save the game time
+            Time.Update(gameTime);
+
             //Draw everything
             Graphics.DrawAll();
 

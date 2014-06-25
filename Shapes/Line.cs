@@ -49,6 +49,7 @@ namespace XoticEngine.Shapes
             //Check if the bounding boxes intersect
             if (!boundingBox.Intersects(rectangle))
                 return false;
+
             //Check if the rectangle contains one of the points
             if (rectangle.Contains(p1) || rectangle.Contains(p2))
                 return true;
@@ -66,9 +67,23 @@ namespace XoticEngine.Shapes
         }
 
         public Point P1
-        { get { return p1; } set { p1 = value; UpdateBoundingBox(); } }
+        {
+            get { return p1; }
+            set
+            {
+                p1 = value;
+                UpdateBoundingBox();
+            }
+        }
         public Point P2
-        { get { return p2; } set { p2 = value; UpdateBoundingBox(); } }
+        {
+            get { return p2; }
+            set
+            {
+                p2 = value;
+                UpdateBoundingBox();
+            }
+        }
         public Rectangle BoundingBox
         { get { return boundingBox; } }
 
