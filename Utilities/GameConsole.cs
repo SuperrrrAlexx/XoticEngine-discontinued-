@@ -13,7 +13,7 @@ namespace XoticEngine.Utilities
     {
         static bool enabled = false;
         //Input, log
-        static List<Tuple<string, Color>> log = new List<Tuple<string,Color>>();
+        static List<Tuple<string, Color, string>> log = new List<Tuple<string, Color, string>>();
         static string input = "";
         static int maxInputLength = 50;
         static string addString = "";
@@ -38,7 +38,7 @@ namespace XoticEngine.Utilities
             //Set the text font and position
             font = consoleFont;
             textPos = new Vector2(font.MeasureString(">").X + 5, (int)(Graphics.Viewport.Height * 0.6) - font.LineSpacing);
-            
+
             //Set the back rectangle
             backRect = new Rectangle(0, 0, Graphics.Viewport.Width, (int)(Graphics.Viewport.Height * 0.6));
 
@@ -125,7 +125,7 @@ namespace XoticEngine.Utilities
             //Clear the log
             Action<string[]> clearLog = (args) =>
                 {
-                    log = new List<Tuple<string, Color>>();
+                    log = new List<Tuple<string, Color, string>>();
                 };
             commands.Add("clear", clearLog);
 
@@ -262,6 +262,11 @@ namespace XoticEngine.Utilities
                     {
                         //Calculate the text position
                         Vector2 linePos = new Vector2(5, textPos.Y - font.LineSpacing * (log.Count - i));
+
+                        //Check if the text position is above the screen
+                        if (linePos.Y < 0)
+                            break;
+
                         //Draw the text
                         s.DrawString(font, log[i].Item1, linePos, log[i].Item2, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                     }
@@ -270,21 +275,21 @@ namespace XoticEngine.Utilities
         }
 
         //Write to console
-        public static void WriteColored(object o, Color c)
+        public static void WriteColored(object o, Color c, string type = "info")
         {
-            log.Add(new Tuple<string, Color>(o.ToString(), c));
+            log.Add(new Tuple<string, Color, string>(o.ToString(), c, type));
         }
         public static void Write(object o)
         {
-            WriteColored(o, Color.White);
+            WriteColored(o, Color.White, "info");
         }
         public static void Warning(object o)
         {
-            WriteColored(o, Color.Yellow);
+            WriteColored(o, Color.Yellow, "warning");
         }
         public static void Error(object o)
         {
-            WriteColored(o, Color.Red);
+            WriteColored(o, Color.Red, "error");
         }
 
         //Command input
@@ -312,7 +317,7 @@ namespace XoticEngine.Utilities
             using (StreamWriter writer = new StreamWriter(path, append))
             {
                 for (int i = 0; i < log.Count; i++)
-                    writer.WriteLine(log.ElementAt(i).Item1);
+                    writer.WriteLine("<" + log.ElementAt(i).Item3 + "> " + log.ElementAt(i).Item1);
             }
         }
 
