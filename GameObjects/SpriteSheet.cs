@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace XoticEngine
+namespace XoticEngine.GameObjects
 {
     public class SpriteSheet
     {
@@ -15,10 +15,6 @@ namespace XoticEngine
         int spriteWidth, spriteHeight;
         int length;
 
-        /// <summary>
-        /// Create a spritesheet.
-        /// </summary>
-        /// <param name="sheetName">The name of the Texture2D, format: Texture2D_name@2x2</param>
         public SpriteSheet(string sheetName)
         {
             //Load the sheet

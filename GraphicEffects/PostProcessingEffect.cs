@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace XoticEngine
+namespace XoticEngine.GraphicEffects
 {
     public abstract class PostProcessingEffect
     {
