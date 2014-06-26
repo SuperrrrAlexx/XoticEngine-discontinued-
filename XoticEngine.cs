@@ -33,9 +33,6 @@ namespace XoticEngine
 
         public static void Update(GameTime g)
         {
-            //Update the gametime
-            Time.Update(g);
-
             //If the current game state is not null, update it
             if (currentState != null)
                 currentState.Update();

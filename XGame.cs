@@ -29,6 +29,9 @@ namespace XoticEngine
 
         protected override void Update(GameTime gameTime)
         {
+            //Update the gametime
+            Time.Update(gameTime);
+            
             //Update X
             X.Update(gameTime);
 
@@ -37,6 +40,9 @@ namespace XoticEngine
 
         protected override void Draw(GameTime gameTime)
         {
+            //Update the gametime
+            Time.Update(gameTime);
+
             //Draw everything
             Graphics.DrawAll();
 
