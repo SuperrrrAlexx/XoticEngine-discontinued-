@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievements\Achievement.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Animation.cs" />
