@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using XoticEngine.Achievements;
 using XoticEngine.GameObjects;
 using XoticEngine.Utilities;
 
@@ -37,11 +38,10 @@ namespace XoticEngine
             if (currentState != null)
                 currentState.Update();
 
-            //Update the game console
+            //Update all components
             Input.Update();
             GameConsole.Update();
-
-            //Update the framerate counter
+            AchievementHolder.Update();
             FrameRateCounter.Update();
         }
 

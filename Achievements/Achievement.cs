@@ -19,6 +19,7 @@ namespace XoticEngine.Achievements
         Rectangle backRect;
         //Achieved
         bool achieved = false;
+        bool done = false;
 
         public Achievement(string name, string description, SpriteFont nameFont, SpriteFont descFont, Color textColor, Color backColor, Texture2D picture)
         {
@@ -31,7 +32,7 @@ namespace XoticEngine.Achievements
             this.picture = picture;
 
             //Positions
-            backRect = new Rectangle(Graphics.Viewport.Width - 280, Graphics.Viewport.Height - 120, 280, 120);
+            backRect = new Rectangle(Graphics.Viewport.Width - 280, Graphics.Viewport.Height, 280, 120);
             position = backRect.Location.ToVector2();
             picPos = new Vector2(10);
             namePos = new Vector2(120, 10);
@@ -50,11 +51,8 @@ namespace XoticEngine.Achievements
             s.Draw(Assets.DummyTexture, backRect, null, backColor, 0, Vector2.Zero, SpriteEffects.None, float.Epsilon);
         }
 
-        public void Get()
-        {
-
-        }
-
+        public string Name
+        { get { return name; } }
         public Vector2 Position
         {
             get { return position; }
@@ -65,6 +63,10 @@ namespace XoticEngine.Achievements
             }
         }
         public bool Achieved
-        { get { return achieved; } }
+        { get { return achieved; } set { achieved = value; } }
+        public bool Done
+        { get { return done; } set { done = value; } }
+        public Rectangle BoundingBox
+        { get { return backRect; } }
     }
 }
