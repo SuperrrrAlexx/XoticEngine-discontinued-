@@ -19,14 +19,13 @@ namespace XoticEngine.Achievements
         Rectangle backRect;
         //Achieved
         bool achieved = false;
-        bool done = false;
 
         public Achievement(string name, string description, SpriteFont nameFont, SpriteFont descFont, Color textColor, Color backColor, Texture2D picture)
         {
             this.name = name;
             this.description = description.Split(new string[] { "\n" }, StringSplitOptions.None);
             this.nameFont = nameFont;
-            this.descFont = descFont == null ? nameFont : descFont;
+            this.descFont = descFont;
             this.textColor = textColor;
             this.backColor = backColor;
             this.picture = picture;
@@ -64,8 +63,6 @@ namespace XoticEngine.Achievements
         }
         public bool Achieved
         { get { return achieved; } set { achieved = value; } }
-        public bool Done
-        { get { return done; } set { done = value; } }
         public Rectangle BoundingBox
         { get { return backRect; } }
     }
