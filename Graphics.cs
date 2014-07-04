@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.Achievements;
 using XoticEngine.GraphicEffects;
 using XoticEngine.Utilities;
 
@@ -67,9 +68,8 @@ namespace XoticEngine
                 effectSpriteBatch.End();
             }
 
-            //Draw the console
-            DrawConsole();
-
+            //Draw the gui elements
+            DrawGui();
             //Draw the framerate counter
             FrameRateCounter.Draw();
         }
@@ -87,14 +87,17 @@ namespace XoticEngine
             spriteBatch.End();
             guiSpriteBatch.End();
         }
-        static void DrawConsole()
+        static void DrawGui()
         {
-            if (GameConsole.Enabled)
-            {
-                guiSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-                GameConsole.Draw(guiSpriteBatch);
-                guiSpriteBatch.End();
-            }
+            guiSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+
+            //Draw the game console
+            GameConsole.Draw(guiSpriteBatch);
+
+            //Draw the achievement holder
+            AchievementHolder.Draw(guiSpriteBatch);
+
+            guiSpriteBatch.End();
         }
 
         //Properties

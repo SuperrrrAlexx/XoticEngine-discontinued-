@@ -21,6 +21,8 @@ namespace XoticEngine
         { get { return gameTime; } }
         public static double DeltaTime
         { get { return gameTime.ElapsedGameTime.TotalSeconds * gameSpeed; } }
+        public static double RealTime
+        { get { return gameTime.ElapsedGameTime.TotalSeconds; } }
         public static double GameSpeed
         { get { return gameSpeed; } set { gameSpeed = value; } }
     }

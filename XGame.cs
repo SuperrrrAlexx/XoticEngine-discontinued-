@@ -29,6 +29,9 @@ namespace XoticEngine
 
         protected override void Update(GameTime gameTime)
         {
+            //Save the game time
+            Time.Update(gameTime);
+            
             //Update X
             X.Update(gameTime);
 
