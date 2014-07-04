@@ -30,18 +30,21 @@ namespace XoticEngine
         {
             return new Vector2(p.X, p.Y);
         }
-
         public static Point ToPoint(this Vector2 v)
         {
-            return new Point((int)(v.X + 0.5f), (int)(v.Y + 0.5f));
+            return new Point((int)Math.Round(v.X, MidpointRounding.AwayFromZero), (int)Math.Round(v.Y, MidpointRounding.AwayFromZero));
         }
 
-        public static double GetAngle(this Vector2 v)
+        public static float GetAngle(this Vector2 v)
         {
-            return Math.Atan2(v.X / v.Length(), -v.Y / v.Length());
+            return (float)Math.Atan2(v.Y / v.Length(), v.X / v.Length());
         }
 
         public static Vector2 GetDirection(this double a)
+        {
+            return new Vector2((float)Math.Sin(a), (float)-Math.Cos(a));
+        }
+        public static Vector2 GetDirection(this float a)
         {
             return new Vector2((float)Math.Sin(a), (float)-Math.Cos(a));
         }
@@ -51,7 +54,6 @@ namespace XoticEngine
         {
             return (float)r.NextDouble();
         }
-
         public static int NextParity(this Random r)
         {
             return r.Next(2) * 2 - 1;

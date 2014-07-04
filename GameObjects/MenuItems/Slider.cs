@@ -24,7 +24,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public event Action OnValueChange;
 
         public Slider(string name, Vector2 position, Vector2 buttonOffset, int offsetRight, Texture2D sliderBar, Texture2D sliderButton, int values)
-            : base(name, position)
+            : base(name, position, 0)
         {
             this.bar = sliderBar;
             //Button

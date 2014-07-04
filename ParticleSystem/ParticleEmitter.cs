@@ -16,7 +16,6 @@ namespace XoticEngine.ParticleSystem
         Vector2 prevPosition;
         Vector2 speed;
         Vector2 scale;
-        double rotation;
         double rotationSpeed;
         //Depth
         bool oldestInFront;
@@ -32,8 +31,8 @@ namespace XoticEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, bool oldestInFront, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
-            : base(name, position)
+        public ParticleEmitter(string name, Vector2 position, float depth, bool oldestInFront, Vector2 speed, Vector2 scale, float rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
+            : base(name, position, rotation)
         {
             this.prevPosition = position;
             //Depth
@@ -41,7 +40,6 @@ namespace XoticEngine.ParticleSystem
             this.oldestInFront = oldestInFront;
             //Particle properties
             this.speed = speed;
-            this.rotation = rotation;
             this.rotationSpeed = rotationSpeed;
             this.scale = scale;
             this.texture = texture;
@@ -121,7 +119,7 @@ namespace XoticEngine.ParticleSystem
                 //Calculate the particle position between the old and new position
                 Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / amount), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / amount));
                 //Create a new particle
-                Particle p = new Particle(pos, depth, speed, scale, rotation, rotationSpeed, texture, particleColor, ttl);
+                Particle p = new Particle(pos, depth, speed, scale, Rotation, rotationSpeed, texture, particleColor, ttl);
 
                 //Update all updateOnce modifiers
                 for (int i = 0; i < modOnceList.Count; i++)
@@ -152,8 +150,6 @@ namespace XoticEngine.ParticleSystem
         //Particle properties
         public Vector2 Speed
         { get { return speed; } set { speed = value; } }
-        public double Rotation
-        { get { return rotation; } set { rotation = value; } }
         public double RotationSpeed
         { get { return rotationSpeed; } set { rotationSpeed = value; } }
         public Color ParticleColor
