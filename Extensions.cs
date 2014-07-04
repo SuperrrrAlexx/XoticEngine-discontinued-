@@ -37,7 +37,7 @@ namespace XoticEngine
 
         public static float GetAngle(this Vector2 v)
         {
-            return (float)Math.Atan2(v.Y / v.Length(), v.X / v.Length());
+            return (float)Math.Atan2(v.Y / v.Length(), -v.X / v.Length());
         }
 
         public static Vector2 GetDirection(this double a)

@@ -89,7 +89,7 @@ namespace XoticEngine.GameObjects
                 //Move to around origin, rotate, move back
                 //Replace relativePosition with position
                 //Extra field Vector2 position, gets updated too
-                relativePosition = relativePosition.Length() * new Vector2((float)Math.Cos(Rotation + rotationOffset), (float)Math.Sin(Rotation + rotationOffset));
+                relativePosition = relativePosition.Length() * (Rotation + rotationOffset).GetDirection();
             }
 
             //Update the positions of all children
