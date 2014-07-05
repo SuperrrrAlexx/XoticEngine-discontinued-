@@ -14,7 +14,7 @@ namespace XoticEngine
     {
         static GraphicsDeviceManager graphics;
         //Spritebatches
-        static SpriteBatch spriteBatch, guiSpriteBatch, effectSpriteBatch;
+        static SpriteBatch gameBatch, additiveBatch, guiBatch;
         static Matrix transformMatrix;
         //Post processing
         static List<PostProcessingEffect> postProcessing;
@@ -26,9 +26,9 @@ namespace XoticEngine
             graphics = gr;
 
             //Create the spritebatches
-            spriteBatch = new SpriteBatch(Device);
-            guiSpriteBatch = new SpriteBatch(Device);
-            effectSpriteBatch = new SpriteBatch(Device);
+            gameBatch = new SpriteBatch(Device);
+            additiveBatch = new SpriteBatch(Device);
+            guiBatch = new SpriteBatch(Device);
 
             //Create a new list and render target
             postProcessing = new List<PostProcessingEffect>();
@@ -59,13 +59,13 @@ namespace XoticEngine
 
                 //Apply all effects
                 for (int i = 0; i < postProcessing.Count; i++)
-                    texture = postProcessing[i].Apply(texture, effectSpriteBatch, Vector2.Zero);
+                    texture = postProcessing[i].Apply(texture, gameBatch, Vector2.Zero);
 
                 //Draw to the screen
                 Device.SetRenderTarget(null);
-                effectSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                effectSpriteBatch.Draw(texture, Vector2.Zero, Color.White);
-                effectSpriteBatch.End();
+                gameBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                gameBatch.Draw(texture, Vector2.Zero, Color.White);
+                gameBatch.End();
             }
 
             //Draw the gui elements
@@ -76,28 +76,34 @@ namespace XoticEngine
         static void DrawGameState()
         {
             //Begin the spritebatches
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
-            guiSpriteBatch.Begin(SpriteSortMode.BackToFront, null);
+            gameBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
+            additiveBatch.Begin(SpriteSortMode.BackToFront, BlendState.Additive, null, null, null, null, transformMatrix);
+            guiBatch.Begin(SpriteSortMode.BackToFront, null);
 
             //If the current game state is not null, draw it
             if (X.CurrentState != null)
-                X.CurrentState.Draw(spriteBatch, guiSpriteBatch);
+                X.CurrentState.Draw(gameBatch, additiveBatch, guiBatch);
 
             //End the spritebatches
-            spriteBatch.End();
-            guiSpriteBatch.End();
+            gameBatch.End();
+            additiveBatch.End();
+            guiBatch.End();
         }
         static void DrawGui()
         {
-            guiSpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            guiBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
-            //Draw the game console
-            GameConsole.Draw(guiSpriteBatch);
+            //Draw the console and schievements
+            GameConsole.Draw(guiBatch);
+            AchievementHolder.Draw(guiBatch);
 
-            //Draw the achievement holder
-            AchievementHolder.Draw(guiSpriteBatch);
+            guiBatch.End();
+        }
 
-            guiSpriteBatch.End();
+        public static void ResetTransformMatrix()
+        {
+            //Reset the transform matrix to the identity matrix
+            transformMatrix = Matrix.Identity;
         }
 
         //Properties
@@ -120,10 +126,6 @@ namespace XoticEngine
         }
         public static Matrix TransformMatrix
         { get { return transformMatrix; } set { transformMatrix = value; } }
-        public static void ResetTransformMatrix()
-        { transformMatrix = Matrix.Identity; }
-        public static SpriteBatch GUISpriteBatch
-        { get { return guiSpriteBatch; } }
         public static List<PostProcessingEffect> PostProcessing
         { get { return postProcessing; } set { postProcessing = value; } }
     }

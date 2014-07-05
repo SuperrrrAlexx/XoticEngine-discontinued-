@@ -18,17 +18,15 @@ namespace XoticEngine
         //Game class
         static Game game;
         //Gamestates
-        static Dictionary<string, GameState> gameStates = new Dictionary<string, GameState>();
+        static Dictionary<string, GameState> gameStates;
         static GameState currentState;
         //Random
         static Random random;
 
         public static void Initialize(Game g)
         {
-            //Save the game
             game = g;
-
-            //Randomness
+            gameStates = new Dictionary<string, GameState>();
             random = new Random();
         }
 
@@ -54,7 +52,6 @@ namespace XoticEngine
                 //Add the gamestate to the list
                 gameStates.Add(g.Name, g);
         }
-
         public static void SwitchTo(string gameStateName)
         {
             //Check if the gamestate exists
@@ -62,15 +59,16 @@ namespace XoticEngine
                 GameConsole.Error("The gamestate \"" + gameStateName + "\" does not exist.");
             else
             {
-                //Call EndState on the current state
+                //End the old state
                 if (currentState != null)
                     currentState.EndState();
-                //Switch the current state
+                //Switch to the new state
                 currentState = gameStates[gameStateName];
-                //Call beginState on the current state
                 currentState.BeginState();
             }
         }
+
+        //Game properties
         public static bool IsMouseVisible
         { get { return game.IsMouseVisible; } set { game.IsMouseVisible = value; } }
         public static string WindowTitle

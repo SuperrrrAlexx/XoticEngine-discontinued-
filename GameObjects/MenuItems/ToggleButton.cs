@@ -43,12 +43,12 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Update();
         }
 
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
+        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw the checkbox
             guiBatch.Draw(sheet[toggled ? 1 : 0], rect, null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
 
-            base.Draw(gameBatch, guiBatch);
+            base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
         public bool Toggled

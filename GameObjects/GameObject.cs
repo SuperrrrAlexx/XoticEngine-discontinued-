@@ -51,11 +51,11 @@ namespace XoticEngine.GameObjects
             foreach (GameObject g in children)
                 g.Update();
         }
-        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
+        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw each child
             foreach (GameObject g in children)
-                g.Draw(gameBatch, guiBatch);
+                g.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
         public void AddChild(GameObject g)

@@ -85,13 +85,13 @@ namespace XoticEngine.ParticleSystem
             //Update the previous position
             prevPosition = Position;
         }
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
+        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw each particle
             foreach (Particle p in particles)
                 p.Draw(gameBatch);
 
-            base.Draw(gameBatch, guiBatch);
+            base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
         public void Shoot()

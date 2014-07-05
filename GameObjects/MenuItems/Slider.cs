@@ -69,13 +69,13 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Update();
         }
 
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
+        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw the bar and button
             guiBatch.Draw(bar, Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0 + float.Epsilon);
             guiBatch.Draw(button, buttonPos, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
-            base.Draw(gameBatch, guiBatch);
+            base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
         public int Value

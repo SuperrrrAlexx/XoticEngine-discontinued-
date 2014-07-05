@@ -28,12 +28,12 @@ namespace XoticEngine.GameObjects
                     gameObjects.ElementAt(i).Value[g].Update();
         }
 
-        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
+        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw each gameobject
             for (int i = 0; i < gameObjects.Count; i++)
                 for (int g = 0; g < gameObjects.ElementAt(i).Value.Count; g++)
-                    gameObjects.ElementAt(i).Value[g].Draw(gameBatch, guiBatch);
+                    gameObjects.ElementAt(i).Value[g].Draw(gameBatch, additiveBatch, guiBatch);
         }
 
         public void Add(GameObject g)
