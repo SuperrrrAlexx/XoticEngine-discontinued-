@@ -8,11 +8,13 @@ namespace XoticEngine
 {
     public class XGame : Game
     {
-        GraphicsDeviceManager graphics;
+        protected GraphicsDeviceManager graphics;
 
         public XGame()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
         }
 
