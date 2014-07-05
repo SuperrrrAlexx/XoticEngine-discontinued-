@@ -55,6 +55,7 @@ namespace XoticEngine
 
             if (postProcessing.Count > 0)
             {
+                Device.SetRenderTarget(null);
                 Texture2D texture = target;
 
                 //Apply all effects
