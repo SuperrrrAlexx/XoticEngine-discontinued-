@@ -15,8 +15,8 @@ namespace XoticEngine.ParticleSystem
         //Positioning, movement
         Vector2 prevPosition, speed, scale;
         double rotationSpeed;
-        //Depth
-        bool oldestInFront;
+        //Drawing
+        bool oldestInFront, additive;
         //Particles
         List<Particle> particles;
         double pps, ttl;
@@ -27,12 +27,14 @@ namespace XoticEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, bool oldestInFront, Vector2 speed, Vector2 scale, float rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
+        public ParticleEmitter(string name, Vector2 position, float depth, bool oldestInFront, Vector2 speed, Vector2 scale, float rotation, double rotationSpeed,
+            Texture2D texture, Color color, bool additive, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
             : base(name, position, rotation, Vector2.Zero, depth)
         {
             this.prevPosition = position;
-            //Depth
+            //Drawing
             this.oldestInFront = oldestInFront;
+            this.additive = additive;
             //Particle properties
             this.speed = speed;
             this.rotationSpeed = rotationSpeed;
@@ -89,7 +91,7 @@ namespace XoticEngine.ParticleSystem
         {
             //Draw each particle
             foreach (Particle p in particles)
-                p.Draw(gameBatch);
+                p.Draw(additive ? additiveBatch : gameBatch);
 
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
