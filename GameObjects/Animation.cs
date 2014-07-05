@@ -52,6 +52,7 @@ namespace XoticEngine.GameObjects
 
         public void Stop()
         {
+            //Stop the animation
             playing = false;
             frame = 0;
         }

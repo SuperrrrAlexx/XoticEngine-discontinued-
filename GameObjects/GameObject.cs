@@ -12,7 +12,7 @@ namespace XoticEngine.GameObjects
         string name;
         //Positioning
         Vector2 position, relativePosition, origin;
-        float rotation, relativeRotation, rotationOffset, depth;
+        float rotation, relativeRotation, depth;
         //Parent and children
         GameObject parent;
         List<GameObject> children = new List<GameObject>();
@@ -22,7 +22,6 @@ namespace XoticEngine.GameObjects
             this.name = name;
             this.relativePosition = Vector2.Zero;
             this.relativeRotation = 0.0f;
-            this.rotationOffset = 0.0f;
             this.origin = Vector2.Zero;
             this.depth = 0.0f;
             UpdatePosition();
@@ -32,7 +31,6 @@ namespace XoticEngine.GameObjects
             this.name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
-            this.rotationOffset = position.GetAngle();
             this.origin = Vector2.Zero;
             this.depth = 0.0f;
             UpdatePosition();
@@ -42,7 +40,6 @@ namespace XoticEngine.GameObjects
             this.name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
-            this.rotationOffset = position.GetAngle();
             this.origin = origin;
             this.depth = depth;
             UpdatePosition();

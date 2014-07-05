@@ -29,10 +29,9 @@ namespace XoticEngine
             //Set the content manager
             content = c;
 
-            //Create a dummy texture
+            //Create a dummy texture and add it to the list
             Texture2D DummyTexture = new Texture2D(Graphics.Device, 1, 1);
             DummyTexture.SetData(new Color[] { Color.White });
-            //Add the dummy texture to the list
             textures.Add("DummyTexture", DummyTexture);
         }
 
