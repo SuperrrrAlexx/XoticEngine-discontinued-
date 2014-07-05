@@ -9,22 +9,24 @@ namespace XoticEngine
 {
     public static class Input
     {
-        //Keyboard
-        static KeyboardState prevKeyboard;
-        static KeyboardState currKeyboard;
-        //Mouse
-        static MouseState prevMouse;
-        static MouseState currMouse;
+        //Keyboard, mouse, gamepad
+        static KeyboardState prevKeyboard, currKeyboard;
+        static MouseState prevMouse, currMouse;
+        static GamePadState[] prevGamePad, currGamePad;
         //Events
         public delegate void KeyEvent(Keys k);
         public static event KeyEvent OnKeyPressed;
         public delegate void CharEvent(char c);
         public static event CharEvent OnCharEntered;
         //A dictionary of keys that can be converted to characters
-        static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
+        private static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
 
         public static void Initialize()
         {
+            //Create the gamepad state arrays
+            prevGamePad = new GamePadState[4];
+            currGamePad = new GamePadState[4];
+
             //Add all the keys that can be converted to chars
             keychars.Add(Keys.Space, ' ');
             //OEM keys that *should* be the same on every region keyboard
@@ -42,12 +44,18 @@ namespace XoticEngine
 
         public static void Update()
         {
-            //Update the keyboard and mouse states
+            //Update the states
             prevKeyboard = currKeyboard;
             currKeyboard = Keyboard.GetState();
             prevMouse = currMouse;
             currMouse = Mouse.GetState();
+            for (int i = 0; i < 4; i++)
+            {
+                prevGamePad[i] = currGamePad[i];
+                currGamePad[i] = GamePad.GetState(GetPlayerIndex(i + 1));
+            }
 
+            //Check for key events
             CheckKeyEvents();
         }
         static void CheckKeyEvents()
@@ -100,6 +108,24 @@ namespace XoticEngine
                     if (s != null)
                         OnCharEntered(c);
                 }
+            }
+        }
+
+        public static PlayerIndex GetPlayerIndex(int playerIndex)
+        {
+            //Get a PlayerIndex from an int
+            switch (playerIndex)
+            {
+                case 1:
+                    return PlayerIndex.One;
+                case 2:
+                    return PlayerIndex.Two;
+                case 3:
+                    return PlayerIndex.Three;
+                case 4:
+                    return PlayerIndex.Four;
+                default:
+                    throw new IndexOutOfRangeException("Player index must be between 1 and 4.");
             }
         }
 
@@ -181,6 +207,36 @@ namespace XoticEngine
             return currKeyboard.GetPressedKeys().Except(prevKeyboard.GetPressedKeys()).ToArray();
         }
 
+        //GamePad buttons
+        public static bool ButtonPressed(Buttons b, int playerIndex)
+        {
+            return currGamePad[playerIndex - 1].IsButtonDown(b) && prevGamePad[playerIndex - 1].IsButtonUp(b);
+        }
+        public static bool ButtonReleased(Buttons b, int playerIndex)
+        {
+            return currGamePad[playerIndex - 1].IsButtonUp(b) && prevGamePad[playerIndex - 1].IsButtonDown(b);
+        }
+        public static bool ButtonDown(Buttons b, int playerIndex)
+        {
+            return currGamePad[playerIndex - 1].IsButtonDown(b);
+        }
+        public static Vector2 LeftStick(int playerIndex)
+        {
+            return currGamePad[playerIndex - 1].ThumbSticks.Left;
+        }
+        public static Vector2 RightStick(int playerIndex)
+        {
+            return currGamePad[playerIndex - 1].ThumbSticks.Right;
+        }
+        public static float LeftTrigger(int playerIndex)
+        {
+            return currGamePad[playerIndex - 1].Triggers.Left;
+        }
+        public static float RightTrigger(int playerIndex)
+        {
+            return currGamePad[playerIndex - 1].Triggers.Right;
+        }
+
         //Keyboard state
         public static KeyboardState PreviousKeyboard
         { get { return prevKeyboard; } }
@@ -194,5 +250,22 @@ namespace XoticEngine
         //Mouse position
         public static Point MousePosition
         { get { return new Point(currMouse.X, currMouse.Y); } }
+        //GamePad state
+        public static GamePadState[] PreviousGamePad
+        { get { return prevGamePad; } }
+        public static GamePadState[] CurrentGamePad
+        { get { return currGamePad; } }
+        //Connected gamepads
+        public static int ConnectedGamePads
+        {
+            get
+            {
+                //Check the gamepads, return when one is not connected
+                for (int i = 0; i < 4; i++)
+                    if (!currGamePad[i].IsConnected)
+                        return i;
+                return 4;
+            }
+        }
     }
 }
