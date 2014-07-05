@@ -12,19 +12,15 @@ namespace XoticEngine.ParticleSystem
     {
         //Paused
         bool paused = false;
-        //Position, rotation, speed
-        Vector2 prevPosition;
-        Vector2 speed;
-        Vector2 scale;
+        //Positioning, movement
+        Vector2 prevPosition, speed, scale;
         double rotationSpeed;
         //Depth
         bool oldestInFront;
-        float depth;
         //Particles
         List<Particle> particles;
-        double pps;
+        double pps, ttl;
         double queue = 0;
-        double ttl;
         //Modifiers
         List<ParticleModifier> modList, modOnceList;
         //Texture
@@ -32,11 +28,10 @@ namespace XoticEngine.ParticleSystem
         Color particleColor;
 
         public ParticleEmitter(string name, Vector2 position, float depth, bool oldestInFront, Vector2 speed, Vector2 scale, float rotation, double rotationSpeed, Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
-            : base(name, position, rotation)
+            : base(name, position, rotation, Vector2.Zero, depth)
         {
             this.prevPosition = position;
             //Depth
-            this.depth = depth;
             this.oldestInFront = oldestInFront;
             //Particle properties
             this.speed = speed;
@@ -67,13 +62,14 @@ namespace XoticEngine.ParticleSystem
                 Shoot();
 
             //Update all particles
-            for (int i = 0; i < particles.Count(); i++)
+            for (int i = particles.Count - 1 - 1; i >= 0; i--)
             {
                 //If the particle is alive, update it, else remove it
                 if (particles[i].Alive)
                 {
                     //Set the depth
-                    particles[i].Depth = oldestInFront ? depth - (float)(particles[i].RealLifeTime / 100000f) : depth + (float)(particles[i].RealLifeTime / 100000f);
+                    float depth = oldestInFront ? Depth - (float)(particles[i].RealLifeTime / 100000f) : Depth + (float)(particles[i].RealLifeTime / 100000f);
+                    particles[i].Depth = MathHelper.Clamp(depth, 0, 1);
 
                     //Update the particle modifiers
                     for (int m = 0; m < modList.Count; m++)
@@ -89,12 +85,11 @@ namespace XoticEngine.ParticleSystem
             //Update the previous position
             prevPosition = Position;
         }
-
         public override void Draw(SpriteBatch gameBatch, SpriteBatch guiBatch)
         {
             //Draw each particle
-            for (int i = 0; i < particles.Count(); i++)
-                particles[i].Draw(gameBatch);
+            foreach (Particle p in particles)
+                p.Draw(gameBatch);
 
             base.Draw(gameBatch, guiBatch);
         }
@@ -119,7 +114,7 @@ namespace XoticEngine.ParticleSystem
                 //Calculate the particle position between the old and new position
                 Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / amount), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / amount));
                 //Create a new particle
-                Particle p = new Particle(pos, depth, speed, scale, Rotation, rotationSpeed, texture, particleColor, ttl);
+                Particle p = new Particle(pos, Depth, speed, scale, Rotation, rotationSpeed, texture, particleColor, ttl);
 
                 //Update all updateOnce modifiers
                 for (int i = 0; i < modOnceList.Count; i++)
@@ -130,9 +125,10 @@ namespace XoticEngine.ParticleSystem
             }
         }
 
-        public void Move(Vector2 position)
+        public void Move(Vector2 position, bool relative)
         {
-            RelativePosition = position;
+            //Set the new position, overwrite the previous position
+            RelativePosition = relative ? RelativePosition + position : position;
             prevPosition = Position;
         }
 
