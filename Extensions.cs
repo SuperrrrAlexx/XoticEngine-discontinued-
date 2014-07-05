@@ -37,16 +37,16 @@ namespace XoticEngine
 
         public static float GetAngle(this Vector2 v)
         {
-            return (float)Math.Atan2(v.Y / v.Length(), -v.X / v.Length());
+            return (float)Math.Atan2(v.Y / v.Length(), v.X / v.Length());
         }
 
         public static Vector2 GetDirection(this double a)
         {
-            return new Vector2((float)Math.Sin(a), (float)-Math.Cos(a));
+            return new Vector2((float)Math.Cos(a), (float)Math.Sin(a));
         }
         public static Vector2 GetDirection(this float a)
         {
-            return new Vector2((float)Math.Sin(a), (float)-Math.Cos(a));
+            return new Vector2((float)Math.Cos(a), (float)Math.Sin(a));
         }
 
         //Random
