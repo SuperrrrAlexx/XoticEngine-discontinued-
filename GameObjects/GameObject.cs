@@ -11,8 +11,8 @@ namespace XoticEngine.GameObjects
     {
         string name;
         //Positioning
-        Vector2 relativePosition, origin;
-        float relativeRotation, rotationOffset, depth;
+        Vector2 position, relativePosition, origin;
+        float rotation, relativeRotation, rotationOffset, depth;
         //Parent and children
         GameObject parent;
         List<GameObject> children = new List<GameObject>();
@@ -25,7 +25,7 @@ namespace XoticEngine.GameObjects
             this.rotationOffset = 0.0f;
             this.origin = Vector2.Zero;
             this.depth = 0.0f;
-            UpdatePosition(true);
+            UpdatePosition();
         }
         public GameObject(string name, Vector2 position, float rotation)
         {
@@ -35,7 +35,7 @@ namespace XoticEngine.GameObjects
             this.rotationOffset = position.GetAngle();
             this.origin = Vector2.Zero;
             this.depth = 0.0f;
-            UpdatePosition(true);
+            UpdatePosition();
         }
         public GameObject(string name, Vector2 position, float rotation, Vector2 origin, float depth)
         {
@@ -45,7 +45,7 @@ namespace XoticEngine.GameObjects
             this.rotationOffset = position.GetAngle();
             this.origin = origin;
             this.depth = depth;
-            UpdatePosition(true);
+            UpdatePosition();
         }
 
         public virtual void Update()
@@ -79,22 +79,26 @@ namespace XoticEngine.GameObjects
             parent = g;
 
             //Update the position
-            UpdatePosition(true);
+            UpdatePosition();
         }
 
-        void UpdatePosition(bool rotateAroundParent)
+        void UpdatePosition()
         {
-            if (rotateAroundParent && parent != null)
+            //Check if the parent is null, set the position and rotation
+            if (parent == null)
             {
-                //Move to around origin, rotate, move back
-                //Replace relativePosition with position
-                //Extra field Vector2 position, gets updated too
-                relativePosition = relativePosition.Length() * (Rotation + rotationOffset).GetDirection();
+                position = relativePosition;
+                rotation = relativeRotation;
+            }
+            else
+            {
+                rotation = parent.Rotation + relativeRotation;
+                position = parent.Position + relativePosition.Rotate(rotation);
             }
 
             //Update the positions of all children
             foreach (GameObject g in children)
-                g.UpdatePosition(true);
+                g.UpdatePosition();
         }
 
         public override string ToString()
@@ -106,21 +110,26 @@ namespace XoticEngine.GameObjects
         { get { return name; } }
         //Position
         public Vector2 Position
-        { get { return parent != null ? parent.Position + relativePosition : relativePosition; } }
+        { get { return position; } }
         public Vector2 RelativePosition
-        { get { return relativePosition; } set { relativePosition = value; } }
+        {
+            get { return relativePosition; }
+            set
+            {
+                relativePosition = value;
+                UpdatePosition();
+            }
+        }
         //Rotation
         public float Rotation
-        { get { return parent != null ? parent.Rotation + relativeRotation : relativeRotation; } }
+        { get { return rotation; } }
         public float RelativeRotation
         {
             get { return relativeRotation; }
             set
             {
-                //Save the rotation, update the position
-                rotationOffset += relativeRotation - value;
                 relativeRotation = value;
-                UpdatePosition(false);
+                UpdatePosition();
             }
         }
         public Vector2 Origin

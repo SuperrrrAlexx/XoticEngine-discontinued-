@@ -46,7 +46,12 @@ namespace XoticEngine
         }
         public static Vector2 GetDirection(this float a)
         {
-            return new Vector2((float)Math.Cos(a), (float)Math.Sin(a));
+            return ((double)a).GetDirection();
+        }
+
+        public static Vector2 Rotate(this Vector2 v, float radians)
+        {
+            return new Vector2((float)(Math.Cos(radians) * v.X - Math.Sin(radians) * v.Y), (float)(Math.Sin(radians) * v.X + Math.Cos(radians) * v.Y));
         }
 
         //Random
