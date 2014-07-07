@@ -68,7 +68,7 @@ namespace XoticEngine.ParticleSystem
         public void Draw(SpriteBatch s)
         {
             //Draw the particle
-            s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2(0.5f), scale, SpriteEffects.None, depth);
+            s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2((float)texture.Width / 2.0f, (float)texture.Height / 2.0f), scale, SpriteEffects.None, depth);
         }
 
         public bool Alive
