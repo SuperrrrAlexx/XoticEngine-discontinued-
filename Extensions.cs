@@ -10,7 +10,7 @@ namespace XoticEngine
 {
     public static class Extensions
     {
-        //Draw a line
+        //Drawing
         public static void DrawLine(this SpriteBatch s, Line l, Color color)
         {
             //Calculate the direction
@@ -18,6 +18,12 @@ namespace XoticEngine
 
             //Draw a rotated rectangle with height 1 (a line)
             s.Draw(Assets.Get<Texture2D>("DummyTexture"), new Rectangle(l.P1.X, l.P1.Y, (int)direction.Length(), 1), null, color, direction.GetAngle(), Vector2.Zero, SpriteEffects.None, 0);
+        }
+        public static void DrawPath(this SpriteBatch s, Path p, int pointSize, Color color)
+        {
+            //Draw each point from the path
+            foreach (Vector2 v in p.Points)
+                s.Draw(Assets.Get<Texture2D>("DummyTexture"), new Rectangle((int)v.X - (pointSize / 2), (int)v.Y - (pointSize / 2), pointSize, pointSize), color);
         }
 
         //Point and Vector2
