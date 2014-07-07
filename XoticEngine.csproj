@@ -99,6 +99,7 @@
     <Compile Include="GameObjects\Animation.cs" />
     <Compile Include="Graphics.cs" />
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />
+    <Compile Include="Path.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Utilities\Benchmark.cs" />
     <Compile Include="GraphicEffects\Camera.cs" />
