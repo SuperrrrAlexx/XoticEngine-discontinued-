@@ -23,7 +23,7 @@ namespace XoticEngine
         {
             //Draw each point from the path
             foreach (Vector2 v in p.Points)
-                s.Draw(Assets.Get<Texture2D>("DummyTexture"), new Rectangle((int)v.X - (pointSize / 2), (int)v.Y - (pointSize / 2), pointSize, pointSize), color);
+                s.Draw(Assets.Get<Texture2D>("DummyTexture"), v, null, color, 0, new Vector2(0.5f), pointSize, SpriteEffects.None, 0);
         }
 
         //Point and Vector2
