@@ -78,6 +78,6 @@ namespace XoticEngine.Shapes
         public int Surface
         { get { return (int)(radius * radius * Math.PI); } }
         public int Circumference
-        { get { return (int)(2 * Math.PI * radius); } }
+        { get { return (int)(MathHelper.TwoPi * radius); } }
     }
 }

@@ -53,14 +53,14 @@ namespace XoticEngine.ParticleSystem
             this.maxSpeed = speed;
             this.minSpeed = speed;
             this.minAngle = 0;
-            this.maxAngle = 2 * Math.PI;
+            this.maxAngle = MathHelper.TwoPi;
         }
         public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed)
         {
             this.minSpeed = minSpeed;
             this.maxSpeed = maxSpeed;
             this.minAngle = 0;
-            this.maxAngle = 2 * Math.PI;
+            this.maxAngle = MathHelper.TwoPi;
         }
         public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed, double minAngle, double maxAngle)
         {
@@ -154,7 +154,7 @@ namespace XoticEngine.ParticleSystem
         public RandomSpawnRotationModifier()
         {
             this.minRot = 0.0;
-            this.maxRot = 2 * Math.PI;
+            this.maxRot = MathHelper.TwoPi;
         }
 
         public RandomSpawnRotationModifier(double minRotation, double maxRotation)
@@ -177,8 +177,8 @@ namespace XoticEngine.ParticleSystem
 
         public RandomRotationSpeedModifier()
         {
-            this.minRotSpeed = -2 * Math.PI;
-            this.maxRotSpeed = 2 * Math.PI;
+            this.minRotSpeed = -MathHelper.TwoPi;
+            this.maxRotSpeed = MathHelper.TwoPi;
         }
 
         public RandomRotationSpeedModifier(double minRotationSpeed, double maxRotationSpeed)
