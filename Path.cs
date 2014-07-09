@@ -18,12 +18,12 @@ namespace XoticEngine
         public Path(Vector2[] points, float speed, bool repeat)
         {
             //Check if there are at least 2 points
-            if (points.Count() < 2)
+            if (points.Length < 2)
                 throw new ArgumentException("The path must contain at least 2 points.");
 
             this.speed = speed;
             this.repeat = repeat;
-            this.path = points;
+            this.path = RemoveEqualConsecutive(points);
             prev = 0;
             next = 1;
             distance = 0;
@@ -31,46 +31,59 @@ namespace XoticEngine
         public Path(Vector2[] points, float speed, bool repeat, int smoothness)
         {
             //Check if there are at least 2 points
-            if (points.Count() < 2)
+            if (points.Length < 2)
                 throw new ArgumentException("The path must contain at least 2 points.");
 
             this.speed = speed;
             this.repeat = repeat;
-            this.path = CatmullRom(points, smoothness);
+            this.path = RemoveEqualConsecutive(CatmullRom(points, smoothness, repeat));
             prev = 0;
             next = 1;
             distance = 0;
         }
 
-        Vector2[] CatmullRom(Vector2[] points, int smoothness)
+        public static Vector2[] CatmullRom(Vector2[] points, int smoothness, bool repeat)
         {
             List<Vector2> newPath = new List<Vector2>();
 
             //Go through all points
-            for (int i = 0; i < points.Count(); i++)
+            for (int i = 0; i < points.Length; i++)
             {
-                float step = (float)smoothness / Vector2.Distance(VectorNumber(points, i), VectorNumber(points, i + 1));
+                //Calculate the step
+                float step = (float)smoothness / Vector2.Distance(VectorNumber(points, i, repeat), VectorNumber(points, i + 1, repeat));
+                //Add smoothed points
                 for (float t = 0; t <= 1; t += step)
-                    newPath.Add(Vector2.CatmullRom(VectorNumber(points, i - 1), VectorNumber(points, i), VectorNumber(points, i + 1), VectorNumber(points, i + 2), t));
+                    newPath.Add(Vector2.CatmullRom(VectorNumber(points, i - 1, repeat), VectorNumber(points, i, repeat), VectorNumber(points, i + 1, repeat), VectorNumber(points, i + 2, repeat), t));
             }
 
             return newPath.ToArray();
         }
-        Vector2 VectorNumber(Vector2[] vectorList, int n)
+        static Vector2 VectorNumber(Vector2[] vectorList, int n, bool repeat)
         {
             //Make sure n falls within range of the array
             if (repeat)
             {
                 //Wrap n around
                 while (n < 0)
-                    n += vectorList.Count();
-                n %= vectorList.Count();
+                    n += vectorList.Length;
+                n %= vectorList.Length;
             }
             else
                 //Set n to the first or last element
-                n = n < 0 ? 0 : (n < vectorList.Count() ? n : vectorList.Count() - 1);
+                n = n < 0 ? 0 : (n < vectorList.Length ? n : vectorList.Length - 1);
 
             return vectorList[n];
+        }
+        Vector2[] RemoveEqualConsecutive(Vector2[] points)
+        {
+            List<Vector2> newPoints = new List<Vector2>(points);
+
+            //Check all points for an equal point after this one and remove it
+            for (int i = points.Length - 1; i >= 0; i--)
+                if (points[i] == points[(i + 1) % points.Length])
+                    newPoints.RemoveAt(i);
+
+            return newPoints.ToArray();
         }
 
         public void Update()
@@ -81,20 +94,14 @@ namespace XoticEngine
                 //Get how much to move
                 float move = speed * (float)Time.DeltaTime;
 
-                //Move to the next point
-                while (move >= Vector2.Distance(path[prev], path[next]) && !ended)
+                while (Vector2.Distance(position, path[next]) <= move && !ended)
                 {
-                    move -= Vector2.Distance(path[prev], path[next]);
+                    move -= Vector2.Distance(position, path[next]);
                     NextPoint();
+                    distance = 0;
                 }
 
-                //Get the lerp amount, make sure it is <= 1
                 distance += move / Vector2.Distance(path[prev], path[next]);
-                while (distance > 1 && !ended)
-                {
-                    distance--;
-                    NextPoint();
-                }
 
                 //Check if the path has ended
                 if (ended)
@@ -107,8 +114,8 @@ namespace XoticEngine
         void NextPoint()
         {
             //Add 1 to both points, wrapping them back to the beginning
-            prev = (prev + 1) % path.Count();
-            next = (next + 1) % path.Count();
+            prev = (prev + 1) % path.Length;
+            next = (next + 1) % path.Length;
 
             //Check if the path has ended
             if (next == 0 && !repeat)
