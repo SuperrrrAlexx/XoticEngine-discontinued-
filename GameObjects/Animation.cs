@@ -7,9 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XoticEngine.GameObjects
 {
-    public class Animation : GameObject
+    public class Animation
     {
-        float depth;
         //Animation
         SpriteSheet sheet;
         bool repeat, playing;
@@ -17,10 +16,8 @@ namespace XoticEngine.GameObjects
         double tpf, frameTime;
         int frame;
 
-        public Animation(string name, Vector2 position, float depth, SpriteSheet sheet, double fps, bool repeat)
-            : base(name, position)
+        public Animation(SpriteSheet sheet, double fps, bool repeat)
         {
-            this.depth = depth;
             this.sheet = sheet;
             this.tpf = 1.0 / fps;
             this.frameTime = tpf;
@@ -28,7 +25,7 @@ namespace XoticEngine.GameObjects
             this.playing = true;
         }
 
-        public override void Update()
+        public  void Update()
         {
             if (playing)
             {
@@ -38,16 +35,6 @@ namespace XoticEngine.GameObjects
                 if (frameTime <= 0)
                     NextFrame();
             }
-
-            base.Update();
-        }
-
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
-        {
-            //Draw the current frame
-            gameBatch.Draw(sheet[frame], Position, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, depth);
-
-            base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
         public void Stop()
@@ -71,6 +58,8 @@ namespace XoticEngine.GameObjects
             frameTime = tpf;
         }
 
+        public Texture2D CurrentFrame
+        { get { return sheet[frame]; } }
         public bool Playing
         { get { return playing; } set { playing = value; } }
         public int Length
