@@ -18,7 +18,7 @@ namespace XoticEngine.GameObjects
         int frame;
 
         public Animation(string name, Vector2 position, float depth, SpriteSheet sheet, double fps, bool repeat)
-            : base(name, position, 0)
+            : base(name, position)
         {
             this.depth = depth;
             this.sheet = sheet;

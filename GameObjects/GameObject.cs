@@ -10,29 +10,30 @@ namespace XoticEngine.GameObjects
     public class GameObject
     {
         string name;
+        DrawMode drawType = DrawMode.AlphaBlend;
         //Positioning
         Vector2 position, relativePosition, origin;
         float rotation, relativeRotation, depth;
         //Parent and children
         GameObject parent;
-        List<GameObject> children = new List<GameObject>();
+        Dictionary<string, List<GameObject>> children = new Dictionary<string, List<GameObject>>();
 
-        public GameObject(string name)
+        public GameObject(string name, Vector2 position)
         {
             this.name = name;
-            this.relativePosition = Vector2.Zero;
+            this.relativePosition = position;
             this.relativeRotation = 0.0f;
             this.origin = Vector2.Zero;
-            this.depth = 0.0f;
+            this.depth = 0;
             UpdatePosition();
         }
-        public GameObject(string name, Vector2 position, float rotation)
+        public GameObject(string name, Vector2 position, float rotation, Vector2 origin)
         {
             this.name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
-            this.origin = Vector2.Zero;
-            this.depth = 0.0f;
+            this.origin = origin;
+            this.depth = 0;
             UpdatePosition();
         }
         public GameObject(string name, Vector2 position, float rotation, Vector2 origin, float depth)
@@ -48,35 +49,47 @@ namespace XoticEngine.GameObjects
         public virtual void Update()
         {
             //Update each child
-            foreach (GameObject g in children)
-                g.Update();
+            for (int i = 0; i < children.Count; i++)
+                for (int g = 0; g < children.ElementAt(i).Value.Count; g++)
+                    children.ElementAt(i).Value[g].Update();
         }
         public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
+        }
+        public virtual void DrawChildren(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        {
             //Draw each child
-            foreach (GameObject g in children)
-                g.Draw(gameBatch, additiveBatch, guiBatch);
+            for (int i = 0; i < children.Count; i++)
+                for (int g = 0; g < children.ElementAt(i).Value.Count; g++)
+                {
+                    children.ElementAt(i).Value[g].Draw(gameBatch, additiveBatch, guiBatch);
+                    children.ElementAt(i).Value[g].DrawChildren(gameBatch, additiveBatch, guiBatch);
+                }
         }
 
-        public void AddChild(GameObject g)
+        public void AddChild(GameObject child)
         {
-            g.SetParent(this);
-        }
-        public void SetParent(GameObject g)
-        {
-            //Remove from the old parent
-            if (parent != null)
-                parent.Children.Remove(this);
+            //Switch parents
+            if (child.parent != null)
+                child.parent.Children[child.name].Remove(this);
+            child.parent = this;
 
-            //Add to the new parent
-            if (!g.Children.Contains(this))
-                g.Children.Add(this);
+            //Check if the key exists
+            if (!children.ContainsKey(child.Name))
+                children.Add(child.Name, new List<GameObject>());
 
-            //Save the new parent
-            parent = g;
+            //Add the object
+            children[child.Name].Add(child);
 
             //Update the position
             UpdatePosition();
+        }
+        public void SetParent(GameObject parent)
+        {
+            //Check if the GameObject is null
+            if (parent == null)
+                this.parent = null;
+            parent.AddChild(this);
         }
 
         void UpdatePosition()
@@ -94,8 +107,9 @@ namespace XoticEngine.GameObjects
             }
 
             //Update the positions of all children
-            foreach (GameObject g in children)
-                g.UpdatePosition();
+            for (int i = 0; i < children.Count; i++)
+                for (int g = 0; g < children.ElementAt(i).Value.Count; g++)
+                    children.ElementAt(i).Value[g].UpdatePosition();
         }
 
         public override string ToString()
@@ -103,8 +117,13 @@ namespace XoticEngine.GameObjects
             return name;
         }
 
+        public enum DrawMode
+        { AlphaBlend, Additive, Gui }
+
         public string Name
         { get { return name; } }
+        public DrawMode DrawType
+        { get { return drawType; } set { drawType = value; } }
         //Position
         public Vector2 Position
         { get { return position; } }
@@ -135,8 +154,10 @@ namespace XoticEngine.GameObjects
         { get { return depth; } set { depth = value; } }
         //Parent and children
         public GameObject Parent
-        { get { return parent; } }
-        public List<GameObject> Children
-        { get { return children; } set { children = value; } }
+        { get { return parent; } set { SetParent(value); } }
+        public Dictionary<string, List<GameObject>> Children
+        { get { return children; } }
+        public List<GameObject> this[string name]
+        { get { return children[name]; } }
     }
 }

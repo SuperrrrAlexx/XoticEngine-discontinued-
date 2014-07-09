@@ -16,7 +16,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public event Action OnToggle;
 
         public ToggleButton(string name, Rectangle rect, SpriteSheet sheet, bool toggled)
-            : base(name, new Vector2(rect.X, rect.Y), 0)
+            : base(name, new Vector2(rect.X, rect.Y))
         {
             this.rect = rect;
             this.toggled = toggled;

@@ -30,10 +30,13 @@ namespace XoticEngine.GameObjects
 
         public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
-            //Draw each gameobject
+            //Draw each gameobject and its children
             for (int i = 0; i < gameObjects.Count; i++)
                 for (int g = 0; g < gameObjects.ElementAt(i).Value.Count; g++)
+                {
                     gameObjects.ElementAt(i).Value[g].Draw(gameBatch, additiveBatch, guiBatch);
+                    gameObjects.ElementAt(i).Value[g].DrawChildren(gameBatch, additiveBatch, guiBatch);
+                }
         }
 
         public void Add(GameObject g)

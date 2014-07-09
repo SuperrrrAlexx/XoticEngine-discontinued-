@@ -24,7 +24,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public event Action OnMouseEnter, OnMouseExit;
 
         public Button(string name, Rectangle rect, SpriteSheet backTexture, string text, SpriteFont font, Color textColor, Color textHoverColor)
-            : base(name, new Vector2(rect.X, rect.Y), 0)
+            : base(name, new Vector2(rect.X, rect.Y))
         {
             this.rect = rect;
 
@@ -43,7 +43,7 @@ namespace XoticEngine.GameObjects.MenuItems
             this.backHoverColor = Color.White;
         }
         public Button(string name, Rectangle rect, Color[] backColors, string text, SpriteFont font, Color textColor, Color textHoverColor)
-            : base(name, new Vector2(rect.X, rect.Y), 0)
+            : base(name, new Vector2(rect.X, rect.Y))
         {
             this.rect = rect;
 
