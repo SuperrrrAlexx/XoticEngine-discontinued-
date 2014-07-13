@@ -13,35 +13,32 @@ namespace XoticEngine.GameObjects
         Texture2D[,] sprites;
         int cols, rows;
         int spriteWidth, spriteHeight;
-        int length;
 
         public SpriteSheet(string sheetName)
         {
             //Load the sheet
             this.sheet = Assets.Get<Texture2D>(sheetName);
 
+            //Default is 1 column and row
+            cols = 1;
+            rows = 1;
+
+            //Extract all sprites from the sheet
+            ExtractSprites(sheetName);
+        }
+
+        void ExtractSprites(string sheetName)
+        {
             //Get the cols and rows
-            string[] name = sheetName.Split(new char[] { '@', 'x' }, StringSplitOptions.RemoveEmptyEntries);
-            switch (name.Count())
+            string[] name = sheetName.Split('@');
+
+            //Check for column/row data
+            if (name.Length > 1)
             {
-                case 1:
-                    //Just the name, 1 sprite
-                    cols = 1;
-                    rows = 1;
-                    break;
-                case 2:
-                    //Only cols
-                    cols = int.Parse(name[1]);
-                    rows = 1;
-                    break;
-                case 3:
-                    //Cols and rows
-                    cols = int.Parse(name[1]);
-                    rows = int.Parse(name[2]);
-                    break;
-                default:
-                    //Exception
-                    throw new FormatException("The spritesheet name must be in this format: SpriteSheet_NAME@COLSxROWS");
+                string[] colrow = name[name.Length - 1].Split('x');
+                cols = int.Parse(colrow[0]);
+                if (colrow.Length == 2)
+                    rows = int.Parse(colrow[1]);
             }
 
             //Get the sprite width and height
@@ -51,10 +48,9 @@ namespace XoticEngine.GameObjects
             //Set all the sprites
             sprites = new Texture2D[cols, rows];
             for (int c = 0; c < cols; c++)
-            {
                 for (int r = 0; r < rows; r++)
                 {
-                    //The sprite texture
+                    //The sprite source rectangle and texture
                     Rectangle sourceRect = new Rectangle(c * spriteWidth, r * spriteHeight, spriteWidth, spriteHeight);
                     Texture2D sprite = new Texture2D(Graphics.Device, spriteWidth, spriteHeight);
 
@@ -66,10 +62,6 @@ namespace XoticEngine.GameObjects
                     //Insert the sprite into the array of sprites
                     sprites[c, r] = sprite;
                 }
-            }
-
-            //Get the amount of sprites
-            length = cols * rows;
         }
 
         public Texture2D this[int item]
@@ -77,7 +69,7 @@ namespace XoticEngine.GameObjects
             get
             {
                 //If the item is larger than the length, throw an exception
-                if (item >= length)
+                if (item >= Length)
                     throw new IndexOutOfRangeException("The spritesheet does not contain item number " + item);
 
                 //Get the column and row
@@ -102,6 +94,10 @@ namespace XoticEngine.GameObjects
         }
 
         public int Length
-        { get { return length; } }
+        { get { return cols * rows; } }
+        public int SpriteWidth
+        { get { return spriteWidth; } }
+        public int SpriteHeight
+        { get { return spriteHeight; } }
     }
 }

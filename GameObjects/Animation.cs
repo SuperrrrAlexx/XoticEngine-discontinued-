@@ -49,7 +49,7 @@ namespace XoticEngine.GameObjects
             frame++;
             if (frame >= Length)
             {
-                frame = repeat ? frame - 1 : 0;
+                frame = repeat ? 0 : frame - 1;
                 if (!repeat)
                     playing = false;
             }

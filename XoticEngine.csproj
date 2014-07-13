@@ -97,6 +97,7 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Animation.cs" />
+    <Compile Include="GameObjects\AnimationGameObject.cs" />
     <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Graphics.cs" />
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />
