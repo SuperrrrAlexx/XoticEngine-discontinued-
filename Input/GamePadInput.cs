@@ -11,12 +11,16 @@ namespace XoticEngine.Input
     {
         //State
         static GamePadState[] prevGamePad, currGamePad;
+        static Buttons[] buttons;
 
         public static void Initialize()
         {
             //Create the gamepad state arrays
             prevGamePad = new GamePadState[4];
             currGamePad = new GamePadState[4];
+
+            //Save all buttons into an array
+            buttons = (Buttons[])Enum.GetValues(typeof(Buttons));
         }
 
         public static void Update()
@@ -60,6 +64,16 @@ namespace XoticEngine.Input
         {
             return currGamePad[playerIndex - 1].IsButtonUp(b) && prevGamePad[playerIndex - 1].IsButtonDown(b);
         }
+        public static bool AnyButtonPressed(int playerIndex)
+        {
+            //Check for all buttons if they were pressed
+            foreach (Buttons b in buttons)
+                if (ButtonPressed(b, playerIndex))
+                    return true;
+
+            //If none were pressed, return false
+            return false;
+        }
 
         //Analog sticks
         public static Vector2 LeftStick(int playerIndex)
@@ -98,5 +112,8 @@ namespace XoticEngine.Input
                 return 4;
             }
         }
+        //GamePad buttons
+        public static Buttons[] Buttons
+        { get { return buttons; } }
     }
 }
