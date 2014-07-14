@@ -35,12 +35,6 @@ namespace XoticEngine
             //If the current game state is not null, update it
             if (currentState != null)
                 currentState.Update();
-
-            //Update all components
-            Input.Update();
-            GameConsole.Update();
-            AchievementHolder.Update();
-            FrameRateCounter.Update();
         }
 
         public static void AddGameState(GameState g)

@@ -101,6 +101,8 @@
     <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Graphics.cs" />
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />
+    <Compile Include="Input\GamePadInput.cs" />
+    <Compile Include="Input\MouseInput.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Utilities\Benchmark.cs" />
@@ -112,7 +114,7 @@
     <Compile Include="GameObjects\MenuItems\Button.cs" />
     <Compile Include="GameObjects\MenuItems\ToggleButton.cs" />
     <Compile Include="GameObjects\MenuItems\Slider.cs" />
-    <Compile Include="Input.cs" />
+    <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />
     <Compile Include="ParticleSystem\ParticleEmitter.cs" />
     <Compile Include="ParticleSystem\ParticleModifier.cs" />

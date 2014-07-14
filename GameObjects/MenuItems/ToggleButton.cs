@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
@@ -26,10 +27,10 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Update()
         {
             //Check if the mouse is within the rectangle
-            if (rect.Contains(Input.MousePosition))
+            if (rect.Contains(MouseInput.Position))
             {
                 //Check for clicks
-                if (Input.LeftClicked())
+                if (MouseInput.LeftClicked())
                 {
                     //Toggle checked
                     toggled = !toggled;

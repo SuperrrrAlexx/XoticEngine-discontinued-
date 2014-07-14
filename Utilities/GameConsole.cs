@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using XoticEngine.Input;
 
 namespace XoticEngine.Utilities
 {
@@ -48,8 +49,8 @@ namespace XoticEngine.Utilities
             InitCommands();
 
             //Event input
-            Input.OnKeyPressed += (k) => KeyInput(k);
-            Input.OnCharEntered += (c) => CharInput(c);
+            KeyboardInput.OnKeyPressed += (k) => KeyInput(k);
+            KeyboardInput.OnCharEntered += (c) => CharInput(c);
         }
 
         //Key and character input

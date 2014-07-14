@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using XoticEngine.Achievements;
+using XoticEngine.Input;
+using XoticEngine.Utilities;
 
 namespace XoticEngine
 {
@@ -10,11 +13,11 @@ namespace XoticEngine
     {
         protected GraphicsDeviceManager graphics;
 
-        public XGame()
+        public XGame(int windowWidth = 1280, int windowHeight = 720)
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = windowWidth;
+            graphics.PreferredBackBufferHeight = windowHeight;
             Content.RootDirectory = "Content";
         }
 
@@ -24,7 +27,8 @@ namespace XoticEngine
             X.Initialize(this);
             Graphics.Initialize(graphics);
             Assets.Initialize(Content);
-            Input.Initialize();
+            KeyboardInput.Initialize();
+            GamePadInput.Initialize();
 
             base.Initialize();
         }
@@ -36,6 +40,14 @@ namespace XoticEngine
             
             //Update X
             X.Update(gameTime);
+
+            //Update all components
+            KeyboardInput.Update();
+            MouseInput.Update();
+            GamePadInput.Update();
+            GameConsole.Update();
+            AchievementHolder.Update();
+            FrameRateCounter.Update();
 
             base.Update(gameTime);
         }

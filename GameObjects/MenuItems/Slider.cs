@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
@@ -48,16 +49,16 @@ namespace XoticEngine.GameObjects.MenuItems
             boundingBox.Location = buttonPos.ToPoint();
 
             //Start dragging
-            if (Input.LeftClicked())
-                if (boundingBox.Contains(Input.MousePosition))
+            if (MouseInput.LeftClicked())
+                if (boundingBox.Contains(MouseInput.Position))
                     dragging = true;
             //Stop dragging
-            if (!Input.LeftDown())
+            if (!MouseInput.LeftDown())
                 dragging = false;
 
             //Drag the button
             if (dragging)
-                amount = (int)MathHelper.Clamp((Input.MousePosition.X - (Vector2.Transform(Position, Graphics.TransformMatrix).X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
+                amount = (int)MathHelper.Clamp((MouseInput.Position.X - (Vector2.Transform(Position, Graphics.TransformMatrix).X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position
             buttonPos = Position + new Vector2(amount * valueWidth - button.Width / 2 + buttonOffset.X, (bar.Height / 2 - button.Height / 2) + buttonOffset.Y);

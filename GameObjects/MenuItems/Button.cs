@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
@@ -65,7 +66,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Update()
         {
             //Check if the mouse is within the rectangle
-            if (rect.Contains(Input.MousePosition))
+            if (rect.Contains(MouseInput.Position))
             {
                 //If the mouse was previously not hovering, call OnMouseEnter
                 if (!hovering)
@@ -74,11 +75,11 @@ namespace XoticEngine.GameObjects.MenuItems
                 hovering = true;
 
                 //Check for clicks
-                if (Input.LeftClicked())
+                if (MouseInput.LeftClicked())
                     CallAction(OnLeftClick);
-                if (Input.RightClicked())
+                if (MouseInput.RightClicked())
                     CallAction(OnRightClick);
-                if (Input.MiddleClicked())
+                if (MouseInput.MiddleClicked())
                     CallAction(OnMiddleClick);
             }
             else
