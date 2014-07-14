@@ -64,6 +64,8 @@ namespace XoticEngine.Input
         {
             return currGamePad[playerIndex - 1].IsButtonUp(b) && prevGamePad[playerIndex - 1].IsButtonDown(b);
         }
+
+        //All pushed buttons
         public static bool AnyButtonPressed(int playerIndex)
         {
             //Check for all buttons if they were pressed
@@ -73,6 +75,18 @@ namespace XoticEngine.Input
 
             //If none were pressed, return false
             return false;
+        }
+        public static Buttons[] PressedButtons(int playerIndex)
+        {
+            List<Buttons> pressed = new List<Buttons>();
+
+            //Check all buttons if they are down
+            foreach (Buttons b in buttons)
+                if (ButtonDown(b, playerIndex))
+                    pressed.Add(b);
+
+            //Return the list with buttons as an array
+            return pressed.ToArray();
         }
 
         //Analog sticks
@@ -113,7 +127,7 @@ namespace XoticEngine.Input
             }
         }
         //GamePad buttons
-        public static Buttons[] Buttons
+        public static Buttons[] GamePadButtons
         { get { return buttons; } }
     }
 }

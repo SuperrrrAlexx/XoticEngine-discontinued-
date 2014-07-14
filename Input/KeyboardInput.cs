@@ -119,7 +119,7 @@ namespace XoticEngine.Input
         }
         public static Keys[] PressedKeys()
         {
-            return currKeyboard.GetPressedKeys().Except(prevKeyboard.GetPressedKeys()).ToArray();
+            return currKeyboard.GetPressedKeys();
         }
 
         //Keyboard state
