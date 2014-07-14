@@ -75,7 +75,7 @@ namespace XoticEngine.ParticleSystem
             double random = X.Random.NextDouble();
             double angle = random * (maxAngle - minAngle) + minAngle;
             Vector2 angleVector = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-            p.Speed = (X.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angleVector;
+            p.Speed += (X.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angleVector;
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -98,7 +98,7 @@ namespace XoticEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Speed = new Vector2(X.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, X.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
+            p.Speed += new Vector2(X.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, X.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
         }
 
         public override bool UpdateOnce { get { return true; } }
