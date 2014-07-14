@@ -12,7 +12,6 @@ namespace XoticEngine.GameObjects
         Texture2D sheet;
         Texture2D[,] sprites;
         int cols, rows;
-        int spriteWidth, spriteHeight;
 
         public SpriteSheet(string sheetName)
         {
@@ -25,6 +24,30 @@ namespace XoticEngine.GameObjects
 
             //Extract all sprites from the sheet
             ExtractSprites(sheetName);
+        }
+        public SpriteSheet(string sheetName, Rectangle[] sourceRectangles)
+        {
+            //Load the sheet
+            this.sheet = Assets.Get<Texture2D>(sheetName);
+
+            //Same amount of columns as rectangles, 1 row
+            cols = sourceRectangles.Length;
+            rows = 1;
+
+            //Extract all sprites from the sheet
+            ExtractSprites(sourceRectangles);
+        }
+        public SpriteSheet(Texture2D sheet, Rectangle[] sourceRectangles)
+        {
+            //Save the sheet
+            this.sheet = sheet;
+
+            //Same amount of columns as rectangles, 1 row
+            cols = sourceRectangles.Length;
+            rows = 1;
+
+            //Extract all sprites from the sheet
+            ExtractSprites(sourceRectangles);
         }
 
         void ExtractSprites(string sheetName)
@@ -42,8 +65,8 @@ namespace XoticEngine.GameObjects
             }
 
             //Get the sprite width and height
-            spriteWidth = sheet.Width / cols;
-            spriteHeight = sheet.Height / rows;
+            int spriteWidth = sheet.Width / cols;
+            int spriteHeight = sheet.Height / rows;
 
             //Set all the sprites
             sprites = new Texture2D[cols, rows];
@@ -62,6 +85,31 @@ namespace XoticEngine.GameObjects
                     //Insert the sprite into the array of sprites
                     sprites[c, r] = sprite;
                 }
+        }
+        void ExtractSprites(Rectangle[] sourceRects)
+        {
+            //Create the array
+            sprites = new Texture2D[sourceRects.Length, 1];
+
+            //Extract each sprite based on the source rectangle
+            for (int i = 0; i < sourceRects.Length; i++)
+            {
+                //Create a texture
+                Texture2D sprite = new Texture2D(Graphics.Device, sourceRects[i].Width, sourceRects[i].Height);
+
+                //Get the data from the sheet
+                Color[] data = new Color[sourceRects[i].Width * sourceRects[i].Height];
+                sheet.GetData(0, sourceRects[i], data, 0, data.Length);
+                sprite.SetData(data);
+
+                //Insert the sprite into the array of sprites
+                sprites[i, 0] = sprite;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "SpriteSheet@" + cols + "x" + rows;
         }
 
         public Texture2D this[int item]
@@ -95,9 +143,5 @@ namespace XoticEngine.GameObjects
 
         public int Length
         { get { return cols * rows; } }
-        public int SpriteWidth
-        { get { return spriteWidth; } }
-        public int SpriteHeight
-        { get { return spriteHeight; } }
     }
 }
