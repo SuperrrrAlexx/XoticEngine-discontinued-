@@ -48,7 +48,7 @@ namespace XoticEngine.Input
         static void CheckKeyEvents()
         {
             //Get the pressed keys
-            Keys[] keys = PressedKeys();
+            Keys[] keys = PressedKeys().Except(prevKeyboard.GetPressedKeys()).ToArray();
 
             //Trigger an event for each pressed key
             for (int i = 0; i < keys.Count(); i++)
@@ -119,7 +119,7 @@ namespace XoticEngine.Input
         }
         public static Keys[] PressedKeys()
         {
-            return currKeyboard.GetPressedKeys();
+            return currKeyboard.GetPressedKeys() ;
         }
 
         //Keyboard state
