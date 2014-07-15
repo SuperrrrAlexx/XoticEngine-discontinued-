@@ -31,6 +31,18 @@ namespace XoticEngine.GameObjects.MenuItems
 
             CalculateTextPosition();
         }
+        public Label(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color textColor, Texture2D background, Color backColor)
+            : base(name, backRect.Location.ToVector2(), 0, Vector2.Zero, depth)
+        {
+            this.backRect = backRect;
+            this.text = text;
+            this.font = font;
+            this.textColor = textColor;
+            this.backColor = backColor;
+            this.backTex = background;
+
+            CalculateTextPosition();
+        }
 
         void CalculateTextPosition()
         {
@@ -42,7 +54,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw the background
-            guiBatch.Draw(backTex, new Rectangle((int)Position.X, (int)Position.Y, backRect.Width, backRect.Height), null, backColor, 0, Vector2.Zero, SpriteEffects.None, MathHelper.Clamp(Depth + float.Epsilon, 0, 1));
+            guiBatch.Draw(backTex, backRect, null, backColor, 0, Vector2.Zero, SpriteEffects.None, MathHelper.Clamp(Depth + float.Epsilon, 0, 1));
             //Draw the text
             guiBatch.DrawString(font, text, textPos, textColor, 0, Vector2.Zero, 1, SpriteEffects.None, Depth);
             
