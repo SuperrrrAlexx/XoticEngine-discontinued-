@@ -8,71 +8,51 @@ using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
-    public class Button : GameObject
+    public class Button : Label
     {
         //Background
-        Rectangle rect;
-        Texture2D texture, hoverTexture;
+        SpriteSheet backTexture;
         //Colors
-        Color backColor, backHoverColor;
-        Color textColor, textHoverColor;
-        //Text
-        string text;
-        SpriteFont font;
+        Color[] backColors, textColors;
         //Actions
         bool hovering = false;
         public event Action OnLeftClick, OnRightClick, OnMiddleClick;
         public event Action OnMouseEnter, OnMouseExit;
 
-        public Button(string name, Rectangle rect, SpriteSheet backTexture, string text, SpriteFont font, Color textColor, Color textHoverColor)
-            : base(name, new Vector2(rect.X, rect.Y))
+        public Button(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color[] textColors, Color[] backColors)
+            : base(name, backRect, depth, text, font, textColors != null ? textColors[0] : Color.Black, backColors != null ? backColors[0] : Color.White)
         {
-            this.rect = rect;
-
-            //Text
-            this.text = text;
-            this.font = font;
-            //Text color
-            this.textColor = textColor;
-            this.textHoverColor = textHoverColor;
-
-            //Back texture
-            this.texture = backTexture[0];
-            this.hoverTexture = backTexture[1];
-            //Back color
-            this.backColor = Color.White;
-            this.backHoverColor = Color.White;
+            this.textColors = textColors;
+            this.backTexture = null;
+            this.backColors = backColors;
         }
-        public Button(string name, Rectangle rect, Color[] backColors, string text, SpriteFont font, Color textColor, Color textHoverColor)
-            : base(name, new Vector2(rect.X, rect.Y))
+        public Button(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color[] textColors, SpriteSheet backTexture, Color[] backColors)
+            : base(name, backRect, depth, text, font, textColors != null ? textColors[0] : Color.Black, backTexture[0], backColors != null ? backColors[0] : Color.White)
         {
-            this.rect = rect;
-
-            //Text
-            this.text = text;
-            this.font = font;
-            //Text color
-            this.textColor = textColor;
-            this.textHoverColor = textHoverColor;
-
-            //Back texture
-            this.texture = Assets.DummyTexture;
-            this.hoverTexture = Assets.DummyTexture;
-            //Back color
-            this.backColor = backColors[0];
-            this.backHoverColor = backColors[1];
+            this.textColors = textColors;
+            this.backTexture = backTexture;
+            this.backColors = backColors;
         }
+        
 
         public override void Update()
         {
             //Check if the mouse is within the rectangle
-            if (rect.Contains(MouseInput.Position))
+            if (BackRectangle.Contains(MouseInput.Position))
             {
-                //If the mouse was previously not hovering, call OnMouseEnter
+                //Check  the mouse was previously not hovering
                 if (!hovering)
+                {
+                    hovering = true;
+
+                    //Call OnMouseEnter
                     CallAction(OnMouseEnter);
-                //Update hovering
-                hovering = true;
+
+                    //Set the textures/colors
+                    BackTexture = backTexture != null ? backTexture[(int)MathHelper.Clamp(1, 0, backTexture.Length - 1)] : Assets.DummyTexture;
+                    BackColor = backColors != null ? backColors[(int)MathHelper.Clamp(1, 0, backColors.Length - 1)] : Color.White;
+                    TextColor = textColors != null ? textColors[(int)MathHelper.Clamp(1, 0, textColors.Length - 1)] : Color.Black;
+                }
 
                 //Check for clicks
                 if (MouseInput.LeftClicked())
@@ -84,26 +64,22 @@ namespace XoticEngine.GameObjects.MenuItems
             }
             else
             {
-                //If the mouse was previously hovering, call OnMouseExit
+                //Check if the mouse was previously hovering
                 if (hovering)
+                {
+                    hovering = false;
+
+                    //Call OnMouseExit
                     CallAction(OnMouseExit);
-                //Update hovering
-                hovering = false;
+
+                    //Set the textures/colors
+                    BackTexture = backTexture != null ? backTexture[0] : Assets.DummyTexture;
+                    BackColor = backColors != null ? backColors[0] : Color.White;
+                    TextColor = textColors != null ? textColors[0] : Color.Black;
+                }
             }
 
             base.Update();
-        }
-
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
-        {
-            //Draw the button
-            guiBatch.Draw(hovering ? hoverTexture : texture, rect, null, hovering ? backHoverColor : backColor, 0, Vector2.Zero, SpriteEffects.None, 0 + float.Epsilon);
-
-            //Draw the text
-            if (font != null)
-                guiBatch.DrawString(font, text, new Vector2(rect.Center.X - font.MeasureString(text).X / 2, rect.Center.Y - font.MeasureString(text).Y / 2), hovering ? textHoverColor : textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-
-            base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
         void CallAction(Action action)
