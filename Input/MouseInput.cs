@@ -22,15 +22,15 @@ namespace XoticEngine.Input
         //Clicks
         public static bool LeftClicked()
         {
-            return currMouse.LeftButton == ButtonState.Released && prevMouse.LeftButton == ButtonState.Pressed;
+            return currMouse.LeftButton == ButtonState.Pressed && prevMouse.LeftButton == ButtonState.Released;
         }
         public static bool MiddleClicked()
         {
-            return currMouse.MiddleButton == ButtonState.Released && prevMouse.MiddleButton == ButtonState.Pressed;
+            return currMouse.MiddleButton == ButtonState.Pressed && prevMouse.MiddleButton == ButtonState.Released;
         }
         public static bool RightClicked()
         {
-            return currMouse.LeftButton == ButtonState.Released && prevMouse.LeftButton == ButtonState.Pressed;
+            return currMouse.RightButton == ButtonState.Pressed && prevMouse.RightButton == ButtonState.Released;
         }
 
         //Button pressed
@@ -50,15 +50,15 @@ namespace XoticEngine.Input
         //Button released
         public static bool LeftReleased()
         {
-            return currMouse.LeftButton == ButtonState.Pressed && prevMouse.LeftButton == ButtonState.Released;
+            return currMouse.LeftButton == ButtonState.Released && prevMouse.LeftButton == ButtonState.Pressed;
         }
         public static bool MiddleReleased()
         {
-            return currMouse.MiddleButton == ButtonState.Pressed && prevMouse.MiddleButton == ButtonState.Released;
+            return currMouse.MiddleButton == ButtonState.Released && prevMouse.MiddleButton == ButtonState.Pressed;
         }
         public static bool RightReleased()
         {
-            return currMouse.RightButton == ButtonState.Pressed && prevMouse.RightButton == ButtonState.Released;
+            return currMouse.LeftButton == ButtonState.Released && prevMouse.LeftButton == ButtonState.Pressed;
         }
 
         //Scroll wheel

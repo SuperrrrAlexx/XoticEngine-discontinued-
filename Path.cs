@@ -58,7 +58,7 @@ namespace XoticEngine
 
             return newPath.ToArray();
         }
-        static Vector2 VectorNumber(Vector2[] vectorList, int n, bool repeat)
+        private static Vector2 VectorNumber(Vector2[] vectorList, int n, bool repeat)
         {
             //Make sure n falls within range of the array
             if (repeat)
@@ -74,7 +74,7 @@ namespace XoticEngine
 
             return vectorList[n];
         }
-        Vector2[] RemoveEqualConsecutive(Vector2[] points)
+        private Vector2[] RemoveEqualConsecutive(Vector2[] points)
         {
             List<Vector2> newPoints = new List<Vector2>(points);
 
@@ -111,7 +111,7 @@ namespace XoticEngine
                 position = Vector2.Lerp(path[prev], path[next], distance);
             }
         }
-        void NextPoint()
+        private void NextPoint()
         {
             //Add 1 to both points, wrapping them back to the beginning
             prev = (prev + 1) % path.Length;
@@ -120,6 +120,13 @@ namespace XoticEngine
             //Check if the path has ended
             if (next == 0 && !repeat)
                 ended = true;
+        }
+
+        public void Reset()
+        {
+            prev = 0;
+            next = 1;
+            distance = 0;
         }
 
         public Vector2[] Points

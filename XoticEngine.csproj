@@ -113,7 +113,6 @@
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameState.cs" />
     <Compile Include="GameObjects\MenuItems\Button.cs" />
-    <Compile Include="GameObjects\MenuItems\ToggleButton.cs" />
     <Compile Include="GameObjects\MenuItems\Slider.cs" />
     <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />

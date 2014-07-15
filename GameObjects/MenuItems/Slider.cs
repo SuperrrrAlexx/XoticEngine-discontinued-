@@ -17,15 +17,14 @@ namespace XoticEngine.GameObjects.MenuItems
         Vector2 buttonOffset, buttonPos;
         Rectangle boundingBox;
         //Slider values
-        int offsetRight, maxValue;
+        int offsetRight, maxValue, prevAmount;
         int amount = 0;
         float valueWidth;
-        //Events
-        int prevAmout;
+        //Event
         public event Action OnValueChange;
 
-        public Slider(string name, Vector2 position, Vector2 buttonOffset, int offsetRight, Texture2D sliderBar, Texture2D sliderButton, int values)
-            : base(name, position)
+        public Slider(string name, Vector2 position, float depth, Vector2 buttonOffset, int offsetRight, Texture2D sliderBar, Texture2D sliderButton, int values)
+            : base(name, position, 0, Vector2.Zero, depth)
         {
             this.bar = sliderBar;
             //Button
@@ -43,28 +42,27 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Update()
         {
             //Update the previous value
-            prevAmout = amount;
+            prevAmount = amount;
 
             //Update the bouding box
             boundingBox.Location = buttonPos.ToPoint();
 
-            //Start dragging
+            //Start/stop dragging
             if (MouseInput.LeftClicked())
                 if (boundingBox.Contains(MouseInput.Position))
                     dragging = true;
-            //Stop dragging
             if (!MouseInput.LeftDown())
                 dragging = false;
 
             //Drag the button
             if (dragging)
-                amount = (int)MathHelper.Clamp((MouseInput.Position.X - (Vector2.Transform(Position, Graphics.TransformMatrix).X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
+                amount = (int)MathHelper.Clamp((MouseInput.Position.X - (Position.X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position
             buttonPos = Position + new Vector2(amount * valueWidth - button.Width / 2 + buttonOffset.X, (bar.Height / 2 - button.Height / 2) + buttonOffset.Y);
 
             //Call the OnValueChange event
-            if (prevAmout != amount && OnValueChange != null)
+            if (prevAmount != amount && OnValueChange != null)
                     OnValueChange();
 
             base.Update();
@@ -81,5 +79,7 @@ namespace XoticEngine.GameObjects.MenuItems
 
         public int Value
         { get { return amount; } set { amount = value; } }
+        public bool Dragging
+        { get { return dragging; } }
     }
 }

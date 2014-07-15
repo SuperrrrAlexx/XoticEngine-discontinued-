@@ -82,7 +82,7 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Update();
         }
 
-        void CallAction(Action action)
+        private void CallAction(Action action)
         {
             if (action != null)
                 action();
