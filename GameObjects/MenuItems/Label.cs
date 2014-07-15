@@ -44,7 +44,7 @@ namespace XoticEngine.GameObjects.MenuItems
             CalculateTextPosition();
         }
 
-        void CalculateTextPosition()
+        private void CalculateTextPosition()
         {
             //Calculate the text position
             textPos.X = backRect.Center.X - font.MeasureString(text).X / 2;

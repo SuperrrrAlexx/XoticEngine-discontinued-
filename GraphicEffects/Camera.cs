@@ -87,7 +87,7 @@ namespace XoticEngine.GraphicEffects
                 MoveToPoint();
             }
         }
-        void MoveToPoint()
+        private void MoveToPoint()
         {
             //Move the camera to the next point
             Vector2 move = nextPoint - shake;

@@ -25,7 +25,7 @@ namespace XoticEngine.GameObjects
             this.playing = true;
         }
 
-        public  void Update()
+        public void Update()
         {
             if (playing)
             {

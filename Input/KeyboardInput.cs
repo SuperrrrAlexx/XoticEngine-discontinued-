@@ -17,7 +17,7 @@ namespace XoticEngine.Input
         public delegate void CharEvent(char c);
         public static event CharEvent OnCharEntered;
         //A dictionary of keys that can be converted to characters
-        private static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
+        static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
 
         public static void Initialize()
         {
@@ -45,7 +45,7 @@ namespace XoticEngine.Input
             //Check for key events
             CheckKeyEvents();
         }
-        static void CheckKeyEvents()
+        private static void CheckKeyEvents()
         {
             //Get the pressed keys
             Keys[] keys = PressedKeys().Except(prevKeyboard.GetPressedKeys()).ToArray();

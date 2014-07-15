@@ -92,7 +92,7 @@ namespace XoticEngine.GameObjects
             parent.AddChild(this);
         }
 
-        void UpdatePosition()
+        private void UpdatePosition()
         {
             //Check if the parent is null, set the position and rotation
             if (parent == null)
