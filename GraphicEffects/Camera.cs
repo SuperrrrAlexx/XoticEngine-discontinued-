@@ -105,6 +105,7 @@ namespace XoticEngine.GraphicEffects
 
         public Matrix TransformMatrix
         { get { return transform; } }
+        //Position and rotation
         public Vector2 Position
         {
             get { return position; }
@@ -132,6 +133,7 @@ namespace XoticEngine.GraphicEffects
                 UpdateMatrix();
             }
         }
+        //Shake
         public double ShakeTime
         { get { return shakeTime; } set { shakeTime = value; } }
         public Vector2 ShakeAmount
