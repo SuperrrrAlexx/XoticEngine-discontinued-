@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ using XoticEngine.Utilities;
 
 namespace XoticEngine.GameObjects
 {
-    public class GameState
+    public class GameState : IEnumerable<GameObject>
     {
-        string name;
+        readonly string name;
         Dictionary<string, List<GameObject>> gameObjects;
 
         public GameState(string name)
@@ -23,20 +24,17 @@ namespace XoticEngine.GameObjects
         public virtual void Update()
         {
             //Update each gameobject
-            for (int i = 0; i < gameObjects.Count; i++)
-                for (int g = 0; g < gameObjects.ElementAt(i).Value.Count; g++)
-                    gameObjects.ElementAt(i).Value[g].Update();
+            foreach (GameObject g in this)
+                g.Update();
         }
-
         public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw each gameobject and its children
-            for (int i = 0; i < gameObjects.Count; i++)
-                for (int g = 0; g < gameObjects.ElementAt(i).Value.Count; g++)
-                {
-                    gameObjects.ElementAt(i).Value[g].Draw(gameBatch, additiveBatch, guiBatch);
-                    gameObjects.ElementAt(i).Value[g].DrawChildren(gameBatch, additiveBatch, guiBatch);
-                }
+            foreach (GameObject g in this)
+            {
+                g.Draw(gameBatch, additiveBatch, guiBatch);
+                g.DrawChildren(gameBatch, additiveBatch, guiBatch);
+            }
         }
 
         public void Add(GameObject g)
@@ -54,12 +52,7 @@ namespace XoticEngine.GameObjects
         }
         public void Remove(GameObject g)
         {
-            //Check if the key exists
-            if (gameObjects.ContainsKey(g.Name))
-                //Check and remove the object
-                for (int i = 0; i < gameObjects[g.Name].Count; i++)
-                    if (gameObjects[g.Name][i] == g)
-                        gameObjects[g.Name].RemoveAt(i);
+            gameObjects[g.Name].Remove(g);
         }
 
         public virtual void BeginState()
@@ -74,6 +67,17 @@ namespace XoticEngine.GameObjects
         public override string ToString()
         {
             return name;
+        }
+
+        public IEnumerator<GameObject> GetEnumerator()
+        {
+            for (int list = 0; list < gameObjects.Count; list++)
+                for (int item = 0; item < gameObjects.ElementAt(list).Value.Count; item++)
+                    yield return gameObjects.ElementAt(list).Value[item];
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public string Name

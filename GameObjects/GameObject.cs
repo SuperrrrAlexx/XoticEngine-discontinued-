@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XoticEngine.GameObjects
 {
-    public class GameObject
+    public class GameObject : IEnumerable<GameObject>
     {
-        string name;
+        readonly string name;
         DrawMode drawType = DrawMode.AlphaBlend;
         //Positioning
         Vector2 position, relativePosition, origin;
@@ -49,9 +50,8 @@ namespace XoticEngine.GameObjects
         public virtual void Update()
         {
             //Update each child
-            for (int i = 0; i < children.Count; i++)
-                for (int g = 0; g < children.ElementAt(i).Value.Count; g++)
-                    children.ElementAt(i).Value[g].Update();
+            foreach (GameObject g in this)
+                g.Update();
         }
         public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
@@ -59,37 +59,36 @@ namespace XoticEngine.GameObjects
         public virtual void DrawChildren(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw each child
-            for (int i = 0; i < children.Count; i++)
-                for (int g = 0; g < children.ElementAt(i).Value.Count; g++)
-                {
-                    children.ElementAt(i).Value[g].Draw(gameBatch, additiveBatch, guiBatch);
-                    children.ElementAt(i).Value[g].DrawChildren(gameBatch, additiveBatch, guiBatch);
-                }
+            foreach (GameObject g in this)
+            {
+                g.Draw(gameBatch, additiveBatch, guiBatch);
+                g.DrawChildren(gameBatch, additiveBatch, guiBatch);
+            }
         }
 
         public void AddChild(GameObject child)
         {
-            //Switch parents
+            //Remove the child from its old parent
             if (child.parent != null)
                 child.parent.Children[child.name].Remove(this);
+            //Save this as the new parent
             child.parent = this;
 
-            //Check if the key exists
+            //Add the child to children
             if (!children.ContainsKey(child.Name))
                 children.Add(child.Name, new List<GameObject>());
-
-            //Add the object
             children[child.Name].Add(child);
 
-            //Update the position
-            UpdatePosition();
+            //Update the childs position
+            child.UpdatePosition();
         }
         public void SetParent(GameObject parent)
         {
-            //Check if the GameObject is null
+            //Check if the new parent is null, else add this as a child to the parent
             if (parent == null)
                 this.parent = null;
-            parent.AddChild(this);
+            else
+                parent.AddChild(this);
         }
 
         private void UpdatePosition()
@@ -115,6 +114,17 @@ namespace XoticEngine.GameObjects
         public override string ToString()
         {
             return name;
+        }
+
+        public IEnumerator<GameObject> GetEnumerator()
+        {
+            for (int list = 0; list < children.Count; list++)
+                for (int item = 0; item < children.ElementAt(list).Value.Count; item++)
+                    yield return children.ElementAt(list).Value[item];
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public enum DrawMode
