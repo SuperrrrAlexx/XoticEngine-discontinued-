@@ -11,13 +11,15 @@ namespace XoticEngine.GameObjects
 {
     public class GameState : IEnumerable<GameObject>
     {
-        readonly string name;
+        //Name
+        public readonly string Name;
+
         Dictionary<string, List<GameObject>> gameObjects;
 
         public GameState(string name)
             : base()
         {
-            this.name = name;
+            this.Name = name;
             gameObjects = new Dictionary<string, List<GameObject>>();
         }
 
@@ -57,16 +59,16 @@ namespace XoticEngine.GameObjects
 
         public virtual void BeginState()
         {
-            GameConsole.Warning("Gamestate " + name + " started.");
+            GameConsole.Warning("Gamestate " + Name + " started.");
         }
         public virtual void EndState()
         {
-            GameConsole.Warning("Gamestate " + name + " ended.");
+            GameConsole.Warning("Gamestate " + Name + " ended.");
         }
 
         public override string ToString()
         {
-            return name;
+            return Name;
         }
 
         public IEnumerator<GameObject> GetEnumerator()
@@ -80,8 +82,6 @@ namespace XoticEngine.GameObjects
             return GetEnumerator();
         }
 
-        public string Name
-        { get { return name; } }
         public List<GameObject> this[string name]
         { get { return gameObjects.ContainsKey(name) ? gameObjects[name] : null; } }
         public Dictionary<string, List<GameObject>> GameObjects

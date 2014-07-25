@@ -9,7 +9,7 @@ namespace XoticEngine.GameObjects
 {
     public class SpriteSheet
     {
-        Texture2D sheet;
+        readonly Texture2D sheet;
         Texture2D[,] sprites;
         int cols, rows;
 

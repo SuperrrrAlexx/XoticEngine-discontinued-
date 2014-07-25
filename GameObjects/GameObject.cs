@@ -10,7 +10,9 @@ namespace XoticEngine.GameObjects
 {
     public class GameObject : IEnumerable<GameObject>
     {
-        readonly string name;
+        //Name
+        public readonly string Name;
+
         DrawMode drawType = DrawMode.AlphaBlend;
         //Positioning
         Vector2 position, relativePosition, origin;
@@ -21,7 +23,7 @@ namespace XoticEngine.GameObjects
 
         public GameObject(string name, Vector2 position)
         {
-            this.name = name;
+            this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = 0.0f;
             this.origin = Vector2.Zero;
@@ -30,7 +32,7 @@ namespace XoticEngine.GameObjects
         }
         public GameObject(string name, Vector2 position, float rotation, Vector2 origin)
         {
-            this.name = name;
+            this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
             this.origin = origin;
@@ -39,7 +41,7 @@ namespace XoticEngine.GameObjects
         }
         public GameObject(string name, Vector2 position, float rotation, Vector2 origin, float depth)
         {
-            this.name = name;
+            this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
             this.origin = origin;
@@ -70,7 +72,7 @@ namespace XoticEngine.GameObjects
         {
             //Remove the child from its old parent
             if (child.parent != null)
-                child.parent.Children[child.name].Remove(this);
+                child.parent.Children[child.Name].Remove(this);
             //Save this as the new parent
             child.parent = this;
 
@@ -96,8 +98,8 @@ namespace XoticEngine.GameObjects
             //Check if the parent is null, set the position and rotation
             if (parent == null)
             {
-                position = relativePosition;
                 rotation = relativeRotation;
+                position = relativePosition;
             }
             else
             {
@@ -106,14 +108,13 @@ namespace XoticEngine.GameObjects
             }
 
             //Update the positions of all children
-            for (int i = 0; i < children.Count; i++)
-                for (int g = 0; g < children.ElementAt(i).Value.Count; g++)
-                    children.ElementAt(i).Value[g].UpdatePosition();
+            foreach (GameObject child in this)
+                child.UpdatePosition();
         }
 
         public override string ToString()
         {
-            return name;
+            return Name;
         }
 
         public IEnumerator<GameObject> GetEnumerator()
@@ -130,11 +131,13 @@ namespace XoticEngine.GameObjects
         public enum DrawMode
         { AlphaBlend, Additive, Gui }
 
-        public string Name
-        { get { return name; } }
+        //Drawing
         public DrawMode DrawType
         { get { return drawType; } set { drawType = value; } }
-        //Position
+        public float Depth
+        { get { return depth; } set { depth = value; } }
+
+        //Position and rotation
         public Vector2 Position
         { get { return position; } }
         public Vector2 RelativePosition
@@ -146,7 +149,6 @@ namespace XoticEngine.GameObjects
                 UpdatePosition();
             }
         }
-        //Rotation
         public float Rotation
         { get { return rotation; } }
         public float RelativeRotation
@@ -160,8 +162,7 @@ namespace XoticEngine.GameObjects
         }
         public Vector2 Origin
         { get { return origin; } set { origin = value; } }
-        public float Depth
-        { get { return depth; } set { depth = value; } }
+
         //Parent and children
         public GameObject Parent
         { get { return parent; } set { SetParent(value); } }
