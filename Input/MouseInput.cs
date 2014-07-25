@@ -20,15 +20,15 @@ namespace XoticEngine.Input
         }
 
         //Clicks
-        public static bool LeftClicked()
+        public static bool LeftPressed()
         {
             return currMouse.LeftButton == ButtonState.Pressed && prevMouse.LeftButton == ButtonState.Released;
         }
-        public static bool MiddleClicked()
+        public static bool MiddlePressed()
         {
             return currMouse.MiddleButton == ButtonState.Pressed && prevMouse.MiddleButton == ButtonState.Released;
         }
-        public static bool RightClicked()
+        public static bool RightPressed()
         {
             return currMouse.RightButton == ButtonState.Pressed && prevMouse.RightButton == ButtonState.Released;
         }

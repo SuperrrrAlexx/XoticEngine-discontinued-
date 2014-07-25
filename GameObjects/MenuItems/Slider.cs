@@ -74,7 +74,7 @@ namespace XoticEngine.GameObjects.MenuItems
             prevAmount = amount;
 
             //Start/stop dragging
-            if (MouseInput.LeftClicked())
+            if (MouseInput.LeftPressed())
                 if (buttonBox.Contains(MouseInput.Position))
                     dragging = true;
             if (!MouseInput.LeftDown())

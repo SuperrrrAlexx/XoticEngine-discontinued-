@@ -14,10 +14,9 @@ namespace XoticEngine.GameObjects.MenuItems
         SpriteSheet backTexture;
         //Colors
         Color[] backColors, textColors;
-        //Actions
-        bool hovering = false;
-        public event Action OnLeftClick, OnRightClick, OnMiddleClick;
-        public event Action OnMouseEnter, OnMouseExit;
+        //Events
+        bool hovering, leftDown, rightDown;
+        public event Action OnLeftPress, OnRightPress, OnLeftRelease, OnRightRelease, OnMouseEnter, OnMouseExit;
 
         public Button(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color[] textColors, Color[] backColors)
             : base(name, backRect, depth, text, font, textColors != null ? textColors[0] : Color.Black, backColors != null ? backColors[0] : Color.White)
@@ -33,14 +32,14 @@ namespace XoticEngine.GameObjects.MenuItems
             this.backTexture = backTexture;
             this.backColors = backColors;
         }
-        
+
 
         public override void Update()
         {
             //Check if the mouse is within the rectangle
             if (BackRectangle.Contains(MouseInput.Position))
             {
-                //Check  the mouse was previously not hovering
+                //Check if the mouse was previously not hovering
                 if (!hovering)
                 {
                     hovering = true;
@@ -54,32 +53,53 @@ namespace XoticEngine.GameObjects.MenuItems
                     TextColor = textColors != null ? textColors[(int)MathHelper.Clamp(1, 0, textColors.Length - 1)] : Color.Black;
                 }
 
-                //Check for clicks
-                if (MouseInput.LeftClicked())
-                    CallAction(OnLeftClick);
-                if (MouseInput.RightClicked())
-                    CallAction(OnRightClick);
-                if (MouseInput.MiddleClicked())
-                    CallAction(OnMiddleClick);
+                //Check for mouse events
+                CheckEvents();
             }
-            else
+            //Check if the mouse was previously hovering
+            else if (hovering)
             {
-                //Check if the mouse was previously hovering
-                if (hovering)
-                {
-                    hovering = false;
+                hovering = false;
+                leftDown = false;
+                rightDown = false;
 
-                    //Call OnMouseExit
-                    CallAction(OnMouseExit);
+                //Call OnMouseExit
+                CallAction(OnMouseExit);
 
-                    //Set the textures/colors
-                    BackTexture = backTexture != null ? backTexture[0] : Assets.DummyTexture;
-                    BackColor = backColors != null ? backColors[0] : Color.White;
-                    TextColor = textColors != null ? textColors[0] : Color.Black;
-                }
+                //Set the textures/colors
+                BackTexture = backTexture != null ? backTexture[0] : Assets.DummyTexture;
+                BackColor = backColors != null ? backColors[0] : Color.White;
+                TextColor = textColors != null ? textColors[0] : Color.Black;
             }
 
             base.Update();
+        }
+
+        private void CheckEvents()
+        {
+            //Check for mouse presses
+            if (MouseInput.LeftPressed())
+            {
+                CallAction(OnLeftPress);
+                leftDown = true;
+            }
+            if (MouseInput.RightPressed())
+            {
+                CallAction(OnRightPress);
+                rightDown = true;
+            }
+
+            //Check for mouse releases
+            if (leftDown && MouseInput.LeftReleased())
+            {
+                CallAction(OnLeftRelease);
+                leftDown = false;
+            }
+            if (rightDown && MouseInput.RightReleased())
+            {
+                CallAction(OnRightRelease);
+                rightDown = false;
+            }
         }
 
         private void CallAction(Action action)
