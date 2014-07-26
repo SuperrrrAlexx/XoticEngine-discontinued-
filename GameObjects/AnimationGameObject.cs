@@ -9,7 +9,7 @@ namespace XoticEngine.GameObjects
 {
     public class AnimationGameObject : SpriteGameObject
     {
-        Animation animation;
+        private Animation animation;
 
         public AnimationGameObject(string name, Animation animation, Vector2 position)
             : base(name, animation.CurrentFrame, position)

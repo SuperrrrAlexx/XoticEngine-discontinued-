@@ -16,12 +16,12 @@ namespace XoticEngine
     public static class X
     {
         //Game class
-        static Game game;
+        private static Game game;
         //Gamestates
-        static Dictionary<string, GameState> gameStates;
-        static GameState currentState;
+        private static Dictionary<string, GameState> gameStates;
+        private static GameState currentState;
         //Random
-        static Random random;
+        private static Random random;
 
         public static void Initialize(Game g)
         {
@@ -39,27 +39,28 @@ namespace XoticEngine
 
         public static void AddGameState(GameState g)
         {
+            //Check if the gamestate is null
+            if (g == null)
+                throw new ArgumentNullException("The gamestate can not be null.");
             //Check if the gamestate already exists
             if (gameStates.ContainsKey(g.Name))
-                GameConsole.Error("A gamestate with this name (" + g.Name + ") already exists.");
-            else
-                //Add the gamestate to the list
-                gameStates.Add(g.Name, g);
+                throw new ArgumentException("The gamestate \"" + g.Name + "\" already exists.");
+
+            //Add the gamestate to the list
+            gameStates.Add(g.Name, g);
         }
         public static void SwitchTo(string gameStateName)
         {
             //Check if the gamestate exists
             if (!gameStates.ContainsKey(gameStateName))
-                GameConsole.Error("The gamestate \"" + gameStateName + "\" does not exist.");
-            else
-            {
-                //End the old state
-                if (currentState != null)
-                    currentState.EndState();
-                //Switch to the new state
-                currentState = gameStates[gameStateName];
-                currentState.BeginState();
-            }
+                throw new KeyNotFoundException("A gamestate with the name \"" + gameStateName + "\" was not found");
+
+            //End the old state
+            if (currentState != null)
+                currentState.EndState();
+            //Switch to the new state
+            currentState = gameStates[gameStateName];
+            currentState.BeginState();
         }
 
         //Game properties
@@ -67,7 +68,9 @@ namespace XoticEngine
         { get { return game.IsMouseVisible; } set { game.IsMouseVisible = value; } }
         public static string WindowTitle
         { get { return game.Window.Title; } set { game.Window.Title = value; } }
-        //Gamestate
+        public static bool GameActive
+        { get { return game.IsActive; } }
+        //Gamestates
         public static GameState CurrentState
         { get { return currentState; } }
         public static Dictionary<string, GameState> GameStates

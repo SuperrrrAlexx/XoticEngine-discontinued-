@@ -8,8 +8,8 @@ namespace XoticEngine
 {
     public static class Time
     {
-        static GameTime gameTime;
-        static double gameSpeed = 1.0;
+        private static GameTime gameTime;
+        private static double gameSpeed = 1.0;
 
         public static void Update(GameTime g)
         {

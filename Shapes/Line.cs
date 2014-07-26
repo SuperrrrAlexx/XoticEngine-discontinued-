@@ -8,8 +8,8 @@ namespace XoticEngine.Shapes
 {
     public class Line
     {
-        Point p1, p2;
-        Rectangle boundingBox;
+        private Point p1, p2;
+        private Rectangle boundingBox;
 
         public Line(Point p1, Point p2)
         {
@@ -18,12 +18,13 @@ namespace XoticEngine.Shapes
             UpdateBoundingBox();
         }
 
-        void UpdateBoundingBox()
+        private void UpdateBoundingBox()
         {
             //Update the bounding box, with a 1 margin so touching lines are also registered
             boundingBox = new Rectangle(Left.X - 1, Top.Y - 1, Right.X - Left.X + 2, Bottom.Y - Top.Y + 2);
         }
 
+        //Intersections
         public bool Intersects(Line line)
         {
             //Check if the bounding boxes intersect
@@ -106,7 +107,6 @@ namespace XoticEngine.Shapes
         }
         public Rectangle BoundingBox
         { get { return boundingBox; } }
-
         public Point Top
         { get { return p1.Y < p2.Y ? p1 : p2; } }
         public Point Bottom

@@ -10,8 +10,8 @@ namespace XoticEngine.Input
     public static class GamePadInput
     {
         //State
-        static GamePadState[] prevGamePad, currGamePad;
-        static Buttons[] buttons;
+        private static GamePadState[] prevGamePad, currGamePad;
+        private static Buttons[] buttons;
 
         public static void Initialize()
         {

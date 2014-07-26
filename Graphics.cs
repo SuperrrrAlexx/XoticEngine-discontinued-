@@ -38,6 +38,7 @@ namespace XoticEngine
             transformMatrix = Matrix.Identity;
         }
 
+        //Drawing
         public static void DrawAll()
         {
             //Clear the graphics device
@@ -74,7 +75,7 @@ namespace XoticEngine
             //Draw the framerate counter
             FrameRateCounter.Draw();
         }
-        static void DrawGameState()
+        private static void DrawGameState()
         {
             //Begin the spritebatches
             gameBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
@@ -90,7 +91,7 @@ namespace XoticEngine
             additiveBatch.End();
             guiBatch.End();
         }
-        static void DrawGui()
+        private static void DrawGui()
         {
             guiBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
@@ -107,7 +108,6 @@ namespace XoticEngine
             transformMatrix = Matrix.Identity;
         }
 
-        //Properties
         public static GraphicsDeviceManager DeviceManager
         { get { return graphics; } }
         public static GraphicsDevice Device

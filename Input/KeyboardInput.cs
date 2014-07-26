@@ -10,14 +10,14 @@ namespace XoticEngine.Input
     public static class KeyboardInput
     {
         //State
-        static KeyboardState prevKeyboard, currKeyboard;
+        private static KeyboardState prevKeyboard, currKeyboard;
         //Events
         public delegate void KeyEvent(Keys k);
         public static event KeyEvent OnKeyPressed;
         public delegate void CharEvent(char c);
         public static event CharEvent OnCharEntered;
         //A dictionary of keys that can be converted to characters
-        static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
+        private static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
 
         public static void Initialize()
         {

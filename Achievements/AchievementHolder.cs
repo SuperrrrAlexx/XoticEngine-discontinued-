@@ -120,7 +120,7 @@ namespace XoticEngine.Achievements
             achievements[name].Achieved = true;
         }
 
-        enum AchievementMove
+        private enum AchievementMove
         { Up, Show, Down }
 
         public static Dictionary<string, Achievement> Achievements

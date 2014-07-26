@@ -11,11 +11,11 @@ namespace XoticEngine.GameObjects.MenuItems
     public class Button : Label
     {
         //Background
-        SpriteSheet backTexture;
+        private SpriteSheet backTexture;
         //Colors
-        Color[] backColors, textColors;
+        private Color[] backColors, textColors;
         //Events
-        bool hovering, leftDown, rightDown;
+        private bool hovering, leftDown, rightDown;
         public event Action OnLeftPress, OnRightPress, OnLeftRelease, OnRightRelease, OnMouseEnter, OnMouseExit;
 
         public Button(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color[] textColors, Color[] backColors)

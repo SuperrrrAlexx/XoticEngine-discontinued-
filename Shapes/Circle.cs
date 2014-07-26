@@ -8,9 +8,9 @@ namespace XoticEngine.Shapes
 {
     public class Circle
     {
-        Point center;
-        int radius;
-        Rectangle boundingBox;
+        private Point center;
+        private int radius;
+        private Rectangle boundingBox;
 
         public Circle(Point center, int radius)
         {
@@ -19,7 +19,7 @@ namespace XoticEngine.Shapes
             UpdateBoundingBox();
         }
 
-        void UpdateBoundingBox()
+        private void UpdateBoundingBox()
         {
             boundingBox = new Rectangle(center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
         }
@@ -29,6 +29,7 @@ namespace XoticEngine.Shapes
             return Vector2.Distance(point.ToVector2(), center.ToVector2()) <= radius;
         }
 
+        //Intersections
         public bool Intersects(Circle circle)
         {
             //Check if the distance is smaller than the two radiuses combined

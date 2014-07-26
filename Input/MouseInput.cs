@@ -10,7 +10,7 @@ namespace XoticEngine.Input
     public static class MouseInput
     {
         //State
-        static MouseState prevMouse, currMouse;
+        private static MouseState prevMouse, currMouse;
 
         public static void Update()
         {
