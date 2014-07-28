@@ -47,6 +47,9 @@ namespace XoticEngine.GameObjects
 
             //Add the object
             gameObjects[g.Name].Add(g);
+
+            //Set the objects parent to null
+            g.Parent = null;
         }
         public void RemoveAll(string name)
         {
