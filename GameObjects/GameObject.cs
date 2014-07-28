@@ -87,11 +87,14 @@ namespace XoticEngine.GameObjects
         public void SetParent(GameObject parent)
         {
             //Check if the new parent is null, but this does have a parent
-            if (parent == null && this.parent != null)
+            if (parent == null)
             {
-                //Remove this from its parent, set the parent to null
-                this.parent.Children[Name].Remove(this);
-                this.parent = null;
+                if (this.parent != null)
+                {
+                    //Remove this from its parent, set the parent to null
+                    this.parent.Children[Name].Remove(this);
+                    this.parent = null;
+                }
             }
             else
                 //Add this as a child to the new parent
