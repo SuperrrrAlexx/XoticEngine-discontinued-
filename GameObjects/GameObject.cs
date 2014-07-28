@@ -13,13 +13,13 @@ namespace XoticEngine.GameObjects
         //Name
         public readonly string Name;
 
-        DrawMode drawType = DrawMode.AlphaBlend;
+        private DrawMode drawType = DrawMode.AlphaBlend;
         //Positioning
-        Vector2 position, relativePosition, origin;
-        float rotation, relativeRotation, depth;
+        private Vector2 position, relativePosition, origin;
+        private float rotation, relativeRotation, depth;
         //Parent and children
-        GameObject parent;
-        Dictionary<string, List<GameObject>> children = new Dictionary<string, List<GameObject>>();
+        private GameObject parent;
+        private Dictionary<string, List<GameObject>> children = new Dictionary<string, List<GameObject>>();
 
         public GameObject(string name, Vector2 position)
         {
