@@ -10,7 +10,7 @@ namespace XoticEngine.Achievements
     public class Achievement
     {
         string name;
-        string[] description;
+        string description;
         SpriteFont nameFont, descFont;
         Texture2D picture;
         Color backColor, textColor;
@@ -23,7 +23,7 @@ namespace XoticEngine.Achievements
         public Achievement(string name, string description, SpriteFont nameFont, SpriteFont descFont, Color textColor, Color backColor, Texture2D picture)
         {
             this.name = name;
-            this.description = description.Split(new string[] { "\n" }, StringSplitOptions.None);
+            this.description = description;
             this.nameFont = nameFont;
             this.descFont = descFont;
             this.textColor = textColor;
@@ -42,8 +42,7 @@ namespace XoticEngine.Achievements
         {
             //Draw the text
             s.DrawString(nameFont, name, position + namePos, textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            for (int i = 0; i < description.Count(); i++)
-                s.DrawString(descFont, description[i], position + descPos + new Vector2(0, i * descFont.LineSpacing), textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            s.DrawString(descFont, description, position + descPos, textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             //Draw the picture
             s.Draw(picture, new Rectangle((int)(position.X + picPos.X), (int)(position.Y + picPos.Y), 100, 100), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             //Draw the background
