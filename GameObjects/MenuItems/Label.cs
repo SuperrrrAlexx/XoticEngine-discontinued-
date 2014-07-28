@@ -13,6 +13,7 @@ namespace XoticEngine.GameObjects.MenuItems
         string text;
         SpriteFont font;
         Vector2 textPos;
+        Alignment alignment;
         //Colors
         Color textColor, backColor;
         //Background
@@ -29,6 +30,7 @@ namespace XoticEngine.GameObjects.MenuItems
             this.backColor = backColor;
             this.backTex = Assets.DummyTexture;
 
+            alignment = new MenuItems.Alignment(HorizontalAlignment.Center, VerticalAlignment.Center);
             CalculateTextPosition();
         }
         public Label(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color textColor, Texture2D background, Color backColor)
@@ -41,14 +43,39 @@ namespace XoticEngine.GameObjects.MenuItems
             this.backColor = backColor;
             this.backTex = background;
 
+            alignment = new MenuItems.Alignment(HorizontalAlignment.Center, VerticalAlignment.Center);
             CalculateTextPosition();
         }
 
         private void CalculateTextPosition()
         {
-            //Calculate the text position
-            textPos.X = backRect.Center.X - font.MeasureString(text).X / 2;
-            textPos.Y = backRect.Center.Y - font.MeasureString(text).Y / 2;
+            //Horizontal alignment
+            switch (alignment.Horizontal)
+            {
+                case HorizontalAlignment.Left:
+                    textPos.X = backRect.Left;
+                    break;
+                case HorizontalAlignment.Center:
+                    textPos.X = backRect.Center.X - font.MeasureString(text).X / 2;
+                    break;
+                case HorizontalAlignment.Right:
+                    textPos.X = backRect.Right - font.MeasureString(text).X;
+                    break;
+            }
+
+            //Vertical alignment
+            switch (alignment.Vertical)
+            {
+                case VerticalAlignment.Top:
+                    textPos.Y = backRect.Top;
+                    break;
+                case VerticalAlignment.Center:
+                    textPos.Y = backRect.Center.Y - font.MeasureString(text).Y / 2;
+                    break;
+                case VerticalAlignment.Bottom:
+                    textPos.Y = backRect.Bottom - font.MeasureString(text).Y;
+                    break;
+            }
         }
 
         public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
@@ -87,6 +114,15 @@ namespace XoticEngine.GameObjects.MenuItems
             set
             {
                 font = value;
+                CalculateTextPosition();
+            }
+        }
+        public Alignment Alignment
+        {
+            get { return alignment; }
+            set
+            {
+                alignment = value;
                 CalculateTextPosition();
             }
         }
