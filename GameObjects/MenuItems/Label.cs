@@ -10,15 +10,15 @@ namespace XoticEngine.GameObjects.MenuItems
     public class Label : GameObject
     {
         //Text
-        string text;
-        SpriteFont font;
-        Vector2 textPos;
-        Alignment alignment;
+        private string text;
+        private SpriteFont font;
+        private Vector2 textPos;
+        private Alignment alignment;
         //Colors
-        Color textColor, backColor;
+        private Color textColor, backColor;
         //Background
-        Rectangle backRect;
-        Texture2D backTex;
+        private Rectangle backRect;
+        private Texture2D backTex;
 
         public Label(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color textColor, Color backColor)
             : base(name, backRect.Location.ToVector2(), 0, Vector2.Zero, depth)
@@ -99,6 +99,8 @@ namespace XoticEngine.GameObjects.MenuItems
             }
         }
         //Text
+        protected Vector2 TextPosition
+        { get { return textPos; } }
         public string Text
         {
             get { return text; }

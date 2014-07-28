@@ -21,8 +21,8 @@ namespace XoticEngine.Utilities
         //Blinking cursor
         static bool cursorVisible = true;
         static int cursorPos = 0;
-        static int blinkTime = 500;
-        static int blinkTimeLeft = 0;
+        static double blinkTime = 0.5;
+        static double blinkTimeLeft = 0;
         //Background
         static Rectangle backRect;
         static bool visible = false;
@@ -56,8 +56,8 @@ namespace XoticEngine.Utilities
         //Key and character input
         static void KeyInput(Keys k)
         {
+            //Toggle console visibility
             if (k == Keys.Tab)
-                //Toggle console visibility
                 visible = !visible;
 
             //If the console is visible, check the key
@@ -73,7 +73,7 @@ namespace XoticEngine.Utilities
                         cursorPos = 0;
                         break;
                     case Keys.Back:
-                        //Remove a letter left from the cursor
+                        //Remove the letter left from the cursor
                         if (cursorPos > 0)
                         {
                             input = input.Substring(0, cursorPos - 1) + input.Substring(cursorPos, input.Length - cursorPos);
@@ -81,7 +81,7 @@ namespace XoticEngine.Utilities
                         }
                         break;
                     case Keys.Delete:
-                        //Remove a letter right from the cursor
+                        //Remove the letter right from the cursor
                         if (cursorPos < input.Length)
                             input = input.Substring(0, cursorPos) + input.Substring(cursorPos + 1, input.Length - (cursorPos + 1));
                         break;
@@ -94,8 +94,6 @@ namespace XoticEngine.Utilities
                         //Move the cursor right
                         if (cursorPos < input.Length)
                             cursorPos++;
-                        break;
-                    default:
                         break;
                 }
             }
@@ -217,7 +215,7 @@ namespace XoticEngine.Utilities
             if (enabled)
             {
                 //Make the text cursor blink
-                blinkTimeLeft -= Time.GameTime.ElapsedGameTime.Milliseconds;
+                blinkTimeLeft -= Time.RealTime;
                 if (blinkTimeLeft <= 0)
                 {
                     cursorVisible = !cursorVisible;
