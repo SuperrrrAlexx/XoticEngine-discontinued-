@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XoticEngine.GameObjects
 {
-    public class GameObject : IEnumerable<GameObject>
+    public class GameObject : IEnumerable
     {
         //Name
         public readonly string Name;

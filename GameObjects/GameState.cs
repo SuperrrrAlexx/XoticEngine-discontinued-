@@ -9,7 +9,7 @@ using XoticEngine.Utilities;
 
 namespace XoticEngine.GameObjects
 {
-    public class GameState : IEnumerable<GameObject>
+    public class GameState : IEnumerable
     {
         //Name
         public readonly string Name;
