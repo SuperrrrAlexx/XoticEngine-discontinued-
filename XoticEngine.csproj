@@ -100,7 +100,7 @@
     <Compile Include="GameObjects\AnimationGameObject.cs" />
     <Compile Include="GameObjects\MenuItems\Alignment.cs" />
     <Compile Include="GameObjects\MenuItems\Label.cs" />
-    <Compile Include="GameObjects\MenuItems\SingleLineTextbox.cs" />
+    <Compile Include="GameObjects\MenuItems\Textbox.cs" />
     <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Graphics.cs" />
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />

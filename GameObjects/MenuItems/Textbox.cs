@@ -9,15 +9,17 @@ using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
-    public class SingleLineTextbox : Label
+    public class Textbox : Label
     {
-        private bool enabled = true;
         //Text cursor
-        Vector2 cursorPos;
-        int cursorTextPos = 0;
+        private Vector2 cursorPos;
+        private int cursorTextPos = 0;
         private bool cursorVisible = true;
+        //Text input
+        private bool enabled = true;
+        private int maxLines;
 
-        public SingleLineTextbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Color backColor)
+        public Textbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Color backColor)
             : base(name, backRect, depth, "", font, textColor, backColor)
         {
             //Set the alignment to top-left
@@ -25,6 +27,8 @@ namespace XoticEngine.GameObjects.MenuItems
 
             //Set the cursor position
             cursorPos = TextPosition;
+            //Calculate how many lines of text can be displayed
+            maxLines = Math.Max(1, BackRectangle.Height / Font.LineSpacing);
 
             //Hook into keyboard input
             KeyboardInput.OnCharEntered += OnCharEntered;
@@ -36,7 +40,7 @@ namespace XoticEngine.GameObjects.MenuItems
             //Add the character to the text
             if (enabled)
             {
-                Text += c.ToString();
+                Text = Text.Insert(cursorTextPos, c.ToString());
                 cursorTextPos++;
             }
         }
@@ -46,6 +50,14 @@ namespace XoticEngine.GameObjects.MenuItems
             {
                 switch (k)
                 {
+                    case Keys.Enter:
+                        //If there are less than maxLines lines, add a newline
+                        if (Text.Split(new string[] { "\n" }, StringSplitOptions.None).Length < maxLines)
+                        {
+                            Text = Text.Insert(cursorTextPos, "\n");
+                            cursorTextPos++;
+                        }
+                        break;
                     case Keys.Back:
                         //Remove the letter left from the cursor
                         if (cursorTextPos > 0)
@@ -81,8 +93,22 @@ namespace XoticEngine.GameObjects.MenuItems
 
         public override void Update()
         {
+            //Get the newline before and after the cursor
+            int before = Text.LastIndexOf("\n", (int)Math.Max(0, cursorTextPos - 1));
+            int after = Text.IndexOf("\n", cursorTextPos);
+
+            string line = "";
+            //Check if the cursor is at the first or last line
+            if (before == -1)
+                line = Text.Split(new string[] { "\n" }, StringSplitOptions.None).First();
+            else if (after == -1)
+                line = Text.Split(new string[] { "\n" }, StringSplitOptions.None).Last();
+            else
+                line = Text.Substring(before, after - before);
+
             //Set the text cursor position
-            cursorPos = TextPosition + new Vector2(Font.MeasureString(Text.Substring(0, cursorTextPos)).X - 4, 0);
+            cursorPos = TextPosition + new Vector2(Font.MeasureString(line.Substring(0, cursorTextPos - (before + 1))).X - 4,
+                Font.MeasureString(Text.Substring(0, cursorTextPos)).Y - (cursorTextPos > 0 ? Font.MeasureString("|").Y : 0));
 
             base.Update();
         }
@@ -95,7 +121,14 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
+        private int FirstIndexBefore(string value, int startIndex)
+        {
+            return 0;
+        }
+
         public bool Enabled
         { get { return enabled; } set { enabled = value; } }
+        public int MaxLines
+        { get { return maxLines; } set { maxLines = value; } }
     }
 }
