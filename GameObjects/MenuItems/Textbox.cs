@@ -15,12 +15,25 @@ namespace XoticEngine.GameObjects.MenuItems
         private Vector2 cursorPos;
         private int cursorTextPos = 0;
         private bool cursorVisible = true;
+        //Blinking
+        private double blinkTime = 0.5;
+        private double blinkTimeLeft = 0.5;
         //Text input
         private bool enabled = true;
         private int maxLines;
 
         public Textbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Color backColor)
             : base(name, backRect, depth, "", font, textColor, backColor)
+        {
+            Create();
+        }
+        public Textbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Texture2D background, Color backColor)
+            : base(name, backRect, depth, "", font, textColor, background, backColor)
+        {
+            Create();
+        }
+
+        private void Create()
         {
             //Set the alignment to top-left
             Alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Top);
@@ -37,11 +50,15 @@ namespace XoticEngine.GameObjects.MenuItems
 
         private void OnCharEntered(char c)
         {
-            //Add the character to the text
             if (enabled)
             {
+                //Add the character to the text
                 Text = Text.Insert(cursorTextPos, c.ToString());
                 cursorTextPos++;
+
+                //Make the cursor visible
+                cursorVisible = true;
+                blinkTimeLeft = blinkTime;
             }
         }
         private void OnKeyPressed(Keys k)
@@ -88,6 +105,10 @@ namespace XoticEngine.GameObjects.MenuItems
                         cursorTextPos = Text.Length;
                         break;
                 }
+
+                //Make the cursor visible
+                cursorVisible = true;
+                blinkTimeLeft = blinkTime;
             }
         }
 
@@ -110,6 +131,14 @@ namespace XoticEngine.GameObjects.MenuItems
             cursorPos = TextPosition + new Vector2(Font.MeasureString(line.Substring(0, cursorTextPos - (before + 1))).X - 4,
                 Font.MeasureString(Text.Substring(0, cursorTextPos)).Y - (cursorTextPos > 0 ? Font.MeasureString("|").Y : 0));
 
+            //Blinking cursor
+            blinkTimeLeft -= Time.DeltaTime;
+            if (blinkTimeLeft <= 0)
+            {
+                cursorVisible = !cursorVisible;
+                blinkTimeLeft = blinkTime;
+            }
+
             base.Update();
         }
         public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
@@ -121,14 +150,11 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
-        private int FirstIndexBefore(string value, int startIndex)
-        {
-            return 0;
-        }
-
         public bool Enabled
         { get { return enabled; } set { enabled = value; } }
         public int MaxLines
         { get { return maxLines; } set { maxLines = value; } }
+        public bool Hovering
+        { get { return BackRectangle.Contains(MouseInput.Position); } }
     }
 }
