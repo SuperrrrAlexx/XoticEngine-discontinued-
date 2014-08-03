@@ -177,6 +177,13 @@ namespace XoticEngine.GameObjects
         public Dictionary<string, List<GameObject>> Children
         { get { return children; } }
         public List<GameObject> this[string name]
-        { get { return children[name]; } }
+        {
+            get
+            {
+                if (!children.ContainsKey(name))
+                    children[name] = new List<GameObject>();
+                return children[name];
+            }
+        }
     }
 }

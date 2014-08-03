@@ -86,7 +86,14 @@ namespace XoticEngine.GameObjects
         }
 
         public List<GameObject> this[string name]
-        { get { return gameObjects.ContainsKey(name) ? gameObjects[name] : null; } }
+        {
+            get
+            {
+                if (!gameObjects.ContainsKey(name))
+                    gameObjects[name] = new List<GameObject>();
+                return gameObjects[name];
+            }
+        }
         public Dictionary<string, List<GameObject>> GameObjects
         { get { return gameObjects; } }
     }
