@@ -102,7 +102,7 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
-        public new Vector2 RelativePosition
+        public override Vector2 RelativePosition
         {
             get { return base.RelativePosition; }
             set

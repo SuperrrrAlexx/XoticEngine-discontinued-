@@ -21,6 +21,7 @@ namespace XoticEngine.GameObjects.MenuItems
         //Text input
         private bool enabled = true;
         private int maxLines;
+        private string baseText;
 
         public Textbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Color backColor)
             : base(name, backRect, depth, "", font, textColor, backColor)
@@ -38,6 +39,9 @@ namespace XoticEngine.GameObjects.MenuItems
             //Set the alignment to top-left
             Alignment = new Alignment(HorizontalAlignment.Left, VerticalAlignment.Top);
 
+            //Set the base text
+            baseText = text;
+
             //Set the cursor position
             cursorPos = TextPosition;
             //Calculate how many lines of text can be displayed
@@ -52,9 +56,14 @@ namespace XoticEngine.GameObjects.MenuItems
         {
             if (enabled)
             {
-                //Add the character to the text
-                Text = Text.Insert(cursorTextPos, c.ToString());
-                cursorTextPos++;
+                //Check if the new amount of lines is smaller than maxLines
+                string newText = WrapText(Text.Insert(cursorTextPos, c.ToString()));
+                if (newText.Split(new string[] { "\n" }, StringSplitOptions.None).Length <= maxLines)
+                {
+                    //Add the character to the text
+                    Text = Text.Insert(cursorTextPos, c.ToString());
+                    cursorTextPos++;
+                }
 
                 //Make the cursor visible
                 cursorVisible = true;
@@ -150,6 +159,46 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
+        private string WrapText(string text)
+        {
+            string wrapped = String.Empty;
+            string line = String.Empty;
+
+            //Get all words
+            string[] words = baseText.Split(' ');
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                //Check for newline
+                if (words[i] == "\n")
+                {
+                    wrapped += line + "\n";
+                    line = String.Empty;
+                }
+                //Check if the line is longer than the width of the textbox
+                else if (Font.MeasureString(line + words[i]).X >= BackRectangle.Width)
+                {
+                    wrapped += line + "\n";
+                    line = words[i] + " ";
+                }
+                //Add a word to the line
+                else
+                    line += words[i] + " ";
+            }
+
+            //Return the wrapped text plus the last line
+            return wrapped + line;
+        }
+
+        public override string Text
+        {
+            get { return baseText; }
+            set
+            {
+                baseText = value;
+                text = WrapText(baseText);
+            }
+        }
         public bool Enabled
         { get { return enabled; } set { enabled = value; } }
         public int MaxLines

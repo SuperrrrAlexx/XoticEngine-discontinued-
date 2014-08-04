@@ -148,7 +148,7 @@ namespace XoticEngine.GameObjects
         //Position and rotation
         public Vector2 Position
         { get { return position; } }
-        public Vector2 RelativePosition
+        public virtual Vector2 RelativePosition
         {
             get { return relativePosition; }
             set

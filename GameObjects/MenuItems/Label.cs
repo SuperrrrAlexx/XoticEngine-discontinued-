@@ -10,7 +10,7 @@ namespace XoticEngine.GameObjects.MenuItems
     public class Label : GameObject
     {
         //Text
-        private string text;
+        protected string text;
         private SpriteFont font;
         private Vector2 textPos;
         private Alignment alignment;
@@ -88,7 +88,7 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
-        public new Vector2 RelativePosition
+        public override Vector2 RelativePosition
         {
             get { return base.RelativePosition; }
             set
@@ -101,7 +101,7 @@ namespace XoticEngine.GameObjects.MenuItems
         //Text
         protected Vector2 TextPosition
         { get { return textPos; } }
-        public string Text
+        public virtual string Text
         {
             get { return text; }
             set
