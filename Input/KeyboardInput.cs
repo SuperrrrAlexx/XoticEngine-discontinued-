@@ -18,10 +18,12 @@ namespace XoticEngine.Input
         public delegate void CharEvent(object sender, CharEventArgs c);
         public static event CharEvent OnCharEntered;
         //A dictionary of keys that can be converted to characters
-        private static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
+        private static Dictionary<Keys, char> keychars;
 
         public static void Initialize()
         {
+            keychars = new Dictionary<Keys, char>();
+
             //Add all the keys that can be converted to chars
             keychars.Add(Keys.Space, ' ');
             //OEM keys that *should* be the same on every region keyboard

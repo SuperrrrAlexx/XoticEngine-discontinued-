@@ -7,20 +7,39 @@ namespace XoticEngine
 {
     public class Timer
     {
+        //A static list of timers that updates them all
+        private static List<Timer> timers;
+
         private double time, timeLeft;
         private bool repeat;
         private bool useRealTime = false;
         private bool enabled = true;
         //Event
-        public delegate void TimerTick(object sender);
+        public delegate void TimerTick(object sender, EventArgs e);
         public event TimerTick Tick;
 
-        public Timer(double time, bool repeat)
+        static Timer()
+        {
+            timers = new List<Timer>();
+        }
+        public Timer(double time, bool repeat, bool autoUpdate = true)
         {
             this.time = time;
+            this.timeLeft = time;
             this.repeat = repeat;
+
+            //Add it to the static list of timers to auto update it
+            if (autoUpdate)
+                timers.Add(this);
         }
 
+        public static void UpdateAll()
+        {
+            //Update all enabled timers
+            foreach (Timer t in timers)
+                if (t.Enabled)
+                    t.Update();
+        }
         public void Update()
         {
             if (enabled)
@@ -32,7 +51,7 @@ namespace XoticEngine
                 if (timeLeft <= 0)
                 {
                     if (Tick != null)
-                        Tick(this);
+                        Tick(this, EventArgs.Empty);
 
                     //Repeat or disable
                     if (repeat)

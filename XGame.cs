@@ -48,6 +48,7 @@ namespace XoticEngine
             GameConsole.Update();
             AchievementHolder.Update();
             FrameRateCounter.Update();
+            Timer.UpdateAll();
 
             base.Update(gameTime);
         }
