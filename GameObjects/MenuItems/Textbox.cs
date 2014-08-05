@@ -19,6 +19,7 @@ namespace XoticEngine.GameObjects.MenuItems
         //Blinking
         private double blinkTime = 0.5;
         private double blinkTimeLeft = 0.5;
+        private bool useRealTime = true;
         //Text input
         private bool enabled = true;
         private int maxLines;
@@ -102,7 +103,7 @@ namespace XoticEngine.GameObjects.MenuItems
             //Blinking cursor
             if (showCursor)
             {
-                blinkTimeLeft -= Time.DeltaTime;
+                blinkTimeLeft -= useRealTime ? Time.RealTime : Time.DeltaTime;
                 if (blinkTimeLeft <= 0)
                 {
                     cursorVisible = !cursorVisible;
@@ -168,8 +169,7 @@ namespace XoticEngine.GameObjects.MenuItems
             set
             {
                 enabled = value;
-                if (!enabled)
-                    showCursor = false;
+                showCursor = value;
             }
         }
         public bool ShowCursor
@@ -184,7 +184,7 @@ namespace XoticEngine.GameObjects.MenuItems
         }
         public int MaxLines
         { get { return maxLines; } set { maxLines = value; } }
-        public bool Hovering
-        { get { return BackRectangle.Contains(MouseInput.Position); } }
+        public bool UseRealTime
+        { get { return useRealTime; } set { useRealTime = value; } }
     }
 }
