@@ -108,6 +108,7 @@
     <Compile Include="Input\MouseInput.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Time.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="Utilities\Benchmark.cs" />
     <Compile Include="GraphicEffects\Camera.cs" />
     <Compile Include="Utilities\FrameRateCounter.cs" />

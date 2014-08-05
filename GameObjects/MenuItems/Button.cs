@@ -16,7 +16,8 @@ namespace XoticEngine.GameObjects.MenuItems
         private Color[] backColors, textColors;
         //Events
         private bool hovering, leftDown, rightDown;
-        public event Action OnLeftPress, OnRightPress, OnLeftRelease, OnRightRelease, OnMouseEnter, OnMouseExit;
+        public delegate void ButtonEvent(object sender);
+        public event ButtonEvent OnLeftPress, OnRightPress, OnLeftRelease, OnRightRelease, OnMouseEnter, OnMouseExit;
 
         public Button(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color[] textColors, Color[] backColors)
             : base(name, backRect, depth, text, font, textColors != null ? textColors[0] : Color.Black, backColors != null ? backColors[0] : Color.White)
@@ -102,10 +103,10 @@ namespace XoticEngine.GameObjects.MenuItems
             }
         }
 
-        private void CallAction(Action action)
+        private void CallAction(ButtonEvent action)
         {
             if (action != null)
-                action();
+                action(this);
         }
 
         public bool Hovering
