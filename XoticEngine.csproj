@@ -95,6 +95,8 @@
     <Compile Include="Achievements\Achievement.cs" />
     <Compile Include="Achievements\AchievementHolder.cs" />
     <Compile Include="Assets.cs" />
+    <Compile Include="EventArguments\CharEventArgs.cs" />
+    <Compile Include="EventArguments\KeyEventArgs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Animation.cs" />
     <Compile Include="GameObjects\AnimationGameObject.cs" />

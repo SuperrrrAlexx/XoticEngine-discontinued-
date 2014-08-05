@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using XoticEngine.EventArguments;
 
 namespace XoticEngine.Input
 {
@@ -12,9 +13,9 @@ namespace XoticEngine.Input
         //State
         private static KeyboardState prevKeyboard, currKeyboard;
         //Events
-        public delegate void KeyEvent(Keys k);
+        public delegate void KeyEvent(object sender, KeyEventArgs k);
         public static event KeyEvent OnKeyPressed;
-        public delegate void CharEvent(char c);
+        public delegate void CharEvent(object sender, CharEventArgs c);
         public static event CharEvent OnCharEntered;
         //A dictionary of keys that can be converted to characters
         private static Dictionary<Keys, char> keychars = new Dictionary<Keys, char>();
@@ -56,7 +57,7 @@ namespace XoticEngine.Input
                 Keys key = keys[i];
                 //Key pressed event
                 if (OnKeyPressed != null)
-                    OnKeyPressed(key);
+                    OnKeyPressed(null, new KeyEventArgs(key));
 
                 if (OnCharEntered != null)
                 {
@@ -93,7 +94,7 @@ namespace XoticEngine.Input
 
                     //Trigger the event
                     if (s != null)
-                        OnCharEntered(c);
+                        OnCharEntered(null, new CharEventArgs(c));
                 }
             }
         }

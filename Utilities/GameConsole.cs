@@ -49,8 +49,8 @@ namespace XoticEngine.Utilities
             InitCommands();
 
             //Event input
-            KeyboardInput.OnKeyPressed += (k) => KeyInput(k);
-            KeyboardInput.OnCharEntered += (c) => CharInput(c);
+            KeyboardInput.OnKeyPressed += (o, k) => KeyInput(k.Key);
+            KeyboardInput.OnCharEntered += (o, c) => CharInput(c.Character);
         }
 
         //Key and character input

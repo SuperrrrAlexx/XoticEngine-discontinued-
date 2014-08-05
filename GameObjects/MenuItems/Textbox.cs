@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using XoticEngine.EventArguments;
 using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
@@ -52,7 +53,7 @@ namespace XoticEngine.GameObjects.MenuItems
             KeyboardInput.OnKeyPressed += OnKeyPressed;
         }
 
-        private void OnCharEntered(char c)
+        private void OnCharEntered(object sender, CharEventArgs c)
         {
             if (enabled)
             {
@@ -70,11 +71,11 @@ namespace XoticEngine.GameObjects.MenuItems
                 blinkTimeLeft = blinkTime;
             }
         }
-        private void OnKeyPressed(Keys k)
+        private void OnKeyPressed(object sender, KeyEventArgs k)
         {
             if (enabled)
             {
-                switch (k)
+                switch (k.Key)
                 {
                     case Keys.Enter:
                         //If there are less than maxLines lines, add a newline
