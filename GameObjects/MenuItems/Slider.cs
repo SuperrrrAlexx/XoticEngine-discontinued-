@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.EventArguments;
 using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
@@ -24,7 +25,7 @@ namespace XoticEngine.GameObjects.MenuItems
         int amount = 0;
         float valueWidth;
         //Event
-        public delegate void ValueEvent(int value);
+        public delegate void ValueEvent(object sender, SliderEventArgs s);
         public event ValueEvent OnValueChange;
 
         public Slider(string name, Rectangle backRect, float depth, Vector2 buttonOffset, int offsetRight, Texture2D sliderBar, Texture2D sliderButton, int values)
@@ -89,7 +90,7 @@ namespace XoticEngine.GameObjects.MenuItems
 
             //Call the OnValueChange event
             if (prevAmount != amount && OnValueChange != null)
-                    OnValueChange(amount);
+                    OnValueChange(this, new SliderEventArgs(amount));
 
             base.Update();
         }
