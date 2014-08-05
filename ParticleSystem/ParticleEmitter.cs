@@ -16,7 +16,7 @@ namespace XoticEngine.ParticleSystem
         Vector2 prevPosition, speed, scale;
         double rotationSpeed;
         //Drawing
-        bool oldestInFront, additive;
+        bool oldestInFront = true;
         //Particles
         List<Particle> particles;
         double pps, ttl;
@@ -27,14 +27,11 @@ namespace XoticEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, bool oldestInFront, Vector2 speed, Vector2 scale, float rotation, double rotationSpeed,
-            Texture2D texture, Color color, bool additive, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
+        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, Vector2 scale, float rotation, double rotationSpeed,
+            Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
             : base(name, position, rotation, Vector2.Zero, depth)
         {
             this.prevPosition = position;
-            //Drawing
-            this.oldestInFront = oldestInFront;
-            this.additive = additive;
             //Particle properties
             this.speed = speed;
             this.rotationSpeed = rotationSpeed;
@@ -48,6 +45,7 @@ namespace XoticEngine.ParticleSystem
             //Modifiers
             this.modList = new List<ParticleModifier>();
             this.modOnceList = new List<ParticleModifier>();
+            //Seperate all modifiers
             for (int i = 0; i < modifierList.Count; i++)
             {
                 if (modifierList[i].UpdateOnce)
@@ -90,8 +88,21 @@ namespace XoticEngine.ParticleSystem
         public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
         {
             //Draw each particle
-            foreach (Particle p in particles)
-                p.Draw(additive ? additiveBatch : gameBatch);
+            switch (DrawType)
+            {
+                case DrawMode.AlphaBlend:
+                    foreach (Particle p in particles)
+                        p.Draw(gameBatch);
+                    break;
+                case DrawMode.Additive:
+                    foreach (Particle p in particles)
+                        p.Draw(additiveBatch);
+                    break;
+                case DrawMode.Gui:
+                    foreach (Particle p in particles)
+                        p.Draw(guiBatch);
+                    break;
+            }
 
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
