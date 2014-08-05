@@ -57,7 +57,7 @@ namespace XoticEngine.GameObjects.MenuItems
             if (enabled)
             {
                 //Check if the new amount of lines is smaller than maxLines
-                string newText = WrapText(Text.Insert(cursorTextPos, c.ToString()));
+                string newText = WrapText(text.Insert(cursorTextPos, c.ToString()));
                 if (newText.Split(new string[] { "\n" }, StringSplitOptions.None).Length <= maxLines)
                 {
                     //Add the character to the text
@@ -78,7 +78,7 @@ namespace XoticEngine.GameObjects.MenuItems
                 {
                     case Keys.Enter:
                         //If there are less than maxLines lines, add a newline
-                        if (Text.Split(new string[] { "\n" }, StringSplitOptions.None).Length < maxLines)
+                        if (text.Split(new string[] { "\n" }, StringSplitOptions.None).Length < maxLines)
                         {
                             Text = Text.Insert(cursorTextPos, "\n");
                             cursorTextPos++;
@@ -124,21 +124,21 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Update()
         {
             //Get the newline before and after the cursor
-            int before = Text.LastIndexOf("\n", (int)Math.Max(0, cursorTextPos - 1));
-            int after = Text.IndexOf("\n", cursorTextPos);
+            int before = text.LastIndexOf("\n", (int)Math.Max(0, cursorTextPos + cursorOffset - 1));
+            int after = text.IndexOf("\n", cursorTextPos + cursorOffset);
 
-            string line = "";
+            string line = String.Empty;
             //Check if the cursor is at the first or last line
             if (before == -1)
-                line = Text.Split(new string[] { "\n" }, StringSplitOptions.None).First();
+                line = text.Split(new string[] { "\n" }, StringSplitOptions.None).First();
             else if (after == -1)
-                line = Text.Split(new string[] { "\n" }, StringSplitOptions.None).Last();
+                line = text.Split(new string[] { "\n" }, StringSplitOptions.None).Last();
             else
-                line = Text.Substring(before, after - before);
+                line = text.Substring(before, after - before);
 
             //Set the text cursor position
-            cursorPos = TextPosition + new Vector2(Font.MeasureString(line.Substring(0, cursorTextPos - (before + 1))).X - 4,
-                Font.MeasureString(Text.Substring(0, cursorTextPos)).Y - (cursorTextPos > 0 ? Font.MeasureString("|").Y : 0));
+            cursorPos = TextPosition + new Vector2(Font.MeasureString(line.Substring(0, cursorTextPos + cursorOffset - (before + 1))).X - 4,
+                Font.MeasureString(text.Substring(0, cursorTextPos)).Y - (cursorTextPos > 0 ? Font.MeasureString("|").Y : 0));
 
             //Blinking cursor
             blinkTimeLeft -= Time.DeltaTime;
@@ -184,12 +184,15 @@ namespace XoticEngine.GameObjects.MenuItems
                 //Add a word to the line
                 else
                     line += words[i] + " ";
-            }
 
+                //TODO: Check if the word is longer than the line
+            }
             //Return the wrapped text plus the last line
             return wrapped + line;
         }
 
+        private int cursorOffset
+        { get { return text.Split(new string[] { "\n" }, StringSplitOptions.None).Length - baseText.Split(new string[] { "\n" }, StringSplitOptions.None).Length; } }
         public override string Text
         {
             get { return baseText; }

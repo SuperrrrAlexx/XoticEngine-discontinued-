@@ -149,15 +149,15 @@ namespace XoticEngine.ParticleSystem
     #region Rotation
     public class RandomSpawnRotationModifier : ParticleModifier
     {
-        double minRot, maxRot;
+        float minRot, maxRot;
 
         public RandomSpawnRotationModifier()
         {
-            this.minRot = 0.0;
+            this.minRot = 0;
             this.maxRot = MathHelper.TwoPi;
         }
 
-        public RandomSpawnRotationModifier(double minRotation, double maxRotation)
+        public RandomSpawnRotationModifier(float minRotation, float maxRotation)
         {
             this.minRot = minRotation;
             this.maxRot = maxRotation;
@@ -165,7 +165,7 @@ namespace XoticEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.Rotation = X.Random.NextDouble() * (maxRot - minRot) + minRot;
+            p.Rotation = X.Random.NextFloat() * (maxRot - minRot) + minRot;
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -173,7 +173,7 @@ namespace XoticEngine.ParticleSystem
 
     public class RandomRotationSpeedModifier : ParticleModifier
     {
-        double minRotSpeed, maxRotSpeed;
+        float minRotSpeed, maxRotSpeed;
 
         public RandomRotationSpeedModifier()
         {
@@ -181,7 +181,7 @@ namespace XoticEngine.ParticleSystem
             this.maxRotSpeed = MathHelper.TwoPi;
         }
 
-        public RandomRotationSpeedModifier(double minRotationSpeed, double maxRotationSpeed)
+        public RandomRotationSpeedModifier(float minRotationSpeed, float maxRotationSpeed)
         {
             this.minRotSpeed = minRotationSpeed;
             this.maxRotSpeed = maxRotationSpeed;
@@ -189,7 +189,7 @@ namespace XoticEngine.ParticleSystem
 
         public override void Update(Particle p)
         {
-            p.RotationSpeed = X.Random.NextDouble() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
+            p.RotationSpeed = X.Random.NextFloat() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
         }
 
         public override bool UpdateOnce { get { return true; } }
@@ -197,9 +197,9 @@ namespace XoticEngine.ParticleSystem
 
     public class RotateBySpeedModifier : ParticleModifier
     {
-        double rotOffset;
+        float rotOffset;
 
-        public RotateBySpeedModifier(double rotationOffset)
+        public RotateBySpeedModifier(float rotationOffset)
         {
             this.rotOffset = rotationOffset;
         }

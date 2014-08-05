@@ -14,7 +14,7 @@ namespace XoticEngine.ParticleSystem
         bool paused = false;
         //Positioning, movement
         Vector2 prevPosition, speed, scale;
-        double rotationSpeed;
+        float rotationSpeed;
         //Drawing
         bool oldestInFront = true;
         //Particles
@@ -27,7 +27,7 @@ namespace XoticEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, Vector2 scale, float rotation, double rotationSpeed,
+        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, Vector2 scale, float rotation, float rotationSpeed,
             Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
             : base(name, position, rotation, Vector2.Zero, depth)
         {
@@ -159,7 +159,7 @@ namespace XoticEngine.ParticleSystem
         //Particle properties
         public Vector2 Speed
         { get { return speed; } set { speed = value; } }
-        public double RotationSpeed
+        public float RotationSpeed
         { get { return rotationSpeed; } set { rotationSpeed = value; } }
         public Color ParticleColor
         { get { return particleColor; } set { particleColor = value; } }

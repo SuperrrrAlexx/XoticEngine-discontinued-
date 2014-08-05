@@ -11,24 +11,17 @@ namespace XoticEngine.ParticleSystem
     public class Particle
     {
         //Position, rotation, size
-        Vector2 position;
-        Vector2 speed;
-        double rotation;
-        double rotationSpeed;
-        Vector2 scale;
-        float depth;
+        Vector2 position, speed, scale;
+        float rotation, rotationSpeed, depth;
         //Alive or dead
         bool alive = true;
-        double ttl;
         //Lifetime
-        double initialTTL;
-        double lifeTime;
-        double realLifeTime;
+        double ttl, initialTTL, lifeTime, realLifeTime;
         //Texture
         Texture2D texture;
         Color particleColor;
 
-        public Particle(Vector2 position, float depth, Vector2 speed, Vector2 scale, double rotation, double rotationSpeed, Texture2D texture, Color color, double ttl)
+        public Particle(Vector2 position, float depth, Vector2 speed, Vector2 scale, float rotation, float rotationSpeed, Texture2D texture, Color color, double ttl)
         {
             //Position, speed, rotation
             this.position = position;
@@ -52,7 +45,7 @@ namespace XoticEngine.ParticleSystem
         {
             //Move and rotate the particle
             position += speed * (float)Time.DeltaTime;
-            rotation += rotationSpeed * Time.DeltaTime;
+            rotation += rotationSpeed * (float)Time.DeltaTime;
 
             //Calculate the lifetime
             realLifeTime = 1f - (ttl / initialTTL);
@@ -87,9 +80,9 @@ namespace XoticEngine.ParticleSystem
         { get { return position; } set { position = value; } }
         public Vector2 Speed
         { get { return speed; } set { speed = value; } }
-        public double Rotation
+        public float Rotation
         { get { return rotation; } set { rotation = value; } }
-        public double RotationSpeed 
+        public float RotationSpeed 
         { get { return rotationSpeed; } set { rotationSpeed = value; } }
         public Vector2 Scale
         { get { return scale; } set { scale = value; } }
