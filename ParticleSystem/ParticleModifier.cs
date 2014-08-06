@@ -7,18 +7,18 @@ using XoticEngine.Utilities;
 
 namespace XoticEngine.ParticleSystem
 {
-    public abstract class ParticleModifier
+    public interface IParticleModifier
     {
-        public abstract void Update(Particle p);
-        public abstract bool UpdateOnce { get; }
+        void Update(Particle p);
+        bool UpdateOnce { get; }
     }
 
-    public class LifetimeModifier : ParticleModifier
+    public class LifetimeModifier : IParticleModifier
     {
-        ParticleModifier modifier;
+        IParticleModifier modifier;
         double startTime, endTime, length;
 
-        public LifetimeModifier(ParticleModifier modifier, double startTime, double endTime)
+        public LifetimeModifier(IParticleModifier modifier, double startTime, double endTime)
         {
             this.modifier = modifier;
             this.startTime = startTime;
@@ -26,7 +26,7 @@ namespace XoticEngine.ParticleSystem
             this.length = endTime - startTime;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             //Only update if the particle lifetime is within the begin and end times
             if (p.RealLifeTime >= startTime && p.RealLifeTime <= endTime)
@@ -39,11 +39,11 @@ namespace XoticEngine.ParticleSystem
             }
         }
 
-        public override bool UpdateOnce { get { return false; } }
+        public bool UpdateOnce { get { return false; } }
     }
 
     #region Speed
-    public class RandomSpawnDirectionModifier : ParticleModifier
+    public class RandomSpawnDirectionModifier : IParticleModifier
     {
         float minSpeed, maxSpeed;
         double minAngle, maxAngle;
@@ -70,7 +70,7 @@ namespace XoticEngine.ParticleSystem
             this.maxAngle = maxAngle;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             double random = X.Random.NextDouble();
             double angle = random * (maxAngle - minAngle) + minAngle;
@@ -78,10 +78,10 @@ namespace XoticEngine.ParticleSystem
             p.Speed += (X.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angleVector;
         }
 
-        public override bool UpdateOnce { get { return true; } }
+        public bool UpdateOnce { get { return true; } }
     }
 
-    public class RandomSpawnSpeedModifier : ParticleModifier
+    public class RandomSpawnSpeedModifier : IParticleModifier
     {
         Vector2 minSpeed, maxSpeed;
 
@@ -96,15 +96,15 @@ namespace XoticEngine.ParticleSystem
             this.maxSpeed = maxSpeed;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.Speed += new Vector2(X.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, X.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
         }
 
-        public override bool UpdateOnce { get { return true; } }
+        public bool UpdateOnce { get { return true; } }
     }
 
-    public class AccelerationModifier : ParticleModifier
+    public class AccelerationModifier : IParticleModifier
     {
         Vector2 acceleration;
 
@@ -113,15 +113,15 @@ namespace XoticEngine.ParticleSystem
             this.acceleration = acceleration;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.Speed += acceleration * (float)Time.DeltaTime;
         }
 
-        public override bool UpdateOnce { get { return false; } }
+        public bool UpdateOnce { get { return false; } }
     }
 
-    public class ScaleBySpeedModifier : ParticleModifier
+    public class ScaleBySpeedModifier : IParticleModifier
     {
         Vector2 scaleFactor, startScale;
         bool gotScale = false;
@@ -131,7 +131,7 @@ namespace XoticEngine.ParticleSystem
             this.scaleFactor = scaleFactor / 1000f;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             if (!gotScale)
             {
@@ -142,12 +142,12 @@ namespace XoticEngine.ParticleSystem
             p.Scale = startScale + p.Speed.Length() * scaleFactor;
         }
 
-        public override bool UpdateOnce { get { return false; } }
+        public bool UpdateOnce { get { return false; } }
     }
     #endregion
 
     #region Rotation
-    public class RandomSpawnRotationModifier : ParticleModifier
+    public class RandomSpawnRotationModifier : IParticleModifier
     {
         float minRot, maxRot;
 
@@ -163,15 +163,15 @@ namespace XoticEngine.ParticleSystem
             this.maxRot = maxRotation;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.Rotation = X.Random.NextFloat() * (maxRot - minRot) + minRot;
         }
 
-        public override bool UpdateOnce { get { return true; } }
+        public bool UpdateOnce { get { return true; } }
     }
 
-    public class RandomRotationSpeedModifier : ParticleModifier
+    public class RandomRotationSpeedModifier : IParticleModifier
     {
         float minRotSpeed, maxRotSpeed;
 
@@ -187,15 +187,15 @@ namespace XoticEngine.ParticleSystem
             this.maxRotSpeed = maxRotationSpeed;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.RotationSpeed = X.Random.NextFloat() * (maxRotSpeed - minRotSpeed) + minRotSpeed;
         }
 
-        public override bool UpdateOnce { get { return true; } }
+        public bool UpdateOnce { get { return true; } }
     }
 
-    public class RotateBySpeedModifier : ParticleModifier
+    public class RotateBySpeedModifier : IParticleModifier
     {
         float rotOffset;
 
@@ -204,17 +204,17 @@ namespace XoticEngine.ParticleSystem
             this.rotOffset = rotationOffset;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.Rotation = p.Speed.GetAngle() + rotOffset;
         }
 
-        public override bool UpdateOnce { get { return false; } }
+        public bool UpdateOnce { get { return false; } }
     }
     #endregion
 
     #region LerpModifiers
-    public class ColorLerpModifier : ParticleModifier
+    public class ColorLerpModifier : IParticleModifier
     {
         Color color1, color2;
 
@@ -224,15 +224,15 @@ namespace XoticEngine.ParticleSystem
             this.color2 = color2;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.ParticleColor = Color.Lerp(color1, color2, (float)p.LifeTime);
         }
 
-        public override bool UpdateOnce { get { return false; } }
+        public bool UpdateOnce { get { return false; } }
     }
 
-    public class SizeLerpModifier : ParticleModifier
+    public class SizeLerpModifier : IParticleModifier
     {
         Vector2 scale1, scale2;
 
@@ -242,17 +242,17 @@ namespace XoticEngine.ParticleSystem
             this.scale2 = scale2;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.Scale = Vector2.Lerp(scale1, scale2, (float)p.LifeTime);
         }
 
-        public override bool UpdateOnce { get { return false; } }
+        public bool UpdateOnce { get { return false; } }
     }
     #endregion
 
     #region SpawnShapes
-    public class FilledRectangleModifier : ParticleModifier
+    public class FilledRectangleModifier : IParticleModifier
     {
         int width, height;
 
@@ -267,15 +267,15 @@ namespace XoticEngine.ParticleSystem
             this.height = height;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             p.Position += new Vector2(X.Random.NextFloat() * width, X.Random.NextFloat() * height);
         }
 
-        public override bool UpdateOnce { get { return true; } }
+        public bool UpdateOnce { get { return true; } }
     }
 
-    public class OutlineRectangleModifier : ParticleModifier
+    public class OutlineRectangleModifier : IParticleModifier
     {
         int width, height;
 
@@ -290,7 +290,7 @@ namespace XoticEngine.ParticleSystem
             this.height = height;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             if (X.Random.NextParity() == 1)
                 p.Position += new Vector2(X.Random.NextFloat() * width, X.Random.Next(2) * height);
@@ -298,10 +298,10 @@ namespace XoticEngine.ParticleSystem
                 p.Position += new Vector2(X.Random.Next(2) * width, X.Random.NextFloat() * height);
         }
 
-        public override bool UpdateOnce { get { return true; } }
+        public bool UpdateOnce { get { return true; } }
     }
 
-    public class FilledCircleModifier : ParticleModifier
+    public class FilledCircleModifier : IParticleModifier
     {
         int width, height;
 
@@ -316,18 +316,18 @@ namespace XoticEngine.ParticleSystem
             this.height = height;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             double angle = X.Random.NextDouble() * Math.PI * 2;
             float radius = X.Random.NextFloat();
             p.Position += new Vector2((float)Math.Cos(angle) * width * radius, (float)Math.Sin(angle) * height * radius);
         }
 
-        public override bool UpdateOnce
+        public bool UpdateOnce
         { get { return true; } }
     }
 
-    public class OutlineCircleModifier : ParticleModifier
+    public class OutlineCircleModifier : IParticleModifier
     {
         int width, height;
 
@@ -342,13 +342,13 @@ namespace XoticEngine.ParticleSystem
             this.height = height;
         }
 
-        public override void Update(Particle p)
+        public void Update(Particle p)
         {
             double angle = X.Random.NextDouble() * Math.PI * 2;
             p.Position += new Vector2((float)Math.Cos(angle) * width, (float)Math.Sin(angle) * height);
         }
 
-        public override bool UpdateOnce
+        public bool UpdateOnce
         { get { return true; } }
     }
     #endregion

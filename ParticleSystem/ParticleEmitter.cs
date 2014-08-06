@@ -21,13 +21,13 @@ namespace XoticEngine.ParticleSystem
         List<Particle> particles;
         double pps, ttl, queue;
         //Modifiers
-        List<ParticleModifier> modList, modOnceList;
+        List<IParticleModifier> modList, modOnceList;
         //Texture
         Texture2D texture;
         Color particleColor;
 
         public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, Vector2 scale, float rotation, float rotationSpeed,
-            Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<ParticleModifier> modifierList)
+            Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<IParticleModifier> modifierList)
             : base(name, position, rotation, Vector2.Zero, depth)
         {
             this.prevPosition = position;
@@ -42,8 +42,8 @@ namespace XoticEngine.ParticleSystem
             this.pps = particlesPerSecond;
             this.particles = new List<Particle>();
             //Modifiers
-            this.modList = new List<ParticleModifier>();
-            this.modOnceList = new List<ParticleModifier>();
+            this.modList = new List<IParticleModifier>();
+            this.modOnceList = new List<IParticleModifier>();
             //Seperate all modifiers
             for (int i = 0; i < modifierList.Count; i++)
             {
@@ -151,7 +151,7 @@ namespace XoticEngine.ParticleSystem
         { get { return pps; } set { pps = value; } }
         public double TimeToLive
         { get { return ttl; } set { ttl = value; } }
-        public List<ParticleModifier> ModifierList
+        public List<IParticleModifier> ModifierList
         { get { return modList; } set { modList = value; } }
         public bool OldestInFront
         { get { return oldestInFront; } set { oldestInFront = value; } }
