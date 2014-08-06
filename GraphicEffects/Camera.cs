@@ -77,7 +77,7 @@ namespace XoticEngine.GraphicEffects
 
                 //Pick a new random point to move to
                 if (shake == nextPoint)
-                    nextPoint = new Vector2(X.Random.NextFloat() * X.Random.NextParity() * shakeAmount.X, X.Random.NextFloat() * X.Random.NextParity() * shakeAmount.Y);
+                    nextPoint = new Vector2(X.Random.NextFloat() * X.Random.NextSign() * shakeAmount.X, X.Random.NextFloat() * X.Random.NextSign() * shakeAmount.Y);
                 MoveToPoint();
             }
             else if (shake != Vector2.Zero)

@@ -14,7 +14,7 @@ namespace XoticEngine.ParticleSystem
         Vector2 position, speed, scale;
         float rotation, rotationSpeed, depth;
         //Lifetime
-        double ttl, initialTTL, lifeTime, realLifeTime;
+        double ttl, initialTTL, lifeTime;
         //Texture
         Texture2D texture;
         Color particleColor;
@@ -34,9 +34,7 @@ namespace XoticEngine.ParticleSystem
             //Time to live
             this.initialTTL = ttl;
             this.ttl = ttl;
-            //Lifetime
-            realLifeTime = 1 - (ttl / initialTTL);
-            lifeTime = realLifeTime;
+            lifeTime = RealLifeTime;
         }
 
         public void Update()
@@ -45,9 +43,8 @@ namespace XoticEngine.ParticleSystem
             position += speed * (float)Time.DeltaTime;
             rotation += rotationSpeed * (float)Time.DeltaTime;
 
-            //Calculate the lifetime
-            realLifeTime = 1f - (ttl / initialTTL);
-            lifeTime = realLifeTime;
+            //Set the lifetime
+            lifeTime = RealLifeTime;
 
             //Update the time to live
             ttl -= Time.DeltaTime;
@@ -67,7 +64,7 @@ namespace XoticEngine.ParticleSystem
         public double InitalTimeToLive
         { get { return initialTTL; } }
         public double RealLifeTime
-        { get { return realLifeTime; } }
+        { get { return 1f - (ttl / initialTTL); } }
         public double LifeTime
         { get { return lifeTime; } set { lifeTime = value; } }
         //Properties

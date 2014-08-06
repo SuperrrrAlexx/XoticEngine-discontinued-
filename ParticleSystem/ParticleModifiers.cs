@@ -10,13 +10,14 @@ namespace XoticEngine.ParticleSystem
     public interface IParticleModifier
     {
         void Update(Particle p);
+
         bool UpdateOnce { get; }
     }
 
     public class LifetimeModifier : IParticleModifier
     {
-        IParticleModifier modifier;
-        double startTime, endTime, length;
+        private IParticleModifier modifier;
+        private double startTime, endTime, length;
 
         public LifetimeModifier(IParticleModifier modifier, double startTime, double endTime)
         {
@@ -42,11 +43,10 @@ namespace XoticEngine.ParticleSystem
         public bool UpdateOnce { get { return false; } }
     }
 
-    #region Speed
+    #region Speed modifiers
     public class RandomSpawnDirectionModifier : IParticleModifier
     {
-        float minSpeed, maxSpeed;
-        double minAngle, maxAngle;
+        private float minSpeed, maxSpeed, minAngle, maxAngle;
 
         public RandomSpawnDirectionModifier(float speed)
         {
@@ -62,7 +62,7 @@ namespace XoticEngine.ParticleSystem
             this.minAngle = 0;
             this.maxAngle = MathHelper.TwoPi;
         }
-        public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed, double minAngle, double maxAngle)
+        public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed, float minAngle, float maxAngle)
         {
             this.maxSpeed = minSpeed;
             this.minSpeed = maxSpeed;
@@ -72,10 +72,8 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            double random = X.Random.NextDouble();
-            double angle = random * (maxAngle - minAngle) + minAngle;
-            Vector2 angleVector = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-            p.Speed += (X.Random.NextFloat() * (maxSpeed + minSpeed) + minSpeed) * angleVector;
+            float angle = X.Random.NextFloat() * (maxAngle - minAngle) + minAngle;
+            p.Speed += (X.Random.NextFloat() * (maxSpeed - minSpeed) + minSpeed) * angle.GetDirection();
         }
 
         public bool UpdateOnce { get { return true; } }
@@ -83,7 +81,7 @@ namespace XoticEngine.ParticleSystem
 
     public class RandomSpawnSpeedModifier : IParticleModifier
     {
-        Vector2 minSpeed, maxSpeed;
+        private Vector2 minSpeed, maxSpeed;
 
         public RandomSpawnSpeedModifier(Vector2 speed)
         {
@@ -106,7 +104,7 @@ namespace XoticEngine.ParticleSystem
 
     public class AccelerationModifier : IParticleModifier
     {
-        Vector2 acceleration;
+        private Vector2 acceleration;
 
         public AccelerationModifier(Vector2 acceleration)
         {
@@ -123,8 +121,8 @@ namespace XoticEngine.ParticleSystem
 
     public class ScaleBySpeedModifier : IParticleModifier
     {
-        Vector2 scaleFactor, startScale;
-        bool gotScale = false;
+        private Vector2 scaleFactor, startScale;
+        private bool gotScale = false;
 
         public ScaleBySpeedModifier(Vector2 scaleFactor)
         {
@@ -146,10 +144,10 @@ namespace XoticEngine.ParticleSystem
     }
     #endregion
 
-    #region Rotation
+    #region Rotation modifiers
     public class RandomSpawnRotationModifier : IParticleModifier
     {
-        float minRot, maxRot;
+        private float minRot, maxRot;
 
         public RandomSpawnRotationModifier()
         {
@@ -173,7 +171,7 @@ namespace XoticEngine.ParticleSystem
 
     public class RandomRotationSpeedModifier : IParticleModifier
     {
-        float minRotSpeed, maxRotSpeed;
+        private float minRotSpeed, maxRotSpeed;
 
         public RandomRotationSpeedModifier()
         {
@@ -197,26 +195,26 @@ namespace XoticEngine.ParticleSystem
 
     public class RotateBySpeedModifier : IParticleModifier
     {
-        float rotOffset;
+        private float rotationOffset;
 
         public RotateBySpeedModifier(float rotationOffset)
         {
-            this.rotOffset = rotationOffset;
+            this.rotationOffset = rotationOffset;
         }
 
         public void Update(Particle p)
         {
-            p.Rotation = p.Speed.GetAngle() + rotOffset;
+            p.Rotation = p.Speed.GetAngle() + rotationOffset;
         }
 
         public bool UpdateOnce { get { return false; } }
     }
     #endregion
 
-    #region LerpModifiers
+    #region Lerp modifiers
     public class ColorLerpModifier : IParticleModifier
     {
-        Color color1, color2;
+        private Color color1, color2;
 
         public ColorLerpModifier(Color color1, Color color2)
         {
@@ -234,7 +232,7 @@ namespace XoticEngine.ParticleSystem
 
     public class SizeLerpModifier : IParticleModifier
     {
-        Vector2 scale1, scale2;
+        private Vector2 scale1, scale2;
 
         public SizeLerpModifier(Vector2 scale1, Vector2 scale2)
         {
@@ -251,10 +249,10 @@ namespace XoticEngine.ParticleSystem
     }
     #endregion
 
-    #region SpawnShapes
+    #region Spawn shape modifiers
     public class FilledRectangleModifier : IParticleModifier
     {
-        int width, height;
+        private int width, height;
 
         public FilledRectangleModifier(int length)
         {
@@ -277,7 +275,7 @@ namespace XoticEngine.ParticleSystem
 
     public class OutlineRectangleModifier : IParticleModifier
     {
-        int width, height;
+        private int width, height;
 
         public OutlineRectangleModifier(int length)
         {
@@ -292,7 +290,7 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            if (X.Random.NextParity() == 1)
+            if (X.Random.NextSign() == 1)
                 p.Position += new Vector2(X.Random.NextFloat() * width, X.Random.Next(2) * height);
             else
                 p.Position += new Vector2(X.Random.Next(2) * width, X.Random.NextFloat() * height);
@@ -303,7 +301,7 @@ namespace XoticEngine.ParticleSystem
 
     public class FilledCircleModifier : IParticleModifier
     {
-        int width, height;
+        private int width, height;
 
         public FilledCircleModifier(int radius)
         {
@@ -318,9 +316,9 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            double angle = X.Random.NextDouble() * Math.PI * 2;
-            float radius = X.Random.NextFloat();
-            p.Position += new Vector2((float)Math.Cos(angle) * width * radius, (float)Math.Sin(angle) * height * radius);
+            double angle = X.Random.NextDouble() * MathHelper.TwoPi;
+            float distance = X.Random.NextFloat();
+            p.Position += new Vector2((float)Math.Cos(angle) * width * distance, (float)Math.Sin(angle) * height * distance);
         }
 
         public bool UpdateOnce
@@ -329,7 +327,7 @@ namespace XoticEngine.ParticleSystem
 
     public class OutlineCircleModifier : IParticleModifier
     {
-        int width, height;
+        private int width, height;
 
         public OutlineCircleModifier(int radius)
         {
@@ -344,7 +342,7 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            double angle = X.Random.NextDouble() * Math.PI * 2;
+            double angle = X.Random.NextDouble() * MathHelper.TwoPi;
             p.Position += new Vector2((float)Math.Cos(angle) * width, (float)Math.Sin(angle) * height);
         }
 

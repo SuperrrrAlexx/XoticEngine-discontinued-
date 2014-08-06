@@ -60,7 +60,7 @@ namespace XoticEngine
         {
             return (float)r.NextDouble();
         }
-        public static int NextParity(this Random r)
+        public static int NextSign(this Random r)
         {
             return r.Next(2) * 2 - 1;
         }

@@ -123,7 +123,7 @@
     <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="ParticleSystem\Particle.cs" />
     <Compile Include="ParticleSystem\ParticleEmitter.cs" />
-    <Compile Include="ParticleSystem\ParticleModifier.cs" />
+    <Compile Include="ParticleSystem\ParticleModifiers.cs" />
     <Compile Include="XGame.cs" />
     <Compile Include="XoticEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

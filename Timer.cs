@@ -11,9 +11,9 @@ namespace XoticEngine
         private static List<Timer> timers;
 
         private double time, timeLeft;
-        private bool repeat;
-        private bool useRealTime = false;
+        private bool repeat, useRealTime;
         private bool enabled = true;
+        private bool autoUpdate;
         //Event
         public delegate void TimerTick(object sender, EventArgs e);
         public event TimerTick Tick;
@@ -27,6 +27,7 @@ namespace XoticEngine
             this.time = time;
             this.timeLeft = time;
             this.repeat = repeat;
+            this.autoUpdate = autoUpdate;
 
             //Add it to the static list of timers to auto update it
             if (autoUpdate)
@@ -72,5 +73,19 @@ namespace XoticEngine
         { get { return useRealTime; } set { useRealTime = value; } }
         public bool Enabled
         { get { return enabled; } set { enabled = value; } }
+        public bool AutoUpdate
+        {
+            get { return autoUpdate; }
+            set
+            {
+                //Add or remove this from the list, but only if the value changed
+                if (autoUpdate && !value)
+                    timers.Remove(this);
+                else if (!autoUpdate && value)
+                    timers.Add(this);
+
+                autoUpdate = value;
+            }
+        }
     }
 }

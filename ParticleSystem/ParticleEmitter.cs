@@ -26,7 +26,7 @@ namespace XoticEngine.ParticleSystem
         Texture2D texture;
         Color particleColor;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, Vector2 scale, float rotation, float rotationSpeed,
+        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, float rotation, float rotationSpeed,
             Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<IParticleModifier> modifierList)
             : base(name, position, rotation, Vector2.Zero, depth)
         {
@@ -34,7 +34,7 @@ namespace XoticEngine.ParticleSystem
             //Particle properties
             this.speed = speed;
             this.rotationSpeed = rotationSpeed;
-            this.scale = scale;
+            this.scale = Vector2.One;
             this.texture = texture;
             this.ParticleColor = color;
             this.ttl = secondsToLive;
