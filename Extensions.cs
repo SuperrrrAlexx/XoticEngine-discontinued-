@@ -64,5 +64,39 @@ namespace XoticEngine
         {
             return r.Next(2) * 2 - 1;
         }
+
+        //String
+        public static string Wrap(this string s, SpriteFont font, int textWidth)
+        {
+            string wrapped = String.Empty;
+            string line = String.Empty;
+
+            //Get all words
+            string[] words = s.Split(' ');
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                //Check for newline
+                if (words[i] == "\n")
+                {
+                    wrapped += line + "\n";
+                    line = String.Empty;
+                }
+                //Check if the line is longer than the width of the textbox
+                else if (font.MeasureString(line + words[i]).X >= textWidth)
+                {
+                    wrapped += line + "\n";
+                    line = words[i] + " ";
+                }
+                //Add a word to the line
+                else
+                    line += words[i] + " ";
+
+                //TODO: Check if the word is longer than the line
+            }
+
+            //Return the wrapped text plus the last line
+            return wrapped + line;
+        }
     }
 }

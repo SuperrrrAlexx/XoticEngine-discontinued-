@@ -19,8 +19,7 @@ namespace XoticEngine.ParticleSystem
         bool oldestInFront = true;
         //Particles
         List<Particle> particles;
-        double pps, ttl;
-        double queue = 0;
+        double pps, ttl, queue;
         //Modifiers
         List<ParticleModifier> modList, modOnceList;
         //Texture

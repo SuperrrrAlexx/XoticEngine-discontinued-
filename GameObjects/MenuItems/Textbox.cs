@@ -59,7 +59,7 @@ namespace XoticEngine.GameObjects.MenuItems
             if (enabled)
             {
                 //Check if the new amount of lines is smaller than maxLines, add the character to the text
-                string newText = WrapText(text + c.Character);
+                string newText = (baseText + c.Character).Wrap(Font, BackRectangle.Width);
                 if (newText.Split(new string[] { "\n" }, StringSplitOptions.None).Length <= maxLines)
                     Text += c.Character;
 
@@ -122,45 +122,13 @@ namespace XoticEngine.GameObjects.MenuItems
             base.Draw(gameBatch, additiveBatch, guiBatch);
         }
 
-        private string WrapText(string text)
-        {
-            string wrapped = String.Empty;
-            string line = String.Empty;
-
-            //Get all words
-            string[] words = baseText.Split(' ');
-
-            for (int i = 0; i < words.Length; i++)
-            {
-                //Check for newline
-                if (words[i] == "\n")
-                {
-                    wrapped += line + "\n";
-                    line = String.Empty;
-                }
-                //Check if the line is longer than the width of the textbox
-                else if (Font.MeasureString(line + words[i]).X >= BackRectangle.Width)
-                {
-                    wrapped += line + "\n";
-                    line = words[i] + " ";
-                }
-                //Add a word to the line
-                else
-                    line += words[i] + " ";
-
-                //TODO: Check if the word is longer than the line
-            }
-            //Return the wrapped text plus the last line
-            return wrapped + line;
-        }
-
         public override string Text
         {
             get { return baseText; }
             set
             {
                 baseText = value;
-                text = WrapText(baseText);
+                text = baseText.Wrap(Font, BackRectangle.Width);
             }
         }
         public bool Enabled

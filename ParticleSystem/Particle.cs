@@ -13,8 +13,6 @@ namespace XoticEngine.ParticleSystem
         //Position, rotation, size
         Vector2 position, speed, scale;
         float rotation, rotationSpeed, depth;
-        //Alive or dead
-        bool alive = true;
         //Lifetime
         double ttl, initialTTL, lifeTime, realLifeTime;
         //Texture
@@ -53,9 +51,6 @@ namespace XoticEngine.ParticleSystem
 
             //Update the time to live
             ttl -= Time.DeltaTime;
-            //If the ttl <= 0, let the particle die
-            if (ttl <= 0)
-                alive = false;
         }
 
         public void Draw(SpriteBatch s)
@@ -65,7 +60,7 @@ namespace XoticEngine.ParticleSystem
         }
 
         public bool Alive
-        { get { return alive; } }
+        { get { return ttl > 0; } }
         //Time to live
         public double TimeToLive
         { get { return ttl; } }
@@ -82,7 +77,7 @@ namespace XoticEngine.ParticleSystem
         { get { return speed; } set { speed = value; } }
         public float Rotation
         { get { return rotation; } set { rotation = value; } }
-        public float RotationSpeed 
+        public float RotationSpeed
         { get { return rotationSpeed; } set { rotationSpeed = value; } }
         public Vector2 Scale
         { get { return scale; } set { scale = value; } }
