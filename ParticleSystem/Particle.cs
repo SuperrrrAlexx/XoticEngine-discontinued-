@@ -11,33 +11,34 @@ namespace XoticEngine.ParticleSystem
     public class Particle
     {
         //Position, rotation, size
-        Vector2 position, speed, scale;
-        float rotation, rotationSpeed, depth;
+        private Vector2 position = Vector2.Zero;
+        private Vector2 speed, scale;
+        private float rotation, rotationSpeed, depth;
         //Lifetime
-        double ttl, initialTTL, lifeTime;
+        private double ttl, initialTTL, lifeTime;
         //Texture
-        Texture2D texture;
-        Color particleColor;
+        private Texture2D texture;
+        private Color color;
+        private Vector2 origin;
 
-        public Particle(Vector2 position, float depth, Vector2 speed, Vector2 scale, float rotation, float rotationSpeed, Texture2D texture, Color color, double ttl)
+        public Particle(Vector2 speed, Vector2 scale, float rotation, float rotationSpeed, Texture2D texture, Color color, double ttl)
         {
             //Position, speed, rotation
-            this.position = position;
             this.speed = speed;
             this.scale = scale;
             this.rotation = rotation;
             this.rotationSpeed = rotationSpeed;
             //Texture
             this.texture = texture;
-            this.particleColor = color;
-            this.depth = depth;
+            this.color = color;
+            this.origin = new Vector2((float)texture.Width / 2, (float)texture.Height / 2);
             //Time to live
             this.initialTTL = ttl;
             this.ttl = ttl;
-            lifeTime = RealLifeTime;
+            this.lifeTime = RealLifeTime;
         }
 
-        public void Update()
+        public virtual void Update()
         {
             //Move and rotate the particle
             position += speed * (float)Time.DeltaTime;
@@ -49,16 +50,25 @@ namespace XoticEngine.ParticleSystem
             //Update the time to live
             ttl -= Time.DeltaTime;
         }
-
-        public void Draw(SpriteBatch s)
+        public virtual void Draw(SpriteBatch s)
         {
             //Draw the particle
-            s.Draw(texture, position, null, particleColor, (float)rotation, new Vector2((float)texture.Width / 2.0f, (float)texture.Height / 2.0f), scale, SpriteEffects.None, depth);
+            s.Draw(texture, position, null, color, rotation, origin, scale, SpriteEffects.None, depth);
         }
 
+        public virtual Particle Fire()
+        {
+            return new Particle(speed, scale, rotation, rotationSpeed, texture, color, ttl)
+            {
+                position = this.position,
+                depth = this.depth,
+                origin = this.origin
+            };
+        }
+
+        //Time to live, lifetime
         public bool Alive
         { get { return ttl > 0; } }
-        //Time to live
         public double TimeToLive
         { get { return ttl; } }
         public double InitalTimeToLive
@@ -67,7 +77,7 @@ namespace XoticEngine.ParticleSystem
         { get { return 1f - (ttl / initialTTL); } }
         public double LifeTime
         { get { return lifeTime; } set { lifeTime = value; } }
-        //Properties
+        //Position, speed, rotation
         public Vector2 Position
         { get { return position; } set { position = value; } }
         public Vector2 Speed
@@ -76,10 +86,15 @@ namespace XoticEngine.ParticleSystem
         { get { return rotation; } set { rotation = value; } }
         public float RotationSpeed
         { get { return rotationSpeed; } set { rotationSpeed = value; } }
+        //Drawing
+        public Texture2D Texture
+        { get { return texture; } set { texture = value; } }
         public Vector2 Scale
         { get { return scale; } set { scale = value; } }
-        public Color ParticleColor
-        { get { return particleColor; } set { particleColor = value; } }
+        public Vector2 Origin
+        { get { return origin; } set { origin = value; } }
+        public Color Color
+        { get { return color; } set { color = value; } }
         public float Depth
         { get { return depth; } set { depth = value; } }
     }

@@ -224,7 +224,7 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            p.ParticleColor = Color.Lerp(color1, color2, (float)p.LifeTime);
+            p.Color = Color.Lerp(color1, color2, (float)p.LifeTime);
         }
 
         public bool UpdateOnce { get { return false; } }

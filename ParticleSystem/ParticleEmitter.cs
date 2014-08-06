@@ -10,40 +10,31 @@ namespace XoticEngine.ParticleSystem
 {
     public class ParticleEmitter : GameObject
     {
-        //Paused
-        bool paused = false;
-        //Positioning, movement
-        Vector2 prevPosition, speed, scale;
-        float rotationSpeed;
+        private bool paused = false;
+        private Vector2 prevPosition;
         //Drawing
-        bool oldestInFront = true;
+        private bool oldestInFront = true;
         //Particles
-        List<Particle> particles;
-        double pps, ttl, queue;
+        private Particle particle;
+        private List<Particle> particles;
+        private double pps, queue;
         //Modifiers
-        List<IParticleModifier> modList, modOnceList;
-        //Texture
-        Texture2D texture;
-        Color particleColor;
+        private List<IParticleModifier> modList, modOnceList;
 
-        public ParticleEmitter(string name, Vector2 position, float depth, Vector2 speed, float rotation, float rotationSpeed,
-            Texture2D texture, Color color, double particlesPerSecond, double secondsToLive, List<IParticleModifier> modifierList)
-            : base(name, position, rotation, Vector2.Zero, depth)
+        public ParticleEmitter(string name, Vector2 position, float depth, Particle particle, double particlesPerSecond, List<IParticleModifier> modifierList)
+            : base(name, position, 0, Vector2.Zero, depth)
         {
             this.prevPosition = position;
-            //Particle properties
-            this.speed = speed;
-            this.rotationSpeed = rotationSpeed;
-            this.scale = Vector2.One;
-            this.texture = texture;
-            this.ParticleColor = color;
-            this.ttl = secondsToLive;
+
             //Particles
+            this.particle = particle;
             this.pps = particlesPerSecond;
             this.particles = new List<Particle>();
+
             //Modifiers
             this.modList = new List<IParticleModifier>();
             this.modOnceList = new List<IParticleModifier>();
+
             //Seperate all modifiers
             for (int i = 0; i < modifierList.Count; i++)
             {
@@ -125,8 +116,10 @@ namespace XoticEngine.ParticleSystem
             {
                 //Calculate the particle position between the old and new position
                 Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / amount), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / amount));
+
                 //Create a new particle
-                Particle p = new Particle(pos, Depth, speed, scale, Rotation, rotationSpeed, texture, particleColor, ttl);
+                Particle p = particle.Fire();
+                p.Position = pos;
 
                 //Update all updateOnce modifiers
                 for (int i = 0; i < modOnceList.Count; i++)
@@ -144,24 +137,16 @@ namespace XoticEngine.ParticleSystem
             prevPosition = Position;
         }
 
-        //Particles shooting
+        public Particle Particle
+        { get { return particle; } set { particle = value; } }
         public bool Paused
         { get { return paused; } set { paused = value; } }
         public double ParticlesPerSecond
         { get { return pps; } set { pps = value; } }
-        public double TimeToLive
-        { get { return ttl; } set { ttl = value; } }
         public List<IParticleModifier> ModifierList
         { get { return modList; } set { modList = value; } }
         public bool OldestInFront
         { get { return oldestInFront; } set { oldestInFront = value; } }
-        //Particle properties
-        public Vector2 Speed
-        { get { return speed; } set { speed = value; } }
-        public float RotationSpeed
-        { get { return rotationSpeed; } set { rotationSpeed = value; } }
-        public Color ParticleColor
-        { get { return particleColor; } set { particleColor = value; } }
         public List<Particle> Particles
         { get { return particles; } }
     }
