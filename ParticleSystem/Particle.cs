@@ -60,8 +60,6 @@ namespace XoticEngine.ParticleSystem
         {
             return new Particle(speed, scale, rotation, rotationSpeed, texture, color, ttl)
             {
-                position = this.position,
-                depth = this.depth,
                 origin = this.origin
             };
         }

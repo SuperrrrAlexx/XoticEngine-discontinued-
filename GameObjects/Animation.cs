@@ -10,11 +10,11 @@ namespace XoticEngine.GameObjects
     public class Animation
     {
         //Animation
-        SpriteSheet sheet;
-        bool repeat, playing;
+        private readonly SpriteSheet sheet;
+        private bool repeat, playing;
         //Time per frame, current frame
-        double tpf, frameTime;
-        int frame;
+        private double tpf, frameTime;
+        private int frame;
 
         public Animation(SpriteSheet sheet, double fps, bool repeat)
         {
@@ -58,10 +58,19 @@ namespace XoticEngine.GameObjects
             frameTime = tpf;
         }
 
+        //Sprites
         public Texture2D CurrentFrame
         { get { return sheet[frame]; } }
+        public Texture2D this[int frame]
+        { get { return sheet[frame]; } }
+        public SpriteSheet Sheet
+        { get { return sheet; } }
+        //Playing
         public bool Playing
         { get { return playing; } set { playing = value; } }
+        public bool Repeat
+        { get { return repeat; } set { repeat = value; } }
+        //Frames
         public int Length
         { get { return sheet.Length; } }
         public int Frame

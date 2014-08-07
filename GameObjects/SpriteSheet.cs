@@ -9,9 +9,9 @@ namespace XoticEngine.GameObjects
 {
     public class SpriteSheet
     {
-        readonly Texture2D sheet;
-        Texture2D[,] sprites;
-        int cols, rows;
+        private readonly Texture2D sheet;
+        private Texture2D[,] sprites;
+        private int cols, rows;
 
         public SpriteSheet(string sheetName)
         {
@@ -24,6 +24,18 @@ namespace XoticEngine.GameObjects
 
             //Extract all sprites from the sheet
             ExtractSprites(sheetName);
+        }
+        public SpriteSheet(Texture2D sheet, int cols, int rows)
+        {
+            //Save the sheet
+            this.sheet = sheet;
+
+            //Default is 1 column and row
+            cols = 1;
+            rows = 1;
+
+            //Extract all sprites from the sheet
+            ExtractSprites("SpriteSheet@" + cols + "x" + rows);
         }
         public SpriteSheet(string sheetName, Rectangle[] sourceRectangles)
         {
@@ -50,7 +62,7 @@ namespace XoticEngine.GameObjects
             ExtractSprites(sourceRectangles);
         }
 
-        void ExtractSprites(string sheetName)
+        private void ExtractSprites(string sheetName)
         {
             //Get the cols and rows
             string[] name = sheetName.Split('@');
@@ -86,7 +98,7 @@ namespace XoticEngine.GameObjects
                     sprites[c, r] = sprite;
                 }
         }
-        void ExtractSprites(Rectangle[] sourceRects)
+        private void ExtractSprites(Rectangle[] sourceRects)
         {
             //Create the array
             sprites = new Texture2D[sourceRects.Length, 1];

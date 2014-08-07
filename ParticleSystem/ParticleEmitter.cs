@@ -52,7 +52,7 @@ namespace XoticEngine.ParticleSystem
                 Shoot();
 
             //Update all particles
-            for (int i = particles.Count - 1 - 1; i >= 0; i--)
+            for (int i = particles.Count - 1; i >= 0; i--)
             {
                 //If the particle is alive, update it, else remove it
                 if (particles[i].Alive)
@@ -120,6 +120,7 @@ namespace XoticEngine.ParticleSystem
                 //Create a new particle
                 Particle p = particle.Fire();
                 p.Position = pos;
+                p.Depth = Depth;
 
                 //Update all updateOnce modifiers
                 for (int i = 0; i < modOnceList.Count; i++)

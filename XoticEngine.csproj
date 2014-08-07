@@ -109,6 +109,7 @@
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />
     <Compile Include="Input\GamePadInput.cs" />
     <Compile Include="Input\MouseInput.cs" />
+    <Compile Include="ParticleSystem\AnimationParticle.cs" />
     <Compile Include="Path.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Timer.cs" />
