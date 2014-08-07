@@ -68,7 +68,7 @@ namespace XoticEngine.ParticleSystem
         public bool Alive
         { get { return ttl > 0; } }
         public double TimeToLive
-        { get { return ttl; } }
+        { get { return ttl; } set { ttl = value; } }
         public double InitalTimeToLive
         { get { return initialTTL; } }
         public double RealLifeTime
