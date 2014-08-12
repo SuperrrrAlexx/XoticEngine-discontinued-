@@ -124,6 +124,10 @@ namespace XoticEngine.GameObjects
         {
             return Name;
         }
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
 
         public IEnumerator<GameObject> GetEnumerator()
         {

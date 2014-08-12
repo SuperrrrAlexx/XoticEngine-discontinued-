@@ -30,7 +30,7 @@ namespace XoticEngine.ParticleSystem
         public override Particle Fire()
         {
             Animation a = new Animation(animation.Sheet, animation.FPS, animation.Repeat);
-            return new AnimationParticle(Speed, Scale, Rotation, RotationSpeed, a, Color, TimeToLive)
+            return new AnimationParticle(Speed, Scale, Rotation, RotationSpeed, a, Color, InitialTimeToLive)
             {
                 Origin = this.Origin
             };

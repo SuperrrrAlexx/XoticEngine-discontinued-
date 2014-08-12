@@ -58,7 +58,7 @@ namespace XoticEngine.ParticleSystem
 
         public virtual Particle Fire()
         {
-            return new Particle(speed, scale, rotation, rotationSpeed, texture, color, ttl)
+            return new Particle(speed, scale, rotation, rotationSpeed, texture, color, initialTTL)
             {
                 origin = this.origin
             };
@@ -68,9 +68,9 @@ namespace XoticEngine.ParticleSystem
         public bool Alive
         { get { return ttl > 0; } }
         public double TimeToLive
-        { get { return ttl; } set { ttl = value; } }
-        public double InitalTimeToLive
-        { get { return initialTTL; } }
+        { get { return ttl; } }
+        public double InitialTimeToLive
+        { get { return initialTTL; } set { initialTTL = value; } }
         public double RealLifeTime
         { get { return 1f - (ttl / initialTTL); } }
         public double LifeTime

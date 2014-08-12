@@ -25,18 +25,6 @@ namespace XoticEngine.GameObjects
             //Extract all sprites from the sheet
             ExtractSprites(sheetName);
         }
-        public SpriteSheet(Texture2D sheet, int cols, int rows)
-        {
-            //Save the sheet
-            this.sheet = sheet;
-
-            //Default is 1 column and row
-            cols = 1;
-            rows = 1;
-
-            //Extract all sprites from the sheet
-            ExtractSprites("SpriteSheet@" + cols + "x" + rows);
-        }
         public SpriteSheet(string sheetName, Rectangle[] sourceRectangles)
         {
             //Load the sheet
@@ -60,6 +48,38 @@ namespace XoticEngine.GameObjects
 
             //Extract all sprites from the sheet
             ExtractSprites(sourceRectangles);
+        }
+        public SpriteSheet(Texture2D sheet, int cols, int rows)
+        {
+            //Save the sheet
+            this.sheet = sheet;
+
+            //Default is 1 column and row
+            cols = 1;
+            rows = 1;
+
+            //Extract all sprites from the sheet
+            ExtractSprites("SpriteSheet@" + cols + "x" + rows);
+        }
+        public SpriteSheet(Texture2D[] sprites)
+        {
+            //Same amount of columns as sprites, 1 row
+            cols = sprites.Length;
+            rows = 1;
+
+            //Save the sprites
+            this.sprites = new Texture2D[cols, rows];
+            for (int i = 0; i < cols; i++)
+                this.sprites[i, 0] = sprites[i];
+        }
+        public SpriteSheet(Texture2D[,] sprites)
+        {
+            //Same amount of columns as sprites, 1 row
+            cols = sprites.GetLength(0);
+            rows = sprites.GetLength(1);
+
+            //Save the sprites
+            this.sprites = sprites;
         }
 
         private void ExtractSprites(string sheetName)

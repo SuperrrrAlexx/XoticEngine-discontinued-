@@ -112,7 +112,7 @@ namespace XoticEngine.ParticleSystem
         public void Shoot(int amount)
         {
             //Create all the particles
-            for (int n = amount; n > 0; n--)
+            for (int n = 0; n < amount; n++)
             {
                 //Calculate the particle position between the old and new position
                 Vector2 pos = new Vector2(MathHelper.Lerp(prevPosition.X, Position.X, (float)n / amount), MathHelper.Lerp(prevPosition.Y, Position.Y, (float)n / amount));

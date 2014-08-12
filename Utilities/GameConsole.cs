@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using XoticEngine.EventArguments;
+using XoticEngine.GameObjects;
 using XoticEngine.GameObjects.MenuItems;
 using XoticEngine.Input;
 
@@ -41,10 +43,11 @@ namespace XoticEngine.Utilities
             font = consoleFont;
 
             //Create the textbox
-            inputBox = new Textbox("Textbox", new Rectangle(0, backRect.Bottom, backRect.Width, 20), 0, consoleFont, Color.White, backColor)
+            inputBox = new Textbox("Command line", new Rectangle(0, backRect.Bottom, backRect.Width, 20), 0, consoleFont, Color.White, backColor)
             {
                 MaxLines = 1,
-                UseRealTime = true
+                UseRealTime = true,
+                Enabled = false
             };
 
             //Add the help text
@@ -68,7 +71,7 @@ namespace XoticEngine.Utilities
             //Clear the log
             Action<string[]> clearLog = (args) =>
             {
-                log = new List<Tuple<string, Color, string>>();
+                log.Clear();
             };
             commands.Add("clear", clearLog);
 
@@ -82,15 +85,14 @@ namespace XoticEngine.Utilities
             //Show the total gametime
             Action<string[]> gameTime = (args) =>
             {
-                if (Time.GameTime != null)
-                    Write("Total gametime: " + Time.GameTime.TotalGameTime.ToString());
+                Write("Total gametime: " + Time.GameTime.TotalGameTime.ToString());
             };
             commands.Add("gametime", gameTime);
 
             //Show the current gamestate
             Action<string[]> gameState = (args) =>
             {
-                Write("Current gamestate: " + X.CurrentState == null ? "null" : X.CurrentState.Name);
+                Write("Current gamestate: " + (X.CurrentState == null ? "null" : X.CurrentState.Name));
             };
             commands.Add("gamestate", gameState);
 
@@ -123,9 +125,10 @@ namespace XoticEngine.Utilities
             Action<string[]> currentObjects = (args) =>
             {
                 Write("Gameobjects:");
-                List<string> names = X.CurrentState.GameObjects.Keys.ToList();
-                for (int i = 0; i < names.Count; i++)
-                    Write(names[i]);
+                foreach (GameObject o in X.CurrentState)
+                {
+                    Write(o.Name);
+                }
             };
             commands.Add("gameobjects", currentObjects);
 
@@ -143,7 +146,7 @@ namespace XoticEngine.Utilities
                 if (args.Length > 0)
                 {
                     double gs;
-                    if (double.TryParse(args[0], out gs))
+                    if (double.TryParse(args[0], NumberStyles.AllowDecimalPoint, null, out gs))
                         Time.GameSpeed = gs;
                     else
                         Error("That is not a valid game speed. Example: gamespeed 0,5");
@@ -245,7 +248,7 @@ namespace XoticEngine.Utilities
             using (StreamWriter writer = new StreamWriter(path, append))
             {
                 for (int i = 0; i < log.Count; i++)
-                    writer.WriteLine("<" + log.ElementAt(i).Item3 + "> " + log.ElementAt(i).Item1);
+                    writer.WriteLine("<" + log[i].Item3 + "> " + log[i].Item1);
             }
         }
 
