@@ -64,6 +64,10 @@ namespace XoticEngine
         {
             return r.Next(2) * 2 - 1;
         }
+        public static Color NextColor(this Random r)
+        {
+            return new Color(r.NextFloat(), r.NextFloat(), r.NextFloat());
+        }
 
         //String
         public static string Wrap(this string s, SpriteFont font, int textWidth)

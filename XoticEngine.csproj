@@ -101,6 +101,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Animation.cs" />
     <Compile Include="GameObjects\AnimationGameObject.cs" />
+    <Compile Include="GameObjects\GameStateGrid.cs" />
     <Compile Include="GameObjects\MenuItems\Alignment.cs" />
     <Compile Include="GameObjects\MenuItems\Label.cs" />
     <Compile Include="GameObjects\MenuItems\Textbox.cs" />
