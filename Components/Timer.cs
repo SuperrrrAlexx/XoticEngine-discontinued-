@@ -10,9 +10,9 @@ namespace XoticEngine.Components
         //A static list of timers that updates them all
         private static List<Timer> timers = new List<Timer>();
 
+        private bool enabled = true;
         private double time, timeLeft;
         private bool repeat, useRealTime;
-        private bool enabled = true;
         //Event
         public delegate void TimerTick(object sender, EventArgs e);
         public event TimerTick Tick;
@@ -30,28 +30,24 @@ namespace XoticEngine.Components
         {
             //Update all enabled timers
             foreach (Timer t in timers)
-                if (t.Enabled)
-                    t.Update();
+                t.Update();
         }
         private void Update()
         {
-            if (enabled)
+            //Update the time
+            timeLeft -= useRealTime ? Time.RealTime : Time.DeltaTime;
+
+            //Check if the timer ticks
+            if (timeLeft <= 0)
             {
-                //Update the time
-                timeLeft -= useRealTime ? Time.RealTime : Time.DeltaTime;
+                if (Tick != null)
+                    Tick(this, EventArgs.Empty);
 
-                //Check if the timer ticks
-                if (timeLeft <= 0)
-                {
-                    if (Tick != null)
-                        Tick(this, EventArgs.Empty);
-
-                    //Repeat or disable
-                    if (repeat)
-                        timeLeft = time;
-                    else
-                        enabled = false;
-                }
+                //Repeat or disable
+                if (repeat)
+                    timeLeft = time;
+                else
+                    enabled = false;
             }
         }
 

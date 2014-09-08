@@ -50,6 +50,7 @@ namespace XoticEngine
             AchievementHolder.Update();
             FrameRateCounter.Update();
             Timer.UpdateAll();
+            Stopwatch.UpdateAll();
 
             base.Update(gameTime);
         }
