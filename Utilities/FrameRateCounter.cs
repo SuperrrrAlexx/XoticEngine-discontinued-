@@ -7,7 +7,7 @@ namespace XoticEngine.Utilities
 {
     public static class FrameRateCounter
     {
-        static int frames = 0, frameRate = 0, secondsPassed = 0;
+        private static int frames, frameRate, secondsPassed;
 
         public static void Update()
         {
@@ -19,7 +19,6 @@ namespace XoticEngine.Utilities
                 frames = 0;
             }
         }
-
         public static void Draw()
         {
             frames++;

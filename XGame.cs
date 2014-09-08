@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using XoticEngine.Achievements;
+using XoticEngine.Components;
 using XoticEngine.Input;
 using XoticEngine.Utilities;
 
@@ -59,7 +60,7 @@ namespace XoticEngine
             Time.Update(gameTime);
 
             //Draw everything
-            Graphics.DrawAll();
+            Graphics.Draw();
 
             base.Draw(gameTime);
         }

@@ -8,13 +8,13 @@ namespace XoticEngine.Utilities
 {
     public class Benchmark
     {
-        static string sName;
-        static DateTime sStartTime, sEndTime;
-        static bool sStarted = false;
+        private static string _name;
+        private static DateTime _startTime, _endTime;
+        private static bool _started = false;
 
-        string name;
-        DateTime startTime, endTime;
-        bool started = false;
+        private string name;
+        private DateTime startTime, endTime;
+        private bool started = false;
 
         public Benchmark(string name)
         {
@@ -23,12 +23,12 @@ namespace XoticEngine.Utilities
 
         public static void StartStatic(string benchmarkName)
         {
-            if (!sStarted)
+            if (!_started)
             {
-                sName = benchmarkName;
-                GameConsole.Write("Benchmark " + sName + " started");
-                sStarted = true;
-                sStartTime = DateTime.Now;
+                _name = benchmarkName;
+                GameConsole.Write("Benchmark " + _name + " started");
+                _started = true;
+                _startTime = DateTime.Now;
             }
             else
                 GameConsole.Error("Can't start a static benchmark before the previous on ended, recommend using instances.");
@@ -43,17 +43,17 @@ namespace XoticEngine.Utilities
                 startTime = DateTime.Now;
             }
             else
-                GameConsole.Error("Can't start a benchmark before it on ended.");
+                GameConsole.Error("Can't start a benchmark multiple times.");
         }
 
         public static void EndStatic()
         {
-            if (sStarted)
+            if (_started)
             {
-                sEndTime = DateTime.Now;
-                GameConsole.Write("Benchmark " + sName + " ended");
-                GameConsole.Write("Time: " + (sEndTime - sStartTime));
-                sStarted = false;
+                _endTime = DateTime.Now;
+                GameConsole.Write("Benchmark " + _name + " ended");
+                GameConsole.Write("Time: " + (_endTime - _startTime));
+                _started = false;
             }
             else
                 GameConsole.Error("Can't end benchmark before it started.");
@@ -76,5 +76,7 @@ namespace XoticEngine.Utilities
         { get { return startTime; } }
         public DateTime EndTime
         { get { return endTime; } }
+        public TimeSpan Length
+        { get { return endTime - startTime; } }
     }
 }

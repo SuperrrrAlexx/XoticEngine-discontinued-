@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.Components;
 using XoticEngine.Shapes;
 
 namespace XoticEngine
@@ -26,7 +27,7 @@ namespace XoticEngine
                 s.Draw(Assets.Get<Texture2D>("DummyTexture"), v, null, color, 0, new Vector2(0.5f), pointSize, SpriteEffects.None, 0);
         }
 
-        //Point and Vector2
+        //Point to Vector2
         public static Vector2 ToVector2(this Point p)
         {
             return new Vector2(p.X, p.Y);
@@ -36,6 +37,7 @@ namespace XoticEngine
             return new Point((int)Math.Round(v.X, MidpointRounding.AwayFromZero), (int)Math.Round(v.Y, MidpointRounding.AwayFromZero));
         }
 
+        //Angle and direction
         public static float GetAngle(this Vector2 v)
         {
             return (float)Math.Atan2(v.Y / v.Length(), v.X / v.Length());
@@ -69,8 +71,8 @@ namespace XoticEngine
             return new Color(r.NextFloat(), r.NextFloat(), r.NextFloat());
         }
 
-        //String
-        public static string Wrap(this string s, SpriteFont font, int textWidth)
+        //Text wrap
+        public static string Wrap(this string s, SpriteFont font, int lineWidth)
         {
             string wrapped = String.Empty;
             string line = String.Empty;
@@ -87,7 +89,7 @@ namespace XoticEngine
                     line = String.Empty;
                 }
                 //Check if the line is longer than the width of the textbox
-                else if (font.MeasureString(line + words[i]).X >= textWidth)
+                else if (font.MeasureString(line + words[i]).X >= lineWidth)
                 {
                     wrapped += line + "\n";
                     line = words[i] + " ";
@@ -101,6 +103,13 @@ namespace XoticEngine
 
             //Return the wrapped text plus the last line
             return wrapped + line;
+        }
+
+        //SpriteBatchSettings
+        public static void Begin(this SpriteBatch s, SpriteBatchSettings settings)
+        {
+            //Begin the spritebatch with all the spritebatch settings
+            s.Begin(settings.SortMode, settings.BlendState, settings.SamplerState, settings.DepthStencilState, settings.RasterizerState, settings.Effect, settings.TransformMatrix);
         }
     }
 }

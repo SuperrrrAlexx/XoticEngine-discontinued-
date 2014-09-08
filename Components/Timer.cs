@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace XoticEngine
+namespace XoticEngine.Components
 {
     public class Timer
     {
@@ -33,7 +33,7 @@ namespace XoticEngine
                 if (t.Enabled)
                     t.Update();
         }
-        public void Update()
+        private void Update()
         {
             if (enabled)
             {

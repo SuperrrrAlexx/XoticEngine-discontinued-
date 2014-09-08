@@ -16,16 +16,16 @@ namespace XoticEngine.Utilities
 {
     public static class GameConsole
     {
-        static bool enabled, visible;
+        private static bool enabled, visible;
         //Input
-        static Textbox inputBox;
-        static SpriteFont font;
+        private static Textbox inputBox;
+        private static SpriteFont font;
         //Background
-        static Rectangle backRect;
-        static Color backColor;
+        private static Rectangle backRect;
+        private static Color backColor;
         //Log, commands
-        static List<Tuple<string, Color, string>> log;
-        static Dictionary<string, Action<string[]>> commands;
+        private static List<Tuple<string, Color, string>> log;
+        private static Dictionary<string, Action<string[]>> commands;
 
         static GameConsole()
         {
@@ -58,7 +58,7 @@ namespace XoticEngine.Utilities
             //Event input
             KeyboardInput.OnKeyPressed += KeyInput;
         }
-        static void InitCommands()
+        private static void InitCommands()
         {
             //Display all the commands
             Action<string[]> showCommands = (args) =>
@@ -156,7 +156,7 @@ namespace XoticEngine.Utilities
             commands.Add("gamespeed", gameSpeed);
         }
 
-        static void KeyInput(object sender, KeyEventArgs k)
+        private static void KeyInput(object sender, KeyEventArgs k)
         {
             //Toggle console visibility
             if (k.Key == Keys.Tab)
@@ -183,13 +183,13 @@ namespace XoticEngine.Utilities
                 inputBox.Update();
             }
         }
-        public static void Draw(SpriteBatch s)
+        public static void Draw(SpriteBatchHolder spriteBatches)
         {
             if (enabled && visible)
             {
                 //Draw the background and textbox
-                s.Draw(Assets.Get<Texture2D>("DummyTexture"), backRect, null, Color.Black * 0.6f, 0, Vector2.Zero, SpriteEffects.None, float.Epsilon);
-                inputBox.Draw(s, s, s);
+                spriteBatches[DrawModes.Gui].Draw(Assets.Get<Texture2D>("DummyTexture"), backRect, null, Color.Black * 0.6f, 0, Vector2.Zero, SpriteEffects.None, float.Epsilon);
+                inputBox.Draw(spriteBatches);
 
                 //Draw the log
                 for (int i = log.Count - 1; i >= 0; i--)
@@ -202,7 +202,7 @@ namespace XoticEngine.Utilities
                         break;
 
                     //Draw the text
-                    s.DrawString(inputBox.Font, log[i].Item1, linePos, log[i].Item2, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                    spriteBatches[DrawModes.Gui].DrawString(inputBox.Font, log[i].Item1, linePos, log[i].Item2, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 }
             }
         }

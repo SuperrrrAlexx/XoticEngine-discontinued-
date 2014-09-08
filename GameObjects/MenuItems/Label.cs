@@ -78,14 +78,14 @@ namespace XoticEngine.GameObjects.MenuItems
             }
         }
 
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        public override void Draw(SpriteBatchHolder spriteBatches)
         {
             //Draw the background
-            guiBatch.Draw(backTex, backRect, null, backColor, 0, Vector2.Zero, SpriteEffects.None, MathHelper.Clamp(Depth + float.Epsilon, 0, 1));
+            spriteBatches[DrawModes.Gui].Draw(backTex, backRect, null, backColor, 0, Vector2.Zero, SpriteEffects.None, MathHelper.Clamp(Depth + float.Epsilon, 0, 1));
             //Draw the text
-            guiBatch.DrawString(font, text, textPos, textColor, 0, Vector2.Zero, 1, SpriteEffects.None, Depth);
+            spriteBatches[DrawModes.Gui].DrawString(font, text, textPos, textColor, 0, Vector2.Zero, 1, SpriteEffects.None, Depth);
             
-            base.Draw(gameBatch, additiveBatch, guiBatch);
+            base.Draw(spriteBatches);
         }
 
         public override Vector2 RelativePosition

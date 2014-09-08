@@ -9,16 +9,16 @@ namespace XoticEngine.Achievements
 {
     public class Achievement
     {
-        string name;
-        string description;
-        SpriteFont nameFont, descFont;
-        Texture2D picture;
-        Color backColor, textColor;
+        private string name;
+        private string description;
+        private SpriteFont nameFont, descFont;
+        private Texture2D picture;
+        private Color backColor, textColor;
         //Positions
-        Vector2 position, namePos, descPos, picPos;
-        Rectangle backRect;
+        private Vector2 position, namePos, descPos, picPos;
+        private Rectangle backRect;
         //Achieved
-        bool achieved = false;
+        private bool achieved = false;
 
         public Achievement(string name, string description, SpriteFont nameFont, SpriteFont descFont, Color textColor, Color backColor, Texture2D picture)
         {

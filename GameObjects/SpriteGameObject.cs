@@ -10,10 +10,10 @@ namespace XoticEngine.GameObjects
 {
     public class SpriteGameObject : GameObject
     {
-        Texture2D sprite;
-        Color color;
-        Vector2 scale;
-        SpriteEffects effects = SpriteEffects.None;
+        private Texture2D sprite;
+        private Color color;
+        private Vector2 scale;
+        private SpriteEffects effects = SpriteEffects.None;
 
         public SpriteGameObject(string name, Texture2D sprite, Vector2 position)
             : base(name, position)
@@ -44,23 +44,12 @@ namespace XoticEngine.GameObjects
             this.scale = scale;
         }
 
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        public override void Draw(SpriteBatchHolder spriteBatches)
         {
-            //Draw the sprite with the correct spritebatch
-            switch (DrawType)
-            {
-                case DrawMode.AlphaBlend:
-                    gameBatch.Draw(sprite, Position, null, color, Rotation, Origin, scale, effects, Depth);
-                    break;
-                case DrawMode.Additive:
-                    additiveBatch.Draw(sprite, Position, null, color, Rotation, Origin, scale, effects, Depth);
-                    break;
-                case DrawMode.Gui:
-                    guiBatch.Draw(sprite, Position, null, color, Rotation, Origin, scale, effects, Depth);
-                    break;
-            }
+            //Draw the sprite
+            spriteBatches[DrawMode].Draw(sprite, Position, null, color, Rotation, Origin, scale, effects, Depth);
 
-            base.Draw(gameBatch, additiveBatch, guiBatch);
+            base.Draw(spriteBatches);
         }
 
         public Texture2D Sprite

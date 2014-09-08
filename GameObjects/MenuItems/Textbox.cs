@@ -113,13 +113,13 @@ namespace XoticEngine.GameObjects.MenuItems
 
             base.Update();
         }
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        public override void Draw(SpriteBatchHolder spriteBatches)
         {
             //Draw the text cursor
             if (showCursor && cursorVisible)
-                guiBatch.DrawString(Font, "|", cursorPos, TextColor, 0, Vector2.Zero, 1, SpriteEffects.None, Depth);
+                spriteBatches[DrawModes.Gui].DrawString(Font, "|", cursorPos, TextColor, 0, Vector2.Zero, 1, SpriteEffects.None, Depth);
 
-            base.Draw(gameBatch, additiveBatch, guiBatch);
+            base.Draw(spriteBatches);
         }
 
         public override string Text

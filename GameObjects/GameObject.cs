@@ -13,7 +13,7 @@ namespace XoticEngine.GameObjects
         //Name
         public readonly string Name;
 
-        private DrawMode drawType = DrawMode.AlphaBlend;
+        private DrawModes drawMode = DrawModes.AlphaBlend;
         //Positioning
         private Vector2 position, relativePosition, origin;
         private float rotation, relativeRotation, depth;
@@ -55,16 +55,16 @@ namespace XoticEngine.GameObjects
             foreach (GameObject g in this)
                 g.Update();
         }
-        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        public virtual void Draw(SpriteBatchHolder spriteBatches)
         {
         }
-        public virtual void DrawChildren(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        public virtual void DrawChildren(SpriteBatchHolder spriteBatches)
         {
             //Draw each child
             foreach (GameObject g in this)
             {
-                g.Draw(gameBatch, additiveBatch, guiBatch);
-                g.DrawChildren(gameBatch, additiveBatch, guiBatch);
+                g.Draw(spriteBatches);
+                g.DrawChildren(spriteBatches);
             }
         }
 
@@ -140,12 +140,9 @@ namespace XoticEngine.GameObjects
             return GetEnumerator();
         }
 
-        public enum DrawMode
-        { AlphaBlend, Additive, Gui }
-
         //Drawing
-        public DrawMode DrawType
-        { get { return drawType; } set { drawType = value; } }
+        public DrawModes DrawMode
+        { get { return drawMode; } set { drawMode = value; } }
         public float Depth
         { get { return depth; } set { depth = value; } }
 

@@ -111,9 +111,11 @@
     <Compile Include="Input\GamePadInput.cs" />
     <Compile Include="Input\MouseInput.cs" />
     <Compile Include="ParticleSystem\AnimationParticle.cs" />
-    <Compile Include="Path.cs" />
+    <Compile Include="Components\Path.cs" />
+    <Compile Include="SpriteBatchHolder.cs" />
+    <Compile Include="SpriteBatchSettings.cs" />
     <Compile Include="Time.cs" />
-    <Compile Include="Timer.cs" />
+    <Compile Include="Components\Timer.cs" />
     <Compile Include="Utilities\Benchmark.cs" />
     <Compile Include="GraphicEffects\Camera.cs" />
     <Compile Include="Utilities\FrameRateCounter.cs" />

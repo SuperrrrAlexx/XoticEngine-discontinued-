@@ -9,20 +9,20 @@ namespace XoticEngine.Achievements
 {
     public static class AchievementHolder
     {
-        static bool enabled = false;
-        static string exception = "Initialize must be called before using the AchievementHolder.";
+        private static bool enabled = false;
+        private static string exception = "Initialize must be called before using the AchievementHolder.";
         //Lists
-        static Dictionary<string, Achievement> achievements;
-        static Queue<Achievement> queue;
-        static Achievement current;
+        private static Dictionary<string, Achievement> achievements;
+        private static Queue<Achievement> queue;
+        private static Achievement current;
         //Movement
-        static AchievementMove currentMove = AchievementMove.Up;
-        static int moveSpeed = 200;
-        static double showTime = 5;
-        static double showTimeLeft;
+        private static AchievementMove currentMove = AchievementMove.Up;
+        private static int moveSpeed = 200;
+        private static double showTime = 5;
+        private static double showTimeLeft;
         //Achievement default properties
-        static SpriteFont nameFont, descFont;
-        static Color textColor, backColor;
+        private static SpriteFont nameFont, descFont;
+        private static Color textColor, backColor;
 
         public static void Initialize(SpriteFont defaultNameFont, SpriteFont defaultDescFont, Color defaultTextColor, Color defaultBackColor)
         {

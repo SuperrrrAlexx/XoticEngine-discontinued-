@@ -14,15 +14,15 @@ namespace XoticEngine
     public static class Assets
     {
         //Content manager
-        static ContentManager content;
+        private static ContentManager content;
         //Lists with assets
-        static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-        static Dictionary<string, SpriteSheet> sheets = new Dictionary<string, SpriteSheet>();
-        static Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
-        static Dictionary<string, Effect> effects = new Dictionary<string, Effect>();
-        static Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-        static Dictionary<string, Song> songs = new Dictionary<string, Song>();
-        static Dictionary<string, Video> videos = new Dictionary<string, Video>();
+        private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+        private static Dictionary<string, SpriteSheet> sheets = new Dictionary<string, SpriteSheet>();
+        private static Dictionary<string, SpriteFont> fonts = new Dictionary<string, SpriteFont>();
+        private static Dictionary<string, Effect> effects = new Dictionary<string, Effect>();
+        private static Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+        private static Dictionary<string, Song> songs = new Dictionary<string, Song>();
+        private static Dictionary<string, Video> videos = new Dictionary<string, Video>();
 
         public static void Initialize(ContentManager c)
         {

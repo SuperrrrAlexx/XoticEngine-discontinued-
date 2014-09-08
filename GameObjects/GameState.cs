@@ -29,13 +29,13 @@ namespace XoticEngine.GameObjects
             foreach (GameObject g in this)
                 g.Update();
         }
-        public virtual void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        public virtual void Draw(SpriteBatchHolder spriteBatches)
         {
             //Draw each gameobject and its children
             foreach (GameObject g in this)
             {
-                g.Draw(gameBatch, additiveBatch, guiBatch);
-                g.DrawChildren(gameBatch, additiveBatch, guiBatch);
+                g.Draw(spriteBatches);
+                g.DrawChildren(spriteBatches);
             }
         }
 

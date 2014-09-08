@@ -31,17 +31,17 @@ namespace XoticEngine.GameObjects
 
             base.Update();
         }
-        public override void Draw(SpriteBatch gameBatch, SpriteBatch additiveBatch, SpriteBatch guiBatch)
+        public override void Draw(SpriteBatchHolder spriteBatches)
         {
             //Draw each GameObject in the grid
             foreach (GameObject g in grid)
                 if (g != null)
                 {
-                    g.Draw(gameBatch, additiveBatch, guiBatch);
-                    g.DrawChildren(gameBatch, additiveBatch, guiBatch);
+                    g.Draw(spriteBatches);
+                    g.DrawChildren(spriteBatches);
                 }
 
-            base.Draw(gameBatch, additiveBatch, guiBatch);
+            base.Draw(spriteBatches);
         }
 
         public GameObject this[int x, int y]

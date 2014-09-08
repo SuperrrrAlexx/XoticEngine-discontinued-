@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace XoticEngine
+namespace XoticEngine.Components
 {
     public class Path
     {

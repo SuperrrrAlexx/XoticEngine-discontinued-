@@ -8,15 +8,15 @@ namespace XoticEngine.GraphicEffects
 {
     public class Camera
     {
-        Matrix transform;
-        Vector2 position;
-        float zoom, rotation;
-        bool applyOnUpdate;
+        private Matrix transform;
+        private Vector2 position;
+        private float zoom, rotation;
+        private bool applyOnUpdate;
 
         //Camera shake
-        Vector2 shake, shakeAmount, nextPoint;
-        float shakeSpeed;
-        double shakeTime;
+        private Vector2 shake, shakeAmount, nextPoint;
+        private float shakeSpeed;
+        private double shakeTime;
 
         public Camera(bool applyOnUpdate)
         {

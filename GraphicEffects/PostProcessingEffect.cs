@@ -11,6 +11,8 @@ namespace XoticEngine.GraphicEffects
     {
         protected Effect effect;
         protected RenderTarget2D target1, target2;
+
+        //For the virtual apply
         private bool secondTarget = true;
 
         public PostProcessingEffect(Effect effect)

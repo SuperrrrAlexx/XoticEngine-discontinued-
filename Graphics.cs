@@ -12,47 +12,64 @@ namespace XoticEngine
 {
     public static class Graphics
     {
-        static GraphicsDeviceManager graphics;
+        private static GraphicsDeviceManager graphics;
         //Spritebatches
-        static SpriteBatch gameBatch, additiveBatch, guiBatch;
-        static Matrix transformMatrix;
+        private static SpriteBatchHolder spriteBatches;
+        private static SpriteBatch effectBatch;
+        private static Matrix transformMatrix = Matrix.Identity;
         //Post processing
-        static List<PostProcessingEffect> postProcessing;
-        static RenderTarget2D target;
+        private static List<PostProcessingEffect> postProcessing;
+        private static RenderTarget2D target;
 
         public static void Initialize(GraphicsDeviceManager gr)
         {
             //Create the graphics device manager
             graphics = gr;
 
-            //Create the spritebatches
-            gameBatch = new SpriteBatch(Device);
-            additiveBatch = new SpriteBatch(Device);
-            guiBatch = new SpriteBatch(Device);
+            //Create the spritebatch settings and holder
+            Dictionary<DrawModes, SpriteBatchSettings> spriteBatchSettings = new Dictionary<DrawModes, SpriteBatchSettings>()
+            {
+                { DrawModes.AlphaBlend, new SpriteBatchSettings(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix) },
+                { DrawModes.Additive, new SpriteBatchSettings(SpriteSortMode.BackToFront, BlendState.Additive, null, null, null, null, transformMatrix) },
+                { DrawModes.Gui, new SpriteBatchSettings(SpriteSortMode.BackToFront, null) },
+            };
+            spriteBatches = new SpriteBatchHolder(spriteBatchSettings);
+
+            //Create the effect batch
+            effectBatch = new SpriteBatch(Device);
 
             //Create a new list and render target
             postProcessing = new List<PostProcessingEffect>();
             target = new RenderTarget2D(Device, Viewport.Width, Viewport.Height);
-
-            //Set the transform matrix
-            transformMatrix = Matrix.Identity;
         }
 
         //Drawing
-        public static void DrawAll()
+        public static void Draw()
         {
             //Clear the graphics device
             Graphics.Device.Clear(Color.Transparent);
 
-            //Draw to a render target
+            //Check if there are any post processing effects
             if (postProcessing.Count > 0)
             {
+                //Draw to a render target
                 Device.SetRenderTarget(target);
                 Device.Clear(Color.Transparent);
             }
 
-            //Draw the current game state
-            DrawGameState();
+            //Begin the spritebatches
+            spriteBatches.Begin();
+
+            //If the current game state is not null, draw it
+            if (X.CurrentState != null)
+                X.CurrentState.Draw(spriteBatches);
+
+            //Draw the other components
+            GameConsole.Draw(spriteBatches);
+            AchievementHolder.Draw(spriteBatches[DrawModes.Gui]);
+
+            //End the spritebatches
+            spriteBatches.End();
 
             if (postProcessing.Count > 0)
             {
@@ -61,45 +78,17 @@ namespace XoticEngine
 
                 //Apply all effects
                 for (int i = 0; i < postProcessing.Count; i++)
-                    texture = postProcessing[i].Apply(texture, gameBatch, Vector2.Zero);
+                    texture = postProcessing[i].Apply(texture, effectBatch, Vector2.Zero);
 
                 //Draw to the screen
                 Device.SetRenderTarget(null);
-                gameBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                gameBatch.Draw(texture, Vector2.Zero, Color.White);
-                gameBatch.End();
+                effectBatch.Begin();
+                effectBatch.Draw(texture, Vector2.Zero, Color.White);
+                effectBatch.End();
             }
 
-            //Draw the gui elements
-            DrawGui();
-            //Draw the framerate counter
+            //Frame rate counter
             FrameRateCounter.Draw();
-        }
-        private static void DrawGameState()
-        {
-            //Begin the spritebatches
-            gameBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, transformMatrix);
-            additiveBatch.Begin(SpriteSortMode.BackToFront, BlendState.Additive, null, null, null, null, transformMatrix);
-            guiBatch.Begin(SpriteSortMode.BackToFront, null);
-
-            //If the current game state is not null, draw it
-            if (X.CurrentState != null)
-                X.CurrentState.Draw(gameBatch, additiveBatch, guiBatch);
-
-            //End the spritebatches
-            gameBatch.End();
-            additiveBatch.End();
-            guiBatch.End();
-        }
-        private static void DrawGui()
-        {
-            guiBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-
-            //Draw the console and schievements
-            GameConsole.Draw(guiBatch);
-            AchievementHolder.Draw(guiBatch);
-
-            guiBatch.End();
         }
 
         public static void ResetTransformMatrix()
@@ -108,10 +97,12 @@ namespace XoticEngine
             transformMatrix = Matrix.Identity;
         }
 
+        //Device and manager
         public static GraphicsDeviceManager DeviceManager
         { get { return graphics; } }
         public static GraphicsDevice Device
         { get { return graphics.GraphicsDevice; } }
+        //Screen
         public static Point Screen
         { get { return new Point(Device.DisplayMode.Width, Device.DisplayMode.Height); } }
         public static Rectangle Viewport
@@ -125,6 +116,7 @@ namespace XoticEngine
                 graphics.ApplyChanges();
             }
         }
+        //Drawing
         public static Matrix TransformMatrix
         { get { return transformMatrix; } set { transformMatrix = value; } }
         public static List<PostProcessingEffect> PostProcessing
