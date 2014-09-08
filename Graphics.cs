@@ -118,7 +118,16 @@ namespace XoticEngine
         }
         //Drawing
         public static Matrix TransformMatrix
-        { get { return transformMatrix; } set { transformMatrix = value; } }
+        {
+            get { return transformMatrix; }
+            set
+            {
+                transformMatrix = value;
+                //Save the matrix in the spritebatch settings
+                spriteBatches.Settings(DrawModes.AlphaBlend).TransformMatrix = transformMatrix;
+                spriteBatches.Settings(DrawModes.Additive).TransformMatrix = transformMatrix;
+            }
+        }
         public static List<PostProcessingEffect> PostProcessing
         { get { return postProcessing; } set { postProcessing = value; } }
     }

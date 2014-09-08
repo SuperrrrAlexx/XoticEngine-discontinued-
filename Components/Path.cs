@@ -8,12 +8,12 @@ namespace XoticEngine.Components
 {
     public class Path
     {
-        Vector2[] path;
-        int prev, next;
-        Vector2 position;
-        float speed, distance;
-        bool repeat;
-        bool ended = false;
+        private Vector2[] path;
+        private int prev, next;
+        private Vector2 position;
+        private float speed, distance;
+        private bool repeat;
+        private bool ended = false;
 
         public Path(Vector2[] points, float speed, bool repeat)
         {
