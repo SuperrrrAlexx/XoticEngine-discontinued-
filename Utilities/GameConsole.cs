@@ -111,7 +111,7 @@ namespace XoticEngine.Utilities
             {
                 try
                 {
-                    if (X.CurrentState.Name != args[0])
+                    if (X.CurrentState == null || X.CurrentState.Name != args[0])
                         X.SwitchTo(args[0]);
                     else
                         Error(args[0] + " is already the current state.");
