@@ -18,13 +18,13 @@ namespace XoticEngine
             Vector2 direction = l.P2.ToVector2() - l.P1.ToVector2();
 
             //Draw a rotated rectangle with height 1 (a line)
-            s.Draw(Assets.Get<Texture2D>("DummyTexture"), new Rectangle(l.P1.X, l.P1.Y, (int)direction.Length(), 1), null, color, direction.GetAngle(), Vector2.Zero, SpriteEffects.None, 0);
+            s.Draw(Assets.DummyTexture, new Rectangle(l.P1.X, l.P1.Y, (int)direction.Length(), 1), null, color, direction.GetAngle(), Vector2.Zero, SpriteEffects.None, 0);
         }
         public static void DrawPath(this SpriteBatch s, Path p, int pointSize, Color color)
         {
             //Draw each point from the path
             foreach (Vector2 v in p.Points)
-                s.Draw(Assets.Get<Texture2D>("DummyTexture"), v, null, color, 0, new Vector2(0.5f), pointSize, SpriteEffects.None, 0);
+                s.Draw(Assets.DummyTexture, v, null, color, 0, new Vector2(0.5f), pointSize, SpriteEffects.None, 0);
         }
 
         //Point to Vector2

@@ -188,7 +188,7 @@ namespace XoticEngine.Utilities
             if (enabled && visible)
             {
                 //Draw the background and textbox
-                spriteBatches[DrawModes.Gui].Draw(Assets.Get<Texture2D>("DummyTexture"), backRect, null, Color.Black * 0.6f, 0, Vector2.Zero, SpriteEffects.None, float.Epsilon);
+                spriteBatches[DrawModes.Gui].Draw(Assets.DummyTexture, backRect, null, Color.Black * 0.6f, 0, Vector2.Zero, SpriteEffects.None, float.Epsilon);
                 inputBox.Draw(spriteBatches);
 
                 //Draw the log
@@ -227,11 +227,11 @@ namespace XoticEngine.Utilities
 
         public static void Command(string c)
         {
-            //Make sure the string is in lowercase
-            c = c.ToLower();
-
-            //Get the command and parameters
+            //Get the command
             string command = c.Split(' ')[0];
+            command = command.ToLower();
+
+            //Get the parameters
             c = c.Remove(0, command.Length);
             string[] parameters = c.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
