@@ -12,7 +12,7 @@ namespace XoticEngine.GameObjects
     {
         //Name
         public readonly string Name;
-
+        //Draw mode
         private DrawModes drawMode = DrawModes.AlphaBlend;
         //Positioning
         private Vector2 position, relativePosition, origin;

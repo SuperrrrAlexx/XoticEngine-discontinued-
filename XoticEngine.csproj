@@ -109,7 +109,9 @@
     <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Graphics.cs" />
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />
+    <Compile Include="EventArguments\ClickEventArgs.cs" />
     <Compile Include="Input\GamePadInput.cs" />
+    <Compile Include="Input\IClickable.cs" />
     <Compile Include="Input\MouseInput.cs" />
     <Compile Include="ParticleSystem\AnimationParticle.cs" />
     <Compile Include="Components\Path.cs" />

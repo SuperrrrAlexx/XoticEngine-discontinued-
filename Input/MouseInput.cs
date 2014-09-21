@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using XoticEngine.EventArguments;
 
 namespace XoticEngine.Input
 {
@@ -11,12 +12,29 @@ namespace XoticEngine.Input
     {
         //State
         private static MouseState prevMouse, currMouse;
+        //Event
+        public delegate void ClickEvent(object sender, ClickEventArgs e);
+        public static event ClickEvent OnClick;
 
         public static void Update()
         {
             //Update the states
             prevMouse = currMouse;
             currMouse = Mouse.GetState();
+
+            //Check the events
+            if (OnClick != null)
+                CheckEvents();
+        }
+        private static void CheckEvents()
+        {
+            //Check if a mouse button was pressed
+            if (LeftPressed())
+                OnClick(null, new ClickEventArgs(MouseButton.Left));
+            if (MiddlePressed())
+                OnClick(null, new ClickEventArgs(MouseButton.Middle));
+            if (RightPressed())
+                OnClick(null, new ClickEventArgs(MouseButton.Right));
         }
 
         //Clicks
@@ -58,7 +76,7 @@ namespace XoticEngine.Input
         }
         public static bool RightReleased()
         {
-            return currMouse.LeftButton == ButtonState.Released && prevMouse.LeftButton == ButtonState.Pressed;
+            return currMouse.RightButton == ButtonState.Released && prevMouse.RightButton == ButtonState.Pressed;
         }
 
         //Scroll wheel
@@ -84,4 +102,7 @@ namespace XoticEngine.Input
         public static Point Position
         { get { return new Point(currMouse.X, currMouse.Y); } }
     }
+
+    public enum MouseButton
+    { Left, Middle, Right }
 }

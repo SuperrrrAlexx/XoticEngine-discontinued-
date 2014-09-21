@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using XoticEngine.EventArguments;
 using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
-    public class Button : Label
+    public class Button : Label, IClickable
     {
         //Background
         private SpriteSheet backTexture;
@@ -16,8 +17,7 @@ namespace XoticEngine.GameObjects.MenuItems
         private Color[] backColors, textColors;
         //Events
         private bool hovering, leftDown, rightDown;
-        public delegate void ButtonEvent(object sender);
-        public event ButtonEvent OnLeftPress, OnRightPress, OnLeftRelease, OnRightRelease, OnMouseEnter, OnMouseExit;
+        public event MouseInput.ClickEvent OnClick;
 
         public Button(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color[] textColors, Color[] backColors)
             : base(name, backRect, depth, text, font, textColors != null ? textColors[0] : Color.Black, backColors != null ? backColors[0] : Color.White)
@@ -45,9 +45,6 @@ namespace XoticEngine.GameObjects.MenuItems
                 {
                     hovering = true;
 
-                    //Call OnMouseEnter
-                    CallAction(OnMouseEnter);
-
                     //Set the textures/colors
                     BackTexture = backTexture != null ? backTexture[(int)MathHelper.Clamp(1, 0, backTexture.Length - 1)] : Assets.DummyTexture;
                     BackColor = backColors != null ? backColors[(int)MathHelper.Clamp(1, 0, backColors.Length - 1)] : Color.White;
@@ -64,9 +61,6 @@ namespace XoticEngine.GameObjects.MenuItems
                 leftDown = false;
                 rightDown = false;
 
-                //Call OnMouseExit
-                CallAction(OnMouseExit);
-
                 //Set the textures/colors
                 BackTexture = backTexture != null ? backTexture[0] : Assets.DummyTexture;
                 BackColor = backColors != null ? backColors[0] : Color.White;
@@ -80,36 +74,33 @@ namespace XoticEngine.GameObjects.MenuItems
         {
             //Check for mouse presses
             if (MouseInput.LeftPressed())
-            {
-                CallAction(OnLeftPress);
                 leftDown = true;
-            }
             if (MouseInput.RightPressed())
-            {
-                CallAction(OnRightPress);
                 rightDown = true;
-            }
 
-            //Check for mouse releases
-            if (leftDown && MouseInput.LeftReleased())
+            if (OnClick != null)
             {
-                CallAction(OnLeftRelease);
-                leftDown = false;
+                //Check for mouse releases
+                if (leftDown && MouseInput.LeftReleased())
+                {
+                    OnClick(this, new ClickEventArgs(MouseButton.Left));
+                    leftDown = false;
+                }
+                if (rightDown && MouseInput.RightReleased())
+                {
+                    OnClick(this, new ClickEventArgs(MouseButton.Right));
+                    rightDown = false;
+                }
             }
-            if (rightDown && MouseInput.RightReleased())
-            {
-                CallAction(OnRightRelease);
-                rightDown = false;
-            }
-        }
-
-        private void CallAction(ButtonEvent action)
-        {
-            if (action != null)
-                action(this);
         }
 
         public bool Hovering
         { get { return hovering; } }
+        public bool LeftMouseDown
+        { get { return leftDown; } }
+        public bool RightMouseDown
+        { get { return rightDown; } }
+        public Rectangle ClickRectangle
+        { get { return BackRectangle; } }
     }
 }
