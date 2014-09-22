@@ -45,9 +45,16 @@ namespace XoticEngine.ParticleSystem
 
     public class RandomDeathModifier : IParticleModifier
     {
+        private double chance;
+
+        public RandomDeathModifier(double chance)
+        {
+            this.chance = chance;
+        }
+
         public void Update(Particle p)
         {
-            if (X.Random.NextDouble() < p.LifeTime * Time.DeltaTime)
+            if (X.Random.NextDouble() / chance < p.LifeTime * Time.DeltaTime)
                 p.Die();
         }
 
@@ -56,25 +63,25 @@ namespace XoticEngine.ParticleSystem
     #endregion
 
     #region Speed modifiers
-    public class RandomSpawnDirectionModifier : IParticleModifier
+    public class SpawnDirectionModifier : IParticleModifier
     {
         private float minSpeed, maxSpeed, minAngle, maxAngle;
 
-        public RandomSpawnDirectionModifier(float speed)
+        public SpawnDirectionModifier(float speed)
         {
             this.maxSpeed = speed;
             this.minSpeed = speed;
             this.minAngle = 0;
             this.maxAngle = MathHelper.TwoPi;
         }
-        public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed)
+        public SpawnDirectionModifier(float minSpeed, float maxSpeed)
         {
             this.minSpeed = minSpeed;
             this.maxSpeed = maxSpeed;
             this.minAngle = 0;
             this.maxAngle = MathHelper.TwoPi;
         }
-        public RandomSpawnDirectionModifier(float minSpeed, float maxSpeed, float minAngle, float maxAngle)
+        public SpawnDirectionModifier(float minSpeed, float maxSpeed, float minAngle, float maxAngle)
         {
             this.maxSpeed = minSpeed;
             this.minSpeed = maxSpeed;
@@ -91,24 +98,28 @@ namespace XoticEngine.ParticleSystem
         public bool UpdateOnce { get { return true; } }
     }
 
-    public class RandomSpawnSpeedModifier : IParticleModifier
+    public class SpawnSpeedModifier : IParticleModifier
     {
         private Vector2 minSpeed, maxSpeed;
+        private bool relative;
 
-        public RandomSpawnSpeedModifier(Vector2 speed)
+        public SpawnSpeedModifier(Vector2 speed, bool relative)
         {
             this.maxSpeed = speed;
-            this.minSpeed = -speed;
+            this.minSpeed = speed;
+            this.relative = relative;
         }
-        public RandomSpawnSpeedModifier(Vector2 minSpeed, Vector2 maxSpeed)
+        public SpawnSpeedModifier(Vector2 minSpeed, Vector2 maxSpeed, bool relative)
         {
             this.minSpeed = minSpeed;
             this.maxSpeed = maxSpeed;
+            this.relative = relative;
         }
 
         public void Update(Particle p)
         {
-            p.Speed += new Vector2(X.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, X.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
+            Vector2 newSpeed = new Vector2(X.Random.NextFloat() * (maxSpeed.X - minSpeed.X) + minSpeed.X, X.Random.NextFloat() * (maxSpeed.Y - minSpeed.Y) + minSpeed.Y);
+            p.Speed = relative ? p.Speed + newSpeed : newSpeed;
         }
 
         public bool UpdateOnce { get { return true; } }
