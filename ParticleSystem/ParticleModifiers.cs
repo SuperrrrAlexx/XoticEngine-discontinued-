@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using XoticEngine.Utilities;
 
 namespace XoticEngine.ParticleSystem
 {
@@ -14,6 +13,7 @@ namespace XoticEngine.ParticleSystem
         bool UpdateOnce { get; }
     }
 
+    #region Lifetime modifiers
     public class LifetimeModifier : IParticleModifier
     {
         private IParticleModifier modifier;
@@ -42,6 +42,18 @@ namespace XoticEngine.ParticleSystem
 
         public bool UpdateOnce { get { return false; } }
     }
+
+    public class RandomDeathModifier : IParticleModifier
+    {
+        public void Update(Particle p)
+        {
+            if (X.Random.NextDouble() < p.LifeTime * Time.DeltaTime)
+                p.Die();
+        }
+
+        public bool UpdateOnce { get { return false; } }
+    }
+    #endregion
 
     #region Speed modifiers
     public class RandomSpawnDirectionModifier : IParticleModifier

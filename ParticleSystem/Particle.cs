@@ -64,13 +64,19 @@ namespace XoticEngine.ParticleSystem
             };
         }
 
+        public void Die()
+        {
+            //Set the time to live to 0
+            ttl = 0;
+        }
+
         //Time to live, lifetime
         public bool Alive
         { get { return ttl > 0; } }
         public double TimeToLive
         { get { return ttl; } }
         public double InitialTimeToLive
-        { get { return initialTTL; } set { initialTTL = value; } }
+        { get { return initialTTL; } }
         public double RealLifeTime
         { get { return 1f - (ttl / initialTTL); } }
         public double LifeTime
