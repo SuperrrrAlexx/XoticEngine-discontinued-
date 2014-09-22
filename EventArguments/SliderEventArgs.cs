@@ -7,7 +7,7 @@ namespace XoticEngine.EventArguments
 {
     public class SliderEventArgs
     {
-        private int value;
+        private readonly int value;
 
         public SliderEventArgs(int value)
         {

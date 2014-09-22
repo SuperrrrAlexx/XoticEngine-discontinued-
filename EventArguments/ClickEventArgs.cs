@@ -9,7 +9,7 @@ namespace XoticEngine.EventArguments
 {
     public class ClickEventArgs
     {
-        private MouseButton pressed;
+        private readonly MouseButton pressed;
 
         public ClickEventArgs(MouseButton pressed)
         {

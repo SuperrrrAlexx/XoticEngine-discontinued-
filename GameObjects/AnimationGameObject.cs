@@ -21,8 +21,8 @@ namespace XoticEngine.GameObjects
         {
             this.animation = animation;
         }
-        public AnimationGameObject(string name, Animation animation, Vector2 position, Color color, float rotation, Vector2 origin)
-            : base(name, animation.CurrentFrame, position, color, rotation, origin)
+        public AnimationGameObject(string name, Animation animation, Vector2 position, Color color, float rotation, Vector2 origin, float depth)
+            : base(name, animation.CurrentFrame, position, color, rotation, origin, depth)
         {
             this.animation = animation;
         }

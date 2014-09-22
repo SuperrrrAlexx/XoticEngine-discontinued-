@@ -59,7 +59,7 @@ namespace XoticEngine.GameObjects.MenuItems
             if (enabled)
             {
                 //Check if the new amount of lines is smaller than maxLines, add the character to the text
-                string newText = (baseText + c.Character).Wrap(Font, BackRectangle.Width);
+                string newText = Font.Wrap(baseText + c.Character, BackRectangle.Width);
                 if (newText.Split(new string[] { "\n" }, StringSplitOptions.None).Length <= maxLines)
                     Text += c.Character;
 
@@ -128,7 +128,7 @@ namespace XoticEngine.GameObjects.MenuItems
             set
             {
                 baseText = value;
-                text = baseText.Wrap(Font, BackRectangle.Width);
+                text = Font.Wrap(baseText, BackRectangle.Width);
             }
         }
         public bool Enabled

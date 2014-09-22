@@ -12,11 +12,14 @@ namespace XoticEngine.GameObjects
     {
         //Name
         public readonly string Name;
-        //Draw mode
+        //Drawing
         private DrawModes drawMode = DrawModes.AlphaBlend;
-        //Positioning
+        private float depth;
+        //Kinematics
         private Vector2 position, relativePosition, origin;
-        private float rotation, relativeRotation, depth;
+        private float rotation, relativeRotation;
+        private Vector2 scale, relativeScale;
+        private KinematicProperties kinematics;
         //Parent and children
         private GameObject parent;
         private Dictionary<string, List<GameObject>> children = new Dictionary<string, List<GameObject>>();
@@ -27,17 +30,9 @@ namespace XoticEngine.GameObjects
             this.relativePosition = position;
             this.relativeRotation = 0.0f;
             this.origin = Vector2.Zero;
+            this.relativeScale = Vector2.One;
             this.depth = 0;
-            UpdatePosition();
-        }
-        public GameObject(string name, Vector2 position, float rotation, Vector2 origin)
-        {
-            this.Name = name;
-            this.relativePosition = position;
-            this.relativeRotation = rotation;
-            this.origin = origin;
-            this.depth = 0;
-            UpdatePosition();
+            this.kinematics = new KinematicProperties(this);
         }
         public GameObject(string name, Vector2 position, float rotation, Vector2 origin, float depth)
         {
@@ -45,8 +40,19 @@ namespace XoticEngine.GameObjects
             this.relativePosition = position;
             this.relativeRotation = rotation;
             this.origin = origin;
+            this.relativeScale = Vector2.One;
             this.depth = depth;
-            UpdatePosition();
+            this.kinematics = new KinematicProperties(this);
+        }
+        public GameObject(string name, Vector2 position, float rotation, Vector2 origin, Vector2 scale, float depth)
+        {
+            this.Name = name;
+            this.relativePosition = position;
+            this.relativeRotation = rotation;
+            this.origin = origin;
+            this.relativeScale = scale;
+            this.depth = depth;
+            this.kinematics = new KinematicProperties(this);
         }
 
         public virtual void Update()
@@ -101,18 +107,22 @@ namespace XoticEngine.GameObjects
                 parent.AddChild(this);
         }
 
-        private void UpdatePosition()
+        internal void UpdatePosition()
         {
             //Check if the parent is null, set the position and rotation
             if (parent == null)
             {
                 rotation = relativeRotation;
                 position = relativePosition;
+                scale = relativeScale;
             }
             else
             {
-                rotation = parent.Rotation + relativeRotation;
-                position = parent.Position + relativePosition.Rotate(rotation);
+                //Set the properties based on the kinematics and the parent properties
+                rotation = kinematics.RotateWithParent ? parent.Rotation + relativeRotation : relativeRotation;
+                scale = kinematics.ScaleWithParent ? parent.Scale * relativeScale : relativeScale;
+                position = kinematics.PositionWithParent ? parent.Position : Vector2.Zero;
+                position += kinematics.MoveWithParentRotation ? relativePosition.Rotate(parent.Rotation) : relativePosition;
             }
 
             //Update the positions of all children
@@ -145,8 +155,9 @@ namespace XoticEngine.GameObjects
         { get { return drawMode; } set { drawMode = value; } }
         public float Depth
         { get { return depth; } set { depth = value; } }
-
-        //Position and rotation
+        //Kinematics
+        public KinematicProperties Kinematics
+        { get { return kinematics; } }
         public Vector2 Position
         { get { return position; } }
         public virtual Vector2 RelativePosition
@@ -171,7 +182,17 @@ namespace XoticEngine.GameObjects
         }
         public Vector2 Origin
         { get { return origin; } set { origin = value; } }
-
+        public Vector2 Scale
+        { get { return scale; } }
+        public Vector2 RelativeScale
+        {
+            get { return relativeScale; }
+            set
+            {
+                relativeScale = value;
+                UpdatePosition();
+            }
+        }
         //Parent and children
         public GameObject Parent
         { get { return parent; } set { SetParent(value); } }

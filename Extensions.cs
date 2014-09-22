@@ -30,21 +30,25 @@ namespace XoticEngine
         //Point to Vector2
         public static Vector2 ToVector2(this Point p)
         {
+            //Return a vector from a point
             return new Vector2(p.X, p.Y);
         }
         public static Point ToPoint(this Vector2 v)
         {
+            //Round a vector to a point
             return new Point((int)Math.Round(v.X, MidpointRounding.AwayFromZero), (int)Math.Round(v.Y, MidpointRounding.AwayFromZero));
         }
 
         //Angle and direction
         public static float GetAngle(this Vector2 v)
         {
+            //Get the angle from a direction vector (after normalizing)
             return (float)Math.Atan2(v.Y / v.Length(), v.X / v.Length());
         }
 
         public static Vector2 GetDirection(this double a)
         {
+            //Get the direction from an angle
             return new Vector2((float)Math.Cos(a), (float)Math.Sin(a));
         }
         public static Vector2 GetDirection(this float a)
@@ -54,25 +58,29 @@ namespace XoticEngine
 
         public static Vector2 Rotate(this Vector2 v, float radians)
         {
+            //Rotate the vector
             return new Vector2((float)(Math.Cos(radians) * v.X - Math.Sin(radians) * v.Y), (float)(Math.Sin(radians) * v.X + Math.Cos(radians) * v.Y));
         }
 
         //Random
         public static float NextFloat(this Random r)
         {
+            //Return a random float
             return (float)r.NextDouble();
         }
         public static int NextSign(this Random r)
         {
+            //Return -1 or 1
             return r.Next(2) * 2 - 1;
         }
         public static Color NextColor(this Random r)
         {
+            //Return a random color
             return new Color(r.NextFloat(), r.NextFloat(), r.NextFloat());
         }
 
         //Text wrap
-        public static string Wrap(this string s, SpriteFont font, int lineWidth)
+        public static string Wrap(this SpriteFont font, string s, int lineWidth)
         {
             string wrapped = String.Empty;
             string line = String.Empty;

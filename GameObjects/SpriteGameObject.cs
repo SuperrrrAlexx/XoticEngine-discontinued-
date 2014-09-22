@@ -12,7 +12,6 @@ namespace XoticEngine.GameObjects
     {
         private Texture2D sprite;
         private Color color;
-        private Vector2 scale;
         private SpriteEffects effects = SpriteEffects.None;
 
         public SpriteGameObject(string name, Texture2D sprite, Vector2 position)
@@ -20,34 +19,30 @@ namespace XoticEngine.GameObjects
         {
             this.sprite = sprite;
             this.color = Color.White;
-            this.scale = Vector2.One;
         }
         public SpriteGameObject(string name, Texture2D sprite, Vector2 position, Color color)
             : base(name, position)
         {
             this.sprite = sprite;
             this.color = color;
-            this.scale = Vector2.One;
         }
-        public SpriteGameObject(string name, Texture2D sprite, Vector2 position, Color color, float rotation, Vector2 origin)
-            : base(name, position, rotation, origin)
-        {
-            this.sprite = sprite;
-            this.color = color;
-            this.scale = Vector2.One;
-        }
-        public SpriteGameObject(string name, Texture2D sprite, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, float depth)
+        public SpriteGameObject(string name, Texture2D sprite, Vector2 position, Color color, float rotation, Vector2 origin, float depth)
             : base(name, position, rotation, origin, depth)
         {
             this.sprite = sprite;
             this.color = color;
-            this.scale = scale;
+        }
+        public SpriteGameObject(string name, Texture2D sprite, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, float depth)
+            : base(name, position, rotation, origin, scale, depth)
+        {
+            this.sprite = sprite;
+            this.color = color;
         }
 
         public override void Draw(SpriteBatchHolder spriteBatches)
         {
             //Draw the sprite
-            spriteBatches[DrawMode].Draw(sprite, Position, null, color, Rotation, Origin, scale, effects, Depth);
+            spriteBatches[DrawMode].Draw(sprite, Position, null, color, Rotation, Origin, Scale, effects, Depth);
 
             base.Draw(spriteBatches);
         }
@@ -58,7 +53,5 @@ namespace XoticEngine.GameObjects
         { get { return color; } set { color = value; } }
         public SpriteEffects Effects
         { get { return effects; } set { effects = value; } }
-        public Vector2 Scale
-        { get { return scale; } set { scale = value; } }
     }
 }
