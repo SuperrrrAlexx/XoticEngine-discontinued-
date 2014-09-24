@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using XoticEngine.EventArguments;
 
 namespace XoticEngine.Input
 {
@@ -30,11 +29,11 @@ namespace XoticEngine.Input
         {
             //Check if a mouse button was pressed
             if (LeftPressed())
-                OnClick(null, new ClickEventArgs(MouseButton.Left));
+                OnClick(null, new ClickEventArgs(MouseButton.Left, Position));
             if (MiddlePressed())
-                OnClick(null, new ClickEventArgs(MouseButton.Middle));
+                OnClick(null, new ClickEventArgs(MouseButton.Middle, Position));
             if (RightPressed())
-                OnClick(null, new ClickEventArgs(MouseButton.Right));
+                OnClick(null, new ClickEventArgs(MouseButton.Right, Position));
         }
 
         //Clicks

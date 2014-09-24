@@ -96,9 +96,9 @@
     <Compile Include="Achievements\AchievementHolder.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Components\Stopwatch.cs" />
-    <Compile Include="EventArguments\CharEventArgs.cs" />
-    <Compile Include="EventArguments\KeyEventArgs.cs" />
-    <Compile Include="EventArguments\SliderEventArgs.cs" />
+    <Compile Include="Input\CharEventArgs.cs" />
+    <Compile Include="Input\KeyEventArgs.cs" />
+    <Compile Include="GameObjects\MenuItems\SliderEventArgs.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Animation.cs" />
     <Compile Include="GameObjects\AnimationGameObject.cs" />
@@ -110,7 +110,7 @@
     <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Graphics.cs" />
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />
-    <Compile Include="EventArguments\ClickEventArgs.cs" />
+    <Compile Include="Input\ClickEventArgs.cs" />
     <Compile Include="Input\GamePadInput.cs" />
     <Compile Include="Input\IClickable.cs" />
     <Compile Include="Input\MouseInput.cs" />

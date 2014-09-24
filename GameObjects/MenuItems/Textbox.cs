@@ -5,12 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using XoticEngine.EventArguments;
 using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
-    public class Textbox : Label
+    public class Textbox : Label, IClickable
     {
         //Text cursor
         private Vector2 cursorPos;
@@ -24,6 +23,8 @@ namespace XoticEngine.GameObjects.MenuItems
         private bool enabled = true;
         private int maxLines;
         private string baseText;
+        //Click event
+        public event MouseInput.ClickEvent OnClick;
 
         public Textbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Color backColor)
             : base(name, backRect, depth, "", font, textColor, backColor)
@@ -49,11 +50,18 @@ namespace XoticEngine.GameObjects.MenuItems
             //Calculate how many lines of text can be displayed
             maxLines = Math.Max(1, BackRectangle.Height / Font.LineSpacing);
 
-            //Hook into keyboard input
+            //Hook into keyboard and mouse input
             KeyboardInput.OnCharEntered += OnCharEntered;
             KeyboardInput.OnKeyPressed += OnKeyPressed;
+            MouseInput.OnClick += OnMouseClick;
         }
 
+        private void OnMouseClick(object sender, ClickEventArgs e)
+        {
+            //Fire the event
+            if (ClickRectangle.Contains(MouseInput.Position) && OnClick != null)
+                OnClick(this, e);
+        }
         private void OnCharEntered(object sender, CharEventArgs c)
         {
             if (enabled)
@@ -154,5 +162,7 @@ namespace XoticEngine.GameObjects.MenuItems
         { get { return maxLines; } set { maxLines = value; } }
         public bool UseRealTime
         { get { return useRealTime; } set { useRealTime = value; } }
+        public Rectangle ClickRectangle
+        { get { return BackRectangle; } }
     }
 }

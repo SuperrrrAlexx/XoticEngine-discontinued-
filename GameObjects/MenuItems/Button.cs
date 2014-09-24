@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using XoticEngine.EventArguments;
 using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
@@ -38,7 +37,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Update()
         {
             //Check if the mouse is within the rectangle
-            if (BackRectangle.Contains(MouseInput.Position))
+            if (ClickRectangle.Contains(MouseInput.Position))
             {
                 //Check if the mouse was previously not hovering
                 if (!hovering)
@@ -83,12 +82,12 @@ namespace XoticEngine.GameObjects.MenuItems
                 //Check for mouse releases
                 if (leftDown && MouseInput.LeftReleased())
                 {
-                    OnClick(this, new ClickEventArgs(MouseButton.Left));
+                    OnClick(this, new ClickEventArgs(MouseButton.Left, MouseInput.Position));
                     leftDown = false;
                 }
                 if (rightDown && MouseInput.RightReleased())
                 {
-                    OnClick(this, new ClickEventArgs(MouseButton.Right));
+                    OnClick(this, new ClickEventArgs(MouseButton.Right, MouseInput.Position));
                     rightDown = false;
                 }
             }

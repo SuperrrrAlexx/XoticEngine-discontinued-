@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using XoticEngine.EventArguments;
 using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems

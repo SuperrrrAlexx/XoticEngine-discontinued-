@@ -7,7 +7,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using XoticEngine.EventArguments;
 using XoticEngine.GameObjects;
 using XoticEngine.GameObjects.MenuItems;
 using XoticEngine.Input;

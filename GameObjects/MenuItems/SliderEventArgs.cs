@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace XoticEngine.EventArguments
+namespace XoticEngine.GameObjects.MenuItems
 {
     public class SliderEventArgs
     {

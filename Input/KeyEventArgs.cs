@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
 
-namespace XoticEngine.EventArguments
+namespace XoticEngine.Input
 {
     public class KeyEventArgs : EventArgs
     {
