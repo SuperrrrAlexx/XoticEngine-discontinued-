@@ -9,9 +9,10 @@ namespace XoticEngine.GraphicEffects
     public class Camera
     {
         private Matrix transform;
-        private Vector2 position;
+        private Vector2 position, size;
         private float zoom, rotation;
         private bool applyOnUpdate;
+        private Rectangle bounds;
 
         //Camera shake
         private Vector2 shake, shakeAmount, nextPoint;
@@ -21,21 +22,28 @@ namespace XoticEngine.GraphicEffects
         public Camera(bool applyOnUpdate)
         {
             this.applyOnUpdate = applyOnUpdate;
+            this.size = new Vector2(Graphics.Viewport.Width, Graphics.Viewport.Height);
             Reset();
         }
         public Camera(Vector2 position, float zoom, float rotation, bool applyOnUpdate)
         {
             this.applyOnUpdate = applyOnUpdate;
+            this.size = new Vector2(Graphics.Viewport.Width, Graphics.Viewport.Height);
             UpdateMatrix(position, zoom, rotation);
         }
 
         public void UpdateMatrix()
         {
-            transform = Matrix.CreateTranslation(new Vector3(-position.X - shake.X, -position.Y - shake.Y, 0)) *
+            //Check the bounds
+            ConstrainBounds();
+
+            //Create the transform matrix
+            transform = Matrix.CreateTranslation(new Vector3(-position - shake, 0)) *
                 Matrix.CreateRotationZ(rotation) *
                 Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
-                Matrix.CreateTranslation(new Vector3(Graphics.Viewport.Width * 0.5f, Graphics.Viewport.Height * 0.5f, 0));
+                Matrix.CreateTranslation(new Vector3(size * 0.5f, 0));
 
+            //Apply the matrix
             if (applyOnUpdate)
                 Graphics.TransformMatrix = transform;
         }
@@ -48,6 +56,13 @@ namespace XoticEngine.GraphicEffects
 
             //Update the matrix
             UpdateMatrix();
+        }
+
+        private void ConstrainBounds()
+        {
+            //Constrain the postition within the bounds
+            position.X = MathHelper.Clamp(position.X, bounds.Left + size.X / 2, bounds.Right - size.X / 2);
+            position.Y = MathHelper.Clamp(position.Y, bounds.Top + size.Y / 2, bounds.Bottom - size.Y / 2);
         }
 
         public void Reset()
@@ -105,6 +120,24 @@ namespace XoticEngine.GraphicEffects
 
         public Matrix TransformMatrix
         { get { return transform; } }
+        public Rectangle Bounds
+        {
+            get { return bounds; }
+            set
+            {
+                bounds = value;
+                ConstrainBounds();
+            }
+        }
+        public Vector2 Size
+        {
+            get { return size; }
+            set
+            {
+                size = value;
+                UpdateMatrix();
+            }
+        }
         //Position and rotation
         public Vector2 Position
         {
