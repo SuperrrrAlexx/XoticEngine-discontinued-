@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using XoticEngine.GameObjects;
 
 namespace XoticEngine.Input
 {
@@ -18,11 +19,13 @@ namespace XoticEngine.Input
         public static event CharEvent OnCharEntered;
         //A dictionary of keys that can be converted to characters
         private static Dictionary<Keys, char> keychars;
+        //A dictionary of keys used to move IMovable
+        private static Dictionary<MoveKeys, Keys?[]> moveKeyArrays;
 
         public static void Initialize()
         {
+            //Key characters
             keychars = new Dictionary<Keys, char>();
-
             //Add all the keys that can be converted to chars
             keychars.Add(Keys.Space, ' ');
             //OEM keys that *should* be the same on every region keyboard
@@ -36,6 +39,12 @@ namespace XoticEngine.Input
             keychars.Add(Keys.Subtract, '-');
             keychars.Add(Keys.Add, '+');
             keychars.Add(Keys.Decimal, '.');
+
+            //Move keys
+            moveKeyArrays = new Dictionary<MoveKeys, Keys?[]>();
+            //Add all move key configurations
+            moveKeyArrays.Add(MoveKeys.Arrows, new Keys?[4] { Keys.Up, Keys.Down, Keys.Right, Keys.Left });
+            moveKeyArrays.Add(MoveKeys.WASD, new Keys?[4] { Keys.W, Keys.S, Keys.D, Keys.A });
         }
 
         public static void Update()
@@ -98,6 +107,55 @@ namespace XoticEngine.Input
                         OnCharEntered(null, new CharEventArgs(c));
                 }
             }
+        }
+
+        //Move IMovable
+        public static void MoveOnInput(IMovable movable, MoveKeys keys, float speed)
+        {
+            MoveOnInput(movable, moveKeyArrays[keys], new Vector2(speed));
+        }
+        public static void MoveOnInput(IMovable movable, MoveKeys keys, Vector2 speed)
+        {
+            MoveOnInput(movable, moveKeyArrays[keys], speed);
+        }
+        public static void MoveOnInput(IMovable movable, Keys?[] keys, float speed)
+        {
+            MoveOnInput(movable, keys, new Vector2(speed));
+        }
+        public static void MoveOnInput(IMovable movable, Keys?[] keys, Vector2 speed)
+        {
+            //Check if the array contains 4 keys
+            if (keys.Length != 4)
+                throw new ArgumentException("The length of the key array must be 4", "keys");
+
+            //The amount to move the object
+            Vector2 moveAmount = Vector2.Zero;
+
+            for (int i = 0; i < 4; i++)
+            {
+                //Check if the keys is not null and is pressed
+                if (keys[i].HasValue && KeyDown(keys[i].Value))
+                    switch (i)
+                    {
+                        //Up, down, right, left
+                        case 0:
+                            moveAmount.Y -= speed.Y;
+                            break;
+                        case 1:
+                            moveAmount.Y += speed.Y;
+                            break;
+                        case 2:
+                            moveAmount.X += speed.X;
+                            break;
+                        case 3:
+                            moveAmount.X -= speed.X;
+                            break;
+                    }
+            }
+
+            //Move the object
+            moveAmount *= (float)Time.DeltaTime;
+            movable.Move(moveAmount);
         }
 
         //Keys

@@ -46,7 +46,4 @@ namespace XoticEngine
         public SpriteBatch this[DrawModes drawMode]
         { get { return batches[drawMode].Item1; } }
     }
-
-    public enum DrawModes
-    { AlphaBlend, Additive, Gui }
 }

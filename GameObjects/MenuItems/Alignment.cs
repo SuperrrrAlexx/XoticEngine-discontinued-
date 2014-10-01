@@ -22,8 +22,5 @@ namespace XoticEngine.GameObjects.MenuItems
         { get { return vertical; } set { vertical = value; } }
     }
 
-    public enum HorizontalAlignment
-    { Left, Center, Right }
-    public enum VerticalAlignment
-    { Top, Center, Bottom }
+    
 }

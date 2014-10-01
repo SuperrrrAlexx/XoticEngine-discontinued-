@@ -101,7 +101,4 @@ namespace XoticEngine.Input
         public static Point Position
         { get { return new Point(currMouse.X, currMouse.Y); } }
     }
-
-    public enum MouseButton
-    { Left, Middle, Right }
 }
