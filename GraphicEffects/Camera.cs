@@ -9,8 +9,9 @@ namespace XoticEngine.GraphicEffects
     public class Camera
     {
         private Matrix transform;
-        private Vector2 position, size;
+        private Vector2 position, nextPosition, size;
         private float zoom, rotation;
+        private float smoothness = 1;
         private bool applyOnUpdate;
         private Rectangle bounds;
 
@@ -29,7 +30,34 @@ namespace XoticEngine.GraphicEffects
         {
             this.applyOnUpdate = applyOnUpdate;
             this.size = new Vector2(Graphics.Viewport.Width, Graphics.Viewport.Height);
+            this.position = position;
             UpdateMatrix(position, zoom, rotation);
+        }
+
+        public void Update()
+        {
+            //Update the smooth position
+            position = Vector2.Lerp(position, nextPosition, smoothness);
+
+            //Update the shake
+            if (shakeTime > 0)
+            {
+                //Update the shake time
+                shakeTime -= Time.DeltaTime;
+
+                //Pick a new random point to move to
+                if (shake == nextPoint)
+                    nextPoint = new Vector2(X.Random.NextFloat() * X.Random.NextSign() * shakeAmount.X, X.Random.NextFloat() * X.Random.NextSign() * shakeAmount.Y);
+                MoveToPoint();
+            }
+            else if (shake != Vector2.Zero)
+            {
+                //Move to reset
+                nextPoint = Vector2.Zero;
+                MoveToPoint();
+            }
+
+            UpdateMatrix();
         }
 
         public void UpdateMatrix()
@@ -50,7 +78,7 @@ namespace XoticEngine.GraphicEffects
         public void UpdateMatrix(Vector2 position, float zoom, float rotation)
         {
             //Update the variables
-            this.position = position;
+            this.nextPosition = position;
             this.zoom = zoom;
             this.rotation = rotation;
 
@@ -60,9 +88,11 @@ namespace XoticEngine.GraphicEffects
 
         private void ConstrainBounds()
         {
-            //Constrain the postition within the bounds
-            position.X = MathHelper.Clamp(position.X, bounds.Left + size.X / 2, bounds.Right - size.X / 2);
-            position.Y = MathHelper.Clamp(position.Y, bounds.Top + size.Y / 2, bounds.Bottom - size.Y / 2);
+            //Constrain the x and y to the bounds
+            if (bounds.Width > 0)
+                position.X = MathHelper.Clamp(position.X, bounds.Left + size.X / 2, bounds.Right - size.X / 2);
+            if (bounds.Height > 0)
+                position.Y = MathHelper.Clamp(position.Y, bounds.Top + size.Y / 2, bounds.Bottom - size.Y / 2);
         }
 
         public void Reset()
@@ -76,31 +106,18 @@ namespace XoticEngine.GraphicEffects
             //Update the matrix
             UpdateMatrix();
         }
+        public void SetPosition(Vector2 position)
+        {
+            //Save the position as the next and current position
+            this.nextPosition = position;
+            this.position = position;
+        }
 
         public void Shake(Vector2 shakeAmount, float speed, double time)
         {
             this.shakeAmount = shakeAmount;
             this.shakeSpeed = speed;
             this.shakeTime = time;
-        }
-        public void Update()
-        {
-            if (shakeTime > 0)
-            {
-                //Update the shake time
-                shakeTime -= Time.DeltaTime;
-
-                //Pick a new random point to move to
-                if (shake == nextPoint)
-                    nextPoint = new Vector2(X.Random.NextFloat() * X.Random.NextSign() * shakeAmount.X, X.Random.NextFloat() * X.Random.NextSign() * shakeAmount.Y);
-                MoveToPoint();
-            }
-            else if (shake != Vector2.Zero)
-            {
-                //Move to reset
-                nextPoint = Vector2.Zero;
-                MoveToPoint();
-            }
         }
         private void MoveToPoint()
         {
@@ -114,8 +131,6 @@ namespace XoticEngine.GraphicEffects
                 shake = nextPoint;
             else
                 shake += move;
-
-            UpdateMatrix();
         }
 
         public Matrix TransformMatrix
@@ -126,7 +141,7 @@ namespace XoticEngine.GraphicEffects
             set
             {
                 bounds = value;
-                ConstrainBounds();
+                UpdateMatrix();
             }
         }
         public Vector2 Size
@@ -138,13 +153,15 @@ namespace XoticEngine.GraphicEffects
                 UpdateMatrix();
             }
         }
+        public float Smoothness
+        { get { return 1.0f - smoothness; } set { smoothness = 1.0f - value; } }
         //Position and rotation
         public Vector2 Position
         {
-            get { return position; }
+            get { return nextPosition; }
             set
             {
-                position = value;
+                nextPosition = Vector2.Clamp(value, bounds.Location.ToVector2() + size / 2, new Vector2(bounds.Right, bounds.Bottom) - size / 2); ;
                 UpdateMatrix();
             }
         }
