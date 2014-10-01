@@ -96,6 +96,8 @@
     <Compile Include="Achievements\AchievementHolder.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Components\Stopwatch.cs" />
+    <Compile Include="Enumerators.cs" />
+    <Compile Include="GameObjects\IMovable.cs" />
     <Compile Include="Input\CharEventArgs.cs" />
     <Compile Include="Input\KeyEventArgs.cs" />
     <Compile Include="GameObjects\MenuItems\SliderEventArgs.cs" />
