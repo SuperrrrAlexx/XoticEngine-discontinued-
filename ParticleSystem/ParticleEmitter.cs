@@ -13,6 +13,7 @@ namespace XoticEngine.ParticleSystem
         private bool paused = false;
         private Vector2 prevPosition;
         //Drawing
+        private DrawModes drawMode = DrawModes.AlphaBlend;
         private bool oldestInFront = true;
         //Particles
         private Particle particle;
@@ -79,7 +80,7 @@ namespace XoticEngine.ParticleSystem
         {
             //Draw each particle
             foreach (Particle p in particles)
-                p.Draw(spriteBatches[DrawMode]);
+                p.Draw(spriteBatches[drawMode]);
 
             base.Draw(spriteBatches);
         }
@@ -125,6 +126,8 @@ namespace XoticEngine.ParticleSystem
             prevPosition = Position;
         }
 
+        public DrawModes DrawMode
+        { get { return drawMode; } set { drawMode = value; } }
         public Particle Particle
         { get { return particle; } set { particle = value; } }
         public bool Paused

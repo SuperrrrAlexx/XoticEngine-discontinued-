@@ -97,6 +97,7 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Components\Stopwatch.cs" />
     <Compile Include="Enumerators.cs" />
+    <Compile Include="GameObjects\IXDrawable.cs" />
     <Compile Include="GameObjects\IMovable.cs" />
     <Compile Include="Input\CharEventArgs.cs" />
     <Compile Include="Input\KeyEventArgs.cs" />
@@ -109,7 +110,6 @@
     <Compile Include="GameObjects\MenuItems\Alignment.cs" />
     <Compile Include="GameObjects\MenuItems\Label.cs" />
     <Compile Include="GameObjects\MenuItems\Textbox.cs" />
-    <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Graphics.cs" />
     <Compile Include="GraphicEffects\PostProcessingEffect.cs" />
     <Compile Include="Input\ClickEventArgs.cs" />

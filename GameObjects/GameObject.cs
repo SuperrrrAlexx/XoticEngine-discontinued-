@@ -13,7 +13,6 @@ namespace XoticEngine.GameObjects
         //Name
         public readonly string Name;
         //Drawing
-        private DrawModes drawMode = DrawModes.AlphaBlend;
         private float depth;
         //Kinematics
         private Vector2 position, relativePosition, origin;
@@ -151,8 +150,6 @@ namespace XoticEngine.GameObjects
         }
 
         //Drawing
-        public DrawModes DrawMode
-        { get { return drawMode; } set { drawMode = value; } }
         public float Depth
         { get { return depth; } set { depth = value; } }
         //Kinematics

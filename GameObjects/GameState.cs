@@ -34,6 +34,13 @@ namespace XoticEngine.GameObjects
             //Draw each gameobject and its children
             foreach (GameObject g in this)
             {
+                //Draw the IXDrawable
+                if (g is IXDrawable)
+                {
+                    IXDrawable gd = g as IXDrawable;
+                    spriteBatches[gd.DrawMode].Draw(gd.Sprite, g.Position, null, gd.DrawColor, g.Rotation, g.Origin, g.Scale, gd.Effects, g.Depth);
+                }
+
                 g.Draw(spriteBatches);
                 g.DrawChildren(spriteBatches);
             }

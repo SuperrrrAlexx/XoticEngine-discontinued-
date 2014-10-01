@@ -7,41 +7,56 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XoticEngine.GameObjects
 {
-    public class AnimationGameObject : SpriteGameObject
+    public class AnimationGameObject : GameObject, IXDrawable
     {
         private Animation animation;
+        private Texture2D sprite;
+        private Color color = Color.White;
+        private SpriteEffects effects = SpriteEffects.None;
+        private DrawModes drawMode = DrawModes.AlphaBlend;
 
         public AnimationGameObject(string name, Animation animation, Vector2 position)
-            : base(name, animation.CurrentFrame, position)
+            : base(name, position)
         {
             this.animation = animation;
         }
         public AnimationGameObject(string name, Animation animation, Vector2 position, Color color)
-            : base(name, animation.CurrentFrame, position, color)
+            : base(name, position)
         {
             this.animation = animation;
+            this.color = color;
         }
         public AnimationGameObject(string name, Animation animation, Vector2 position, Color color, float rotation, Vector2 origin, float depth)
-            : base(name, animation.CurrentFrame, position, color, rotation, origin, depth)
+            : base(name, position, rotation, origin, depth)
         {
             this.animation = animation;
+            this.color = color;
         }
         public AnimationGameObject(string name, Animation animation, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, float depth)
-            : base(name, animation.CurrentFrame, position, color, rotation, origin, scale, depth)
+            : base(name, position, rotation, origin, scale, depth)
         {
             this.animation = animation;
+            this.color = color;
         }
 
         public override void Update()
         {
             //Update the animation and sprite
             animation.Update();
-            Sprite = animation.CurrentFrame;
+            sprite = animation.CurrentFrame;
 
             base.Update();
         }
 
         public Animation Animation
         { get { return animation; } set { animation = value; } }
+        public Texture2D Sprite
+        { get { return sprite; } set { sprite = value; } }
+        public Color DrawColor
+        { get { return color; } set { color = value; } }
+        public SpriteEffects Effects
+        { get { return effects; } set { effects = value; } }
+        public DrawModes DrawMode
+        { get { return drawMode; } set { drawMode = value; } }
     }
 }
