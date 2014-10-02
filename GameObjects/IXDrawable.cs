@@ -9,9 +9,15 @@ namespace XoticEngine.GameObjects
 {
     public interface IXDrawable
     {
-        Texture2D Sprite { get; }
         DrawModes DrawMode { get; }
+        Texture2D Sprite { get; }
+        Vector2 Position { get; }
+        Rectangle? SourceRectangle { get; }
         Color DrawColor { get; }
+        float Rotation { get; }
+        Vector2 Origin { get; }
+        Vector2 Scale { get; }
         SpriteEffects Effects { get; }
+        float Depth { get; }
     }
 }

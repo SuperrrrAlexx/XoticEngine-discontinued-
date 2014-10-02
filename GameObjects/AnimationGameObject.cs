@@ -14,6 +14,7 @@ namespace XoticEngine.GameObjects
         private Color color = Color.White;
         private SpriteEffects effects = SpriteEffects.None;
         private DrawModes drawMode = DrawModes.AlphaBlend;
+        private Rectangle? sourceRect = null;
 
         public AnimationGameObject(string name, Animation animation, Vector2 position)
             : base(name, position)
@@ -58,5 +59,7 @@ namespace XoticEngine.GameObjects
         { get { return effects; } set { effects = value; } }
         public DrawModes DrawMode
         { get { return drawMode; } set { drawMode = value; } }
+        public Rectangle? SourceRectangle
+        { get { return sourceRect; } set { sourceRect = value; } }
     }
 }

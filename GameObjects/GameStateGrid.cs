@@ -36,10 +36,7 @@ namespace XoticEngine.GameObjects
             //Draw each GameObject in the grid
             foreach (GameObject g in grid)
                 if (g != null)
-                {
                     g.Draw(spriteBatches);
-                    g.DrawChildren(spriteBatches);
-                }
 
             base.Draw(spriteBatches);
         }

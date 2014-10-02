@@ -38,11 +38,11 @@ namespace XoticEngine.GameObjects
                 if (g is IXDrawable)
                 {
                     IXDrawable gd = g as IXDrawable;
-                    spriteBatches[gd.DrawMode].Draw(gd.Sprite, g.Position, null, gd.DrawColor, g.Rotation, g.Origin, g.Scale, gd.Effects, g.Depth);
+                    if (gd.Sprite != null)
+                        spriteBatches[gd.DrawMode].Draw(gd.Sprite, gd.Position, gd.SourceRectangle, gd.DrawColor, gd.Rotation, gd.Origin, gd.Scale, gd.Effects, gd.Depth);
                 }
 
                 g.Draw(spriteBatches);
-                g.DrawChildren(spriteBatches);
             }
         }
 

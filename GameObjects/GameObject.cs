@@ -62,15 +62,9 @@ namespace XoticEngine.GameObjects
         }
         public virtual void Draw(SpriteBatchHolder spriteBatches)
         {
-        }
-        public virtual void DrawChildren(SpriteBatchHolder spriteBatches)
-        {
             //Draw each child
             foreach (GameObject g in this)
-            {
                 g.Draw(spriteBatches);
-                g.DrawChildren(spriteBatches);
-            }
         }
 
         public void AddChild(GameObject child)
