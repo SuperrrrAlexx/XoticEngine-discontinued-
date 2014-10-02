@@ -92,8 +92,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Achievements\Achievement.cs" />
     <Compile Include="Achievements\AchievementHolder.cs" />
+    <Compile Include="Achievements\IAchievement.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Components\Stopwatch.cs" />
     <Compile Include="Enumerators.cs" />

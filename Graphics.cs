@@ -66,7 +66,7 @@ namespace XoticEngine
 
             //Draw the other components
             GameConsole.Draw(spriteBatches);
-            AchievementHolder.Draw(spriteBatches[DrawModes.Gui]);
+            AchievementHolder.Draw(spriteBatches);
 
             //End the spritebatches
             spriteBatches.End();
