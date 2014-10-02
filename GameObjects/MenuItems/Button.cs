@@ -16,7 +16,7 @@ namespace XoticEngine.GameObjects.MenuItems
         private Color[] backColors, textColors;
         //Events
         private bool hovering, leftDown, rightDown;
-        public event MouseInput.ClickEvent OnClick;
+        public event InputManager.ClickEvent OnClick;
 
         public Button(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color[] textColors, Color[] backColors)
             : base(name, backRect, depth, text, font, textColors != null ? textColors[0] : Color.Black, backColors != null ? backColors[0] : Color.White)
@@ -37,7 +37,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Update()
         {
             //Check if the mouse is within the rectangle
-            if (ClickRectangle.Contains(MouseInput.Position))
+            if (ClickRectangle.Contains(InputManager.Mouse.Position))
             {
                 //Check if the mouse was previously not hovering
                 if (!hovering)
@@ -72,22 +72,22 @@ namespace XoticEngine.GameObjects.MenuItems
         private void CheckEvents()
         {
             //Check for mouse presses
-            if (MouseInput.LeftPressed())
+            if (InputManager.Mouse.LeftPressed())
                 leftDown = true;
-            if (MouseInput.RightPressed())
+            if (InputManager.Mouse.RightPressed())
                 rightDown = true;
 
             if (OnClick != null)
             {
                 //Check for mouse releases
-                if (leftDown && MouseInput.LeftReleased())
+                if (leftDown && InputManager.Mouse.LeftReleased())
                 {
-                    OnClick(this, new ClickEventArgs(MouseButton.Left, MouseInput.Position));
+                    OnClick(this, new ClickEventArgs(MouseButton.Left, InputManager.Mouse.Position));
                     leftDown = false;
                 }
-                if (rightDown && MouseInput.RightReleased())
+                if (rightDown && InputManager.Mouse.RightReleased())
                 {
-                    OnClick(this, new ClickEventArgs(MouseButton.Right, MouseInput.Position));
+                    OnClick(this, new ClickEventArgs(MouseButton.Right, InputManager.Mouse.Position));
                     rightDown = false;
                 }
             }

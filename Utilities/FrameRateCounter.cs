@@ -9,7 +9,7 @@ namespace XoticEngine.Utilities
     {
         private static int frames, frameRate, secondsPassed;
 
-        public static void Update()
+        internal static void Update()
         {
             if (secondsPassed != Time.GameTime.TotalGameTime.Seconds)
             {
@@ -19,7 +19,7 @@ namespace XoticEngine.Utilities
                 frames = 0;
             }
         }
-        public static void Draw()
+        internal static void Draw()
         {
             frames++;
         }

@@ -8,7 +8,7 @@ namespace XoticEngine.Input
 {
     public interface IClickable
     {
-        event MouseInput.ClickEvent OnClick;
+        event InputManager.ClickEvent OnClick;
 
         Rectangle ClickRectangle { get; }
     }

@@ -20,7 +20,7 @@ namespace XoticEngine
         //Dummy texture
         private static Texture2D dummyTex;
 
-        public static void Initialize(ContentManager c)
+        internal static void Initialize(ContentManager c)
         {
             //Create the dictionary
             assets = new Dictionary<Type, Dictionary<string, object>>();

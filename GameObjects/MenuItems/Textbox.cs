@@ -24,7 +24,7 @@ namespace XoticEngine.GameObjects.MenuItems
         private int maxLines;
         private string baseText;
         //Click event
-        public event MouseInput.ClickEvent OnClick;
+        public event InputManager.ClickEvent OnClick;
 
         public Textbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Color backColor)
             : base(name, backRect, depth, "", font, textColor, backColor)
@@ -51,15 +51,15 @@ namespace XoticEngine.GameObjects.MenuItems
             maxLines = Math.Max(1, BackRectangle.Height / Font.LineSpacing);
 
             //Hook into keyboard and mouse input
-            KeyboardInput.OnCharEntered += OnCharEntered;
-            KeyboardInput.OnKeyPressed += OnKeyPressed;
-            MouseInput.OnClick += OnMouseClick;
+            InputManager.OnCharEntered += OnCharEntered;
+            InputManager.OnKeyPressed += OnKeyPressed;
+            InputManager.OnClick += OnMouseClick;
         }
 
         private void OnMouseClick(object sender, ClickEventArgs e)
         {
             //Fire the event
-            if (ClickRectangle.Contains(MouseInput.Position) && OnClick != null)
+            if (ClickRectangle.Contains(InputManager.Mouse.Position) && OnClick != null)
                 OnClick(this, e);
         }
         private void OnCharEntered(object sender, CharEventArgs c)

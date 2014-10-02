@@ -26,7 +26,7 @@ namespace XoticEngine.Components
             timers.Add(this);
         }
 
-        public static void UpdateAll()
+        internal static void UpdateAll()
         {
             //Update all enabled timers
             foreach (Timer t in timers)

@@ -74,15 +74,15 @@ namespace XoticEngine.GameObjects.MenuItems
             prevAmount = amount;
 
             //Start/stop dragging
-            if (MouseInput.LeftPressed())
-                if (buttonBox.Contains(MouseInput.Position))
+            if (InputManager.Mouse.LeftPressed())
+                if (buttonBox.Contains(InputManager.Mouse.Position))
                     dragging = true;
-            if (!MouseInput.LeftDown())
+            if (!InputManager.Mouse.LeftDown())
                 dragging = false;
 
             //Drag the button
             if (dragging)
-                amount = (int)MathHelper.Clamp((MouseInput.Position.X - (Position.X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
+                amount = (int)MathHelper.Clamp((InputManager.Mouse.Position.X - (Position.X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position and bounding box
             buttonBox.Location = new Point((int)(Position.X + buttonOffset.X + amount * valueWidth - button.Width / 2), buttonBox.Location.Y);

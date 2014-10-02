@@ -34,7 +34,7 @@ namespace XoticEngine.Achievements
             achievements.Add(a.Name, a);
         }
 
-        public static void Update()
+        internal static void Update()
         {
             if (current != null)
             {
@@ -49,7 +49,7 @@ namespace XoticEngine.Achievements
             else if (queue.Count > 0)
                 current = queue.Dequeue();
         }
-        public static void Draw(SpriteBatchHolder s)
+        internal static void Draw(SpriteBatchHolder s)
         {
             //Draw the current achievement
             if (current != null)

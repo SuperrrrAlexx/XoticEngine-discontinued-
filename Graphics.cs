@@ -21,7 +21,7 @@ namespace XoticEngine
         private static List<PostProcessingEffect> postProcessing;
         private static RenderTarget2D target;
 
-        public static void Initialize(GraphicsDeviceManager gr)
+        internal static void Initialize(GraphicsDeviceManager gr)
         {
             //Create the graphics device manager
             graphics = gr;
@@ -44,7 +44,7 @@ namespace XoticEngine
         }
 
         //Drawing
-        public static void Draw()
+        internal static void Draw()
         {
             //Clear the graphics device
             Graphics.Device.Clear(Color.Transparent);

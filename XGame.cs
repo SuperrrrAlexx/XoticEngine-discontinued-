@@ -28,8 +28,7 @@ namespace XoticEngine
             X.Initialize(this);
             Graphics.Initialize(graphics);
             Assets.Initialize(Content);
-            KeyboardInput.Initialize();
-            GamePadInput.Initialize();
+            InputManager.Initialize();
 
             base.Initialize();
         }
@@ -43,9 +42,7 @@ namespace XoticEngine
             X.Update(gameTime);
 
             //Update all components
-            KeyboardInput.Update();
-            MouseInput.Update();
-            GamePadInput.Update();
+            InputManager.Update();
             GameConsole.Update();
             AchievementHolder.Update();
             FrameRateCounter.Update();

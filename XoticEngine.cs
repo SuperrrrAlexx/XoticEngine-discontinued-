@@ -23,14 +23,14 @@ namespace XoticEngine
         //Random
         private static Random random;
 
-        public static void Initialize(Game g)
+        internal static void Initialize(Game g)
         {
             game = g;
             gameStates = new Dictionary<string, GameState>();
             random = new Random();
         }
 
-        public static void Update(GameTime g)
+        internal static void Update(GameTime g)
         {
             //If the current game state is not null, update it
             if (currentState != null)

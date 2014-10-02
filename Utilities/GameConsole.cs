@@ -55,7 +55,7 @@ namespace XoticEngine.Utilities
             InitCommands();
 
             //Event input
-            KeyboardInput.OnKeyPressed += KeyInput;
+            InputManager.OnKeyPressed += KeyInput;
         }
         private static void InitCommands()
         {
@@ -174,7 +174,7 @@ namespace XoticEngine.Utilities
             }
         }
 
-        public static void Update()
+        internal static void Update()
         {
             if (enabled && visible)
             {
@@ -182,7 +182,7 @@ namespace XoticEngine.Utilities
                 inputBox.Update();
             }
         }
-        public static void Draw(SpriteBatchHolder spriteBatches)
+        internal static void Draw(SpriteBatchHolder spriteBatches)
         {
             if (enabled && visible)
             {

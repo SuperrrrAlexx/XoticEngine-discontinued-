@@ -11,7 +11,7 @@ namespace XoticEngine
         private static GameTime gameTime;
         private static double gameSpeed = 1.0;
 
-        public static void Update(GameTime g)
+        internal static void Update(GameTime g)
         {
             //Save the game time
             gameTime = g;

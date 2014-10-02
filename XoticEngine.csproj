@@ -101,6 +101,7 @@
     <Compile Include="GameObjects\IMovable.cs" />
     <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Input\CharEventArgs.cs" />
+    <Compile Include="Input\InputManager.cs" />
     <Compile Include="Input\KeyEventArgs.cs" />
     <Compile Include="GameObjects\MenuItems\SliderEventArgs.cs" />
     <Compile Include="Extensions.cs" />

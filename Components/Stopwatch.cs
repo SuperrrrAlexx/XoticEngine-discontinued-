@@ -26,7 +26,7 @@ namespace XoticEngine.Components
             }
         }
 
-        public static void UpdateAll()
+        internal static void UpdateAll()
         {
             foreach (Stopwatch s in stopwatches)
                     s.Update();
