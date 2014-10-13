@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Achievements\AchievementHolder.cs" />
     <Compile Include="Achievements\IAchievement.cs" />
+    <Compile Include="Achievements\SteamAchievement.cs" />
     <Compile Include="Assets.cs" />
     <Compile Include="Components\Stopwatch.cs" />
     <Compile Include="Enumerators.cs" />
