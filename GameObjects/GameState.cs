@@ -33,17 +33,24 @@ namespace XoticEngine.GameObjects
         {
             //Draw each gameobject and its children
             foreach (GameObject g in this)
-            {
-                //Draw the IXDrawable
-                if (g is IXDrawable)
-                {
-                    IXDrawable gd = g as IXDrawable;
-                    if (gd.Sprite != null)
-                        spriteBatches[gd.DrawMode].Draw(gd.Sprite, gd.Position, gd.SourceRectangle, gd.DrawColor, gd.Rotation, gd.Origin, gd.Scale, gd.Effects, gd.Depth);
-                }
+                DrawGameObject(g, spriteBatches);
+        }
+        private void DrawGameObject(GameObject g, SpriteBatchHolder spriteBatches)
+        {
+            //Draw the game object
+            g.Draw(spriteBatches);
 
-                g.Draw(spriteBatches);
+            //Draw the IXDrawable
+            if (g is IXDrawable)
+            {
+                IXDrawable gd = g as IXDrawable;
+                if (gd.Sprite != null)
+                    spriteBatches[gd.DrawMode].Draw(gd.Sprite, gd.Position, gd.SourceRectangle, gd.DrawColor, gd.Rotation, gd.Origin, gd.Scale, gd.Effects, gd.Depth);
             }
+
+            //Draw each child
+            foreach (GameObject child in g)
+                DrawGameObject(child, spriteBatches);
         }
 
         public void Add(GameObject g)
