@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
-    public class Label : GameObject
+    public class Label : MenuItem
     {
         //Text
         protected string text;
@@ -17,13 +17,11 @@ namespace XoticEngine.GameObjects.MenuItems
         //Colors
         private Color textColor, backColor;
         //Background
-        private Rectangle backRect;
         private Texture2D backTex;
 
         public Label(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color textColor, Color backColor)
-            : base(name, backRect.Location.ToVector2(), 0, Vector2.Zero, depth)
+            : base(name, backRect, 0, Vector2.Zero, depth)
         {
-            this.backRect = backRect;
             this.text = text;
             this.font = font;
             this.textColor = textColor;
@@ -34,9 +32,8 @@ namespace XoticEngine.GameObjects.MenuItems
             CalculateTextPosition();
         }
         public Label(string name, Rectangle backRect, float depth, string text, SpriteFont font, Color textColor, Texture2D background, Color backColor)
-            : base(name, backRect.Location.ToVector2(), 0, Vector2.Zero, depth)
+            : base(name, backRect, 0, Vector2.Zero, depth)
         {
-            this.backRect = backRect;
             this.text = text;
             this.font = font;
             this.textColor = textColor;
@@ -53,13 +50,13 @@ namespace XoticEngine.GameObjects.MenuItems
             switch (alignment.Horizontal)
             {
                 case HorizontalAlignment.Left:
-                    textPos.X = backRect.Left;
+                    textPos.X = ClickRectangle.Left;
                     break;
                 case HorizontalAlignment.Center:
-                    textPos.X = backRect.Center.X - font.MeasureString(text).X / 2;
+                    textPos.X = ClickRectangle.Center.X - font.MeasureString(text).X / 2;
                     break;
                 case HorizontalAlignment.Right:
-                    textPos.X = backRect.Right - font.MeasureString(text).X;
+                    textPos.X = ClickRectangle.Right - font.MeasureString(text).X;
                     break;
             }
 
@@ -67,13 +64,13 @@ namespace XoticEngine.GameObjects.MenuItems
             switch (alignment.Vertical)
             {
                 case VerticalAlignment.Top:
-                    textPos.Y = backRect.Top;
+                    textPos.Y = ClickRectangle.Top;
                     break;
                 case VerticalAlignment.Center:
-                    textPos.Y = backRect.Center.Y - font.MeasureString(text).Y / 2;
+                    textPos.Y = ClickRectangle.Center.Y - font.MeasureString(text).Y / 2;
                     break;
                 case VerticalAlignment.Bottom:
-                    textPos.Y = backRect.Bottom - font.MeasureString(text).Y;
+                    textPos.Y = ClickRectangle.Bottom - font.MeasureString(text).Y;
                     break;
             }
         }
@@ -81,7 +78,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public override void Draw(SpriteBatchHolder spriteBatches)
         {
             //Draw the background
-            spriteBatches[DrawModes.Gui].Draw(backTex, backRect, null, backColor, 0, Vector2.Zero, SpriteEffects.None, MathHelper.Clamp(Depth + float.Epsilon, 0, 1));
+            spriteBatches[DrawModes.Gui].Draw(backTex, ClickRectangle, null, backColor, 0, Vector2.Zero, SpriteEffects.None, MathHelper.Clamp(Depth + float.Epsilon, 0, 1));
             //Draw the text
             spriteBatches[DrawModes.Gui].DrawString(font, text, textPos, textColor, 0, Vector2.Zero, 1, SpriteEffects.None, Depth);
             
@@ -94,7 +91,6 @@ namespace XoticEngine.GameObjects.MenuItems
             set
             {
                 base.RelativePosition = value;
-                backRect.Location = Position.ToPoint();
                 CalculateTextPosition();
             }
         }
@@ -133,16 +129,6 @@ namespace XoticEngine.GameObjects.MenuItems
         { get { return textColor; } set { textColor = value; } }
         public Color BackColor
         { get { return backColor; } set { backColor = value; } }
-        //Background
-        public Rectangle BackRectangle
-        {
-            get { return backRect; }
-            set
-            {
-                backRect = value;
-                CalculateTextPosition();
-            }
-        }
         public Texture2D BackTexture
         { get { return backTex; } set { backTex = value; } }
     }

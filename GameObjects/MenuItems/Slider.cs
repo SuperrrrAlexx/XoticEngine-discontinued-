@@ -8,16 +8,15 @@ using XoticEngine.Input;
 
 namespace XoticEngine.GameObjects.MenuItems
 {
-    public class Slider : GameObject
+    public class Slider : MenuItem
     {
         //Background
         Texture2D sliderBar, button;
         //Rectangles
-        Rectangle buttonBox, backRect;
+        Rectangle backRect;
         //Colors
         Color barColor, buttonColor;
         //Button
-        bool dragging = false;
         Vector2 buttonOffset;
         //Slider values
         int offsetRight, maxValue, prevAmount;
@@ -28,7 +27,7 @@ namespace XoticEngine.GameObjects.MenuItems
         public event ValueEvent OnValueChange;
 
         public Slider(string name, Rectangle backRect, float depth, Vector2 buttonOffset, int offsetRight, Texture2D sliderBar, Texture2D sliderButton, int values)
-            : base(name, backRect.Location.ToVector2(), 0, Vector2.Zero, depth)
+            : base(name, backRect, 0, Vector2.Zero, depth)
         {
             //Background
             this.sliderBar = sliderBar;
@@ -41,14 +40,14 @@ namespace XoticEngine.GameObjects.MenuItems
             //Offset
             this.buttonOffset = buttonOffset;
             this.offsetRight = offsetRight;
-            this.buttonBox = new Rectangle(0, 0, button.Width, button.Height);
-            this.buttonBox.Location = (Position + buttonOffset + new Vector2(-button.Width / 2 + buttonOffset.X, backRect.Height / 2 - button.Height / 2 + buttonOffset.Y)).ToPoint();
+            this.clickRect = new Rectangle(0, 0, button.Width, button.Height);
+            this.clickRect.Location = (Position + buttonOffset + new Vector2(-button.Width / 2 + buttonOffset.X, backRect.Height / 2 - button.Height / 2 + buttonOffset.Y)).ToPoint();
             //Slider values
             this.maxValue = values - 1;
             this.valueWidth = (float)(backRect.Width - (buttonOffset.X + offsetRight)) / maxValue;
         }
         public Slider(string name, Rectangle backRect, float depth, Vector2 buttonOffset, int offsetRight, Texture2D sliderBar, Color barColor, Texture2D sliderButton, Color buttonColor, int values)
-            : base(name, backRect.Location.ToVector2(), 0, Vector2.Zero, depth)
+            : base(name, backRect, 0, Vector2.Zero, depth)
         {
             //Background
             this.sliderBar = sliderBar;
@@ -61,8 +60,8 @@ namespace XoticEngine.GameObjects.MenuItems
             //Offset
             this.buttonOffset = buttonOffset;
             this.offsetRight = offsetRight;
-            this.buttonBox = new Rectangle(0, 0, button.Width, button.Height);
-            this.buttonBox.Location = (Position + buttonOffset + new Vector2(-button.Width / 2 + buttonOffset.X, backRect.Height / 2 - button.Height / 2 + buttonOffset.Y)).ToPoint();
+            this.clickRect = new Rectangle(0, 0, button.Width, button.Height);
+            this.clickRect.Location = (Position + buttonOffset + new Vector2(-button.Width / 2 + buttonOffset.X, backRect.Height / 2 - button.Height / 2 + buttonOffset.Y)).ToPoint();
             //Slider values
             this.maxValue = values - 1;
             this.valueWidth = (float)(backRect.Width - (buttonOffset.X + offsetRight)) / maxValue;
@@ -73,19 +72,12 @@ namespace XoticEngine.GameObjects.MenuItems
             //Update the previous value
             prevAmount = amount;
 
-            //Start/stop dragging
-            if (InputManager.Mouse.LeftPressed())
-                if (buttonBox.Contains(InputManager.Mouse.Position))
-                    dragging = true;
-            if (!InputManager.Mouse.LeftDown())
-                dragging = false;
-
             //Drag the button
-            if (dragging)
+            if (LeftMouseDown)
                 amount = (int)MathHelper.Clamp((InputManager.Mouse.Position.X - (Position.X + buttonOffset.X - valueWidth / 2)) / valueWidth, 0, maxValue);
 
             //Set the button position and bounding box
-            buttonBox.Location = new Point((int)(Position.X + buttonOffset.X + amount * valueWidth - button.Width / 2), buttonBox.Location.Y);
+            clickRect.Location = new Point((int)(Position.X + buttonOffset.X + amount * valueWidth - button.Width / 2), clickRect.Location.Y);
 
             //Call the OnValueChange event
             if (prevAmount != amount && OnValueChange != null)
@@ -97,7 +89,7 @@ namespace XoticEngine.GameObjects.MenuItems
         {
             //Draw the bar and button
             spriteBatches[DrawModes.Gui].Draw(sliderBar, backRect, null, barColor, 0, Vector2.Zero, SpriteEffects.None, MathHelper.Clamp(Depth + float.Epsilon, 0, 1));
-            spriteBatches[DrawModes.Gui].Draw(button, buttonBox, null, buttonColor, 0, Vector2.Zero, SpriteEffects.None, Depth);
+            spriteBatches[DrawModes.Gui].Draw(button, clickRect, null, buttonColor, 0, Vector2.Zero, SpriteEffects.None, Depth);
 
             base.Draw(spriteBatches);
         }
@@ -110,13 +102,11 @@ namespace XoticEngine.GameObjects.MenuItems
                 base.RelativePosition = value;
                 //Set the background and button locations
                 backRect.Location = Position.ToPoint();
-                buttonBox.Location = (Position + buttonOffset + new Vector2(amount * valueWidth - button.Width / 2, backRect.Height / 2 - button.Height / 2 + buttonOffset.Y)).ToPoint();
+                clickRect.Location = (Position + buttonOffset + new Vector2(amount * valueWidth - button.Width / 2, backRect.Height / 2 - button.Height / 2 + buttonOffset.Y)).ToPoint();
             }
         }
         public int Value
         { get { return amount; } set { amount = value; } }
-        public bool Dragging
-        { get { return dragging; } }
         //Colors
         public Color BarColor
         { get { return barColor; } set { barColor = value; } }

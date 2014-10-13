@@ -23,8 +23,6 @@ namespace XoticEngine.GameObjects.MenuItems
         private bool enabled = true;
         private int maxLines;
         private string baseText;
-        //Click event
-        public event InputManager.ClickEvent OnClick;
 
         public Textbox(string name, Rectangle backRect, float depth, SpriteFont font, Color textColor, Color backColor)
             : base(name, backRect, depth, "", font, textColor, backColor)
@@ -48,26 +46,19 @@ namespace XoticEngine.GameObjects.MenuItems
             //Set the cursor position
             cursorPos = TextPosition;
             //Calculate how many lines of text can be displayed
-            maxLines = Math.Max(1, BackRectangle.Height / Font.LineSpacing);
+            maxLines = Math.Max(1, ClickRectangle.Height / Font.LineSpacing);
 
             //Hook into keyboard and mouse input
             InputManager.OnCharEntered += OnCharEntered;
             InputManager.OnKeyPressed += OnKeyPressed;
-            InputManager.OnClick += OnMouseClick;
         }
 
-        private void OnMouseClick(object sender, ClickEventArgs e)
-        {
-            //Fire the event
-            if (ClickRectangle.Contains(InputManager.Mouse.Position) && OnClick != null)
-                OnClick(this, e);
-        }
         private void OnCharEntered(object sender, CharEventArgs c)
         {
             if (enabled)
             {
                 //Check if the new amount of lines is smaller than maxLines, add the character to the text
-                string newText = Font.Wrap(baseText + c.Character, BackRectangle.Width);
+                string newText = Font.Wrap(baseText + c.Character, ClickRectangle.Width);
                 if (newText.Split(new string[] { "\n" }, StringSplitOptions.None).Length <= maxLines)
                     Text += c.Character;
 
@@ -136,7 +127,7 @@ namespace XoticEngine.GameObjects.MenuItems
             set
             {
                 baseText = value;
-                text = Font.Wrap(baseText, BackRectangle.Width);
+                text = Font.Wrap(baseText, ClickRectangle.Width);
             }
         }
         public bool Enabled
@@ -162,7 +153,5 @@ namespace XoticEngine.GameObjects.MenuItems
         { get { return maxLines; } set { maxLines = value; } }
         public bool UseRealTime
         { get { return useRealTime; } set { useRealTime = value; } }
-        public Rectangle ClickRectangle
-        { get { return BackRectangle; } }
     }
 }

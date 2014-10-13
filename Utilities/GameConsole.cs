@@ -194,7 +194,7 @@ namespace XoticEngine.Utilities
                 for (int i = log.Count - 1; i >= 0; i--)
                 {
                     //Calculate the text position
-                    Vector2 linePos = new Vector2(5, inputBox.BackRectangle.Top - inputBox.Font.LineSpacing * (log.Count - i));
+                    Vector2 linePos = new Vector2(5, inputBox.ClickRectangle.Top - inputBox.Font.LineSpacing * (log.Count - i));
 
                     //Check if the text position is above the screen
                     if (linePos.Y < 0)
