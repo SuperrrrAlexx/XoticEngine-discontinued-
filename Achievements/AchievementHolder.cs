@@ -36,18 +36,21 @@ namespace XoticEngine.Achievements
 
         internal static void Update()
         {
-            if (current != null)
+            if (enabled)
             {
-                //Update the current achievement
-                current.Update();
+                if (current != null)
+                {
+                    //Update the current achievement
+                    current.Update();
 
-                //Check if the achievement is done
-                if (current.Done)
-                    current = null;
+                    //Check if the achievement is done
+                    if (current.Done)
+                        current = null;
+                }
+                //Check if the queue contains achievements
+                else if (queue.Count > 0)
+                    current = queue.Dequeue();
             }
-            //Check if the queue contains achievements
-            else if (queue.Count > 0)
-                current = queue.Dequeue();
         }
         internal static void Draw(SpriteBatchHolder s)
         {
