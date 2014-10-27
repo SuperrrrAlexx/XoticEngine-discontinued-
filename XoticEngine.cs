@@ -37,7 +37,7 @@ namespace XoticEngine
                 currentState.Update();
         }
 
-        public static void AddGameState(GameState g)
+        internal static void AddGameState(GameState g)
         {
             //Check if the gamestate is null
             if (g == null)

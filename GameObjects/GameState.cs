@@ -21,6 +21,9 @@ namespace XoticEngine.GameObjects
         {
             this.Name = name;
             gameObjects = new Dictionary<string, List<GameObject>>();
+
+            //Add this gamestate
+            X.AddGameState(this);
         }
 
         public virtual void Update()
