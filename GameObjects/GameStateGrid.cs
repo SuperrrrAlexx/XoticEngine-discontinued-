@@ -9,14 +9,22 @@ namespace XoticEngine.GameObjects
 {
     public class GameStateGrid : GameState
     {
-        private readonly int cellWidth, cellHeight, gridWidth, gridHeight;
+        private Vector2 cellSize;
+        private readonly int gridWidth, gridHeight;
         private GameObject[,] grid;
 
-        public GameStateGrid(string name, int cellWidth, int cellHeight, int gridWidth, int gridHeight)
+        public GameStateGrid(string name, int gridWidth, int gridHeight)
             : base(name)
         {
-            this.cellWidth = cellWidth;
-            this.cellHeight = cellHeight;
+            this.cellSize = Vector2.Zero;
+            this.gridWidth = gridWidth;
+            this.gridHeight = gridHeight;
+            grid = new GameObject[gridWidth, gridHeight];
+        }
+        public GameStateGrid(string name, Vector2 cellSize, int gridWidth, int gridHeight)
+            : base(name)
+        {
+            this.cellSize = cellSize;
             this.gridWidth = gridWidth;
             this.gridHeight = gridHeight;
             grid = new GameObject[gridWidth, gridHeight];
@@ -48,7 +56,7 @@ namespace XoticEngine.GameObjects
             {
                 //Set the parent for the new grid object
                 if (value != null)
-                    value.Parent = new GameObject("grid[" + x + ", " + y + "]", new Vector2(x * cellWidth, y * cellHeight));
+                    value.Parent = new GameObject("grid[" + x + ", " + y + "]", new Vector2(x * CellWidth, y * CellHeight));
                 //Remove the parent for the old grid object
                 if (grid[x, y] != null)
                     grid[x, y].Parent = null;
@@ -56,10 +64,12 @@ namespace XoticEngine.GameObjects
                 grid[x, y] = value;
             }
         }
-        public int CellWidth
-        { get { return cellWidth; } }
-        public int CellHeight
-        { get { return cellHeight; } }
+        public Vector2 CellSize
+        { get { return cellSize; } set { cellSize = value; } }
+        public float CellWidth
+        { get { return cellSize.X; } set { cellSize.X = value; } }
+        public float CellHeight
+        { get { return cellSize.Y; } set { cellSize.Y = value; } }
         public int GridWidth
         { get { return gridWidth; } }
         public int GridHeight

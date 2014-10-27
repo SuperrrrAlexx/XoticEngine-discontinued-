@@ -14,6 +14,7 @@ namespace XoticEngine.GameObjects
         public readonly string Name;
         //Drawing
         private float depth;
+        private bool isIXDrawable;
         //Kinematics
         private Vector2 position, relativePosition, origin;
         private float rotation, relativeRotation;
@@ -23,8 +24,22 @@ namespace XoticEngine.GameObjects
         private GameObject parent;
         private Dictionary<string, List<GameObject>> children = new Dictionary<string, List<GameObject>>();
 
+        public GameObject(string name)
+        {
+            isIXDrawable = this is IXDrawable;
+
+            this.Name = name;
+            this.relativePosition = Vector2.Zero;
+            this.relativeRotation = 0.0f;
+            this.origin = Vector2.Zero;
+            this.relativeScale = Vector2.One;
+            this.depth = 0;
+            this.kinematics = new KinematicProperties(this);
+        }
         public GameObject(string name, Vector2 position)
         {
+            isIXDrawable = this is IXDrawable;
+
             this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = 0.0f;
@@ -35,6 +50,8 @@ namespace XoticEngine.GameObjects
         }
         public GameObject(string name, Vector2 position, float rotation, Vector2 origin, float depth)
         {
+            isIXDrawable = this is IXDrawable;
+
             this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
@@ -45,6 +62,8 @@ namespace XoticEngine.GameObjects
         }
         public GameObject(string name, Vector2 position, float rotation, Vector2 origin, Vector2 scale, float depth)
         {
+            isIXDrawable = this is IXDrawable;
+
             this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
@@ -146,11 +165,13 @@ namespace XoticEngine.GameObjects
         //Drawing
         public float Depth
         { get { return depth; } set { depth = value; } }
+        internal bool IXDrawable
+        { get { return isIXDrawable; } }
         //Kinematics
         public KinematicProperties Kinematics
         { get { return kinematics; } }
         public Vector2 Position
-        { get { return position; } }
+        { get { return position; } set { RelativePosition = value; } }
         public virtual Vector2 RelativePosition
         {
             get { return relativePosition; }
@@ -161,7 +182,7 @@ namespace XoticEngine.GameObjects
             }
         }
         public float Rotation
-        { get { return rotation; } }
+        { get { return rotation; } set { RelativeRotation = value; } }
         public float RelativeRotation
         {
             get { return relativeRotation; }
@@ -174,7 +195,7 @@ namespace XoticEngine.GameObjects
         public Vector2 Origin
         { get { return origin; } set { origin = value; } }
         public Vector2 Scale
-        { get { return scale; } }
+        { get { return scale; } set { RelativeScale = value; } }
         public Vector2 RelativeScale
         {
             get { return relativeScale; }
