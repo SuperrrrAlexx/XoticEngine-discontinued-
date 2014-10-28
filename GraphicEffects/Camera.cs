@@ -13,7 +13,7 @@ namespace XoticEngine.GraphicEffects
         private float zoom, rotation;
         private float smoothness = 1;
         private bool applyOnUpdate;
-        private Rectangle bounds;
+        private Rectangle? bounds = null;
 
         //Camera shake
         private Vector2 shake, shakeAmount, nextPoint;
@@ -89,10 +89,8 @@ namespace XoticEngine.GraphicEffects
         private void ConstrainBounds()
         {
             //Constrain the x and y to the bounds
-            if (bounds.Width > 0)
-                position.X = MathHelper.Clamp(position.X, bounds.Left + size.X / 2, bounds.Right - size.X / 2);
-            if (bounds.Height > 0)
-                position.Y = MathHelper.Clamp(position.Y, bounds.Top + size.Y / 2, bounds.Bottom - size.Y / 2);
+            if (bounds.HasValue)
+                position = Vector2.Clamp(position, bounds.Value.Location.ToVector2() + size / 2, new Vector2(bounds.Value.Right - size.X / 2, bounds.Value.Bottom - size.Y / 2));
         }
 
         public void Reset()
@@ -111,6 +109,7 @@ namespace XoticEngine.GraphicEffects
             //Save the position as the next and current position
             this.nextPosition = position;
             this.position = position;
+            UpdateMatrix();
         }
 
         public void Shake(Vector2 shakeAmount, float speed, double time)
@@ -135,7 +134,7 @@ namespace XoticEngine.GraphicEffects
 
         public Matrix TransformMatrix
         { get { return transform; } }
-        public Rectangle Bounds
+        public Rectangle? Bounds
         {
             get { return bounds; }
             set
@@ -161,8 +160,8 @@ namespace XoticEngine.GraphicEffects
             get { return nextPosition; }
             set
             {
-                nextPosition = Vector2.Clamp(value, bounds.Location.ToVector2() + size / 2, new Vector2(bounds.Right, bounds.Bottom) - size / 2); ;
-                UpdateMatrix();
+                nextPosition = value;
+                Update();
             }
         }
         public float Zoom

@@ -12,6 +12,16 @@ namespace XoticEngine.ParticleSystem
     {
         private Animation animation;
 
+        public AnimationParticle(Animation animation, Color color, double ttl)
+            : base(animation.CurrentFrame, color, ttl)
+        {
+            this.animation = animation;
+        }
+        public AnimationParticle(Vector2 speed, Animation animation, Color color, double ttl)
+            : base(speed, animation.CurrentFrame, color, ttl)
+        {
+            this.animation = animation;
+        }
         public AnimationParticle(Vector2 speed, Vector2 scale, float rotation, float rotationSpeed, Animation animation, Color color, double ttl)
             : base(speed, scale, rotation, rotationSpeed, animation.CurrentFrame, color, ttl)
         {

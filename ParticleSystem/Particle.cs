@@ -21,6 +21,38 @@ namespace XoticEngine.ParticleSystem
         private Color color;
         private Vector2 origin;
 
+        public Particle(Texture2D texture, Color color, double ttl)
+        {
+            //Position, speed, rotation
+            this.speed = Vector2.Zero;
+            this.scale = Vector2.One;
+            this.rotation = 0;
+            this.rotationSpeed = 0;
+            //Texture
+            this.texture = texture;
+            this.color = color;
+            this.origin = new Vector2((float)texture.Width / 2, (float)texture.Height / 2);
+            //Time to live
+            this.initialTTL = ttl;
+            this.ttl = ttl;
+            this.lifeTime = RealLifeTime;
+        }
+        public Particle(Vector2 speed, Texture2D texture, Color color, double ttl)
+        {
+            //Position, speed, rotation
+            this.speed = speed;
+            this.scale = Vector2.One;
+            this.rotation = 0;
+            this.rotationSpeed = 0;
+            //Texture
+            this.texture = texture;
+            this.color = color;
+            this.origin = new Vector2((float)texture.Width / 2, (float)texture.Height / 2);
+            //Time to live
+            this.initialTTL = ttl;
+            this.ttl = ttl;
+            this.lifeTime = RealLifeTime;
+        }
         public Particle(Vector2 speed, Vector2 scale, float rotation, float rotationSpeed, Texture2D texture, Color color, double ttl)
         {
             //Position, speed, rotation
