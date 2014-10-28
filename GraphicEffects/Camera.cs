@@ -12,7 +12,7 @@ namespace XoticEngine.GraphicEffects
         private Vector2 position, nextPosition, size;
         private float zoom, rotation;
         private float smoothness = 1;
-        private bool applyOnUpdate;
+        private bool applyOnUpdate = true;
         private Rectangle? bounds = null;
 
         //Camera shake
@@ -20,18 +20,27 @@ namespace XoticEngine.GraphicEffects
         private float shakeSpeed;
         private double shakeTime;
 
-        public Camera(bool applyOnUpdate)
+        public Camera()
         {
-            this.applyOnUpdate = applyOnUpdate;
-            this.size = new Vector2(Graphics.Viewport.Width, Graphics.Viewport.Height);
             Reset();
         }
-        public Camera(Vector2 position, float zoom, float rotation, bool applyOnUpdate)
+        public Camera(Vector2 position)
         {
-            this.applyOnUpdate = applyOnUpdate;
-            this.size = new Vector2(Graphics.Viewport.Width, Graphics.Viewport.Height);
-            this.position = position;
-            UpdateMatrix(position, zoom, rotation);
+            Reset();
+            SetPosition(position);
+        }
+        public Camera(Vector2 position, float zoom)
+        {
+            Reset();
+            this.zoom = zoom;
+            SetPosition(position);
+        }
+        public Camera(Vector2 position, float zoom, float rotation)
+        {
+            Reset();
+            this.zoom = zoom;
+            this.rotation = rotation;
+            SetPosition(position);
         }
 
         public void Update()
@@ -96,7 +105,8 @@ namespace XoticEngine.GraphicEffects
         public void Reset()
         {
             //Reset all the variables
-            position = Graphics.Viewport.Center.ToVector2();
+            size = new Vector2(Graphics.Viewport.Width, Graphics.Viewport.Height);
+            SetPosition(Graphics.Viewport.Center.ToVector2());
             zoom = 1.0f;
             rotation = 0.0f;
             shake = Vector2.Zero;
@@ -109,6 +119,8 @@ namespace XoticEngine.GraphicEffects
             //Save the position as the next and current position
             this.nextPosition = position;
             this.position = position;
+
+            //Update the matrix
             UpdateMatrix();
         }
 
