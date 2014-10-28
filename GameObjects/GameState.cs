@@ -44,9 +44,9 @@ namespace XoticEngine.GameObjects
             g.Draw(spriteBatches);
 
             //Draw the IXDrawable
-            if (g.IXDrawable)
+            if (g is IXDrawable)
             {
-                IXDrawable gd = g as IXDrawable;
+                IXDrawable gd = (IXDrawable)g;
                 if (gd.Sprite != null)
                     spriteBatches[gd.DrawMode].Draw(gd.Sprite, gd.Position, gd.SourceRectangle, gd.DrawColor, gd.Rotation, gd.Origin, gd.Scale, gd.Effects, gd.Depth);
             }
