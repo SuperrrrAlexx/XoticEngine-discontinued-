@@ -151,7 +151,7 @@ namespace XoticEngine.Input
                 }
 
                 //Move the object
-                moveAmount *= (float)Time.DeltaTime;
+                moveAmount *= TimeF.DeltaTime;
                 movable.Move(moveAmount);
             }
 

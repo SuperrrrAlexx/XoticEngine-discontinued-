@@ -43,17 +43,17 @@ namespace XoticEngine
         public static float GetAngle(this Vector2 v)
         {
             //Get the angle from a direction vector (after normalizing)
-            return (float)Math.Atan2(v.Y / v.Length(), v.X / v.Length());
+            return MathF.Atan2(v.Y / v.Length(), v.X / v.Length());
         }
 
         public static Vector2 GetDirection(this double a)
         {
-            //Get the direction from an angle
-            return new Vector2((float)Math.Cos(a), (float)Math.Sin(a));
+            return ((float)a).GetDirection();
         }
         public static Vector2 GetDirection(this float a)
         {
-            return ((double)a).GetDirection();
+            //Get the direction from an angle
+            return new Vector2(MathF.Cos(a), MathF.Sin(a));
         }
 
         public static Vector2 Rotate(this Vector2 v, float radians)

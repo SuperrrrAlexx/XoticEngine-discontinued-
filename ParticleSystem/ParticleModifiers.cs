@@ -136,7 +136,7 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            p.Speed += acceleration * (float)Time.DeltaTime;
+            p.Speed += acceleration * TimeF.DeltaTime;
         }
 
         public bool UpdateOnce { get { return false; } }
@@ -339,9 +339,9 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            double angle = X.Random.NextDouble() * MathHelper.TwoPi;
+            float angle = X.Random.NextFloat() * MathHelper.TwoPi;
             float distance = X.Random.NextFloat();
-            p.Position += new Vector2((float)Math.Cos(angle) * width * distance, (float)Math.Sin(angle) * height * distance);
+            p.Position += new Vector2(MathF.Cos(angle) * width * distance, MathF.Sin(angle) * height * distance);
         }
 
         public bool UpdateOnce
@@ -365,8 +365,8 @@ namespace XoticEngine.ParticleSystem
 
         public void Update(Particle p)
         {
-            double angle = X.Random.NextDouble() * MathHelper.TwoPi;
-            p.Position += new Vector2((float)Math.Cos(angle) * width, (float)Math.Sin(angle) * height);
+            float angle = X.Random.NextFloat() * MathHelper.TwoPi;
+            p.Position += new Vector2(MathF.Cos(angle) * width, MathF.Sin(angle) * height);
         }
 
         public bool UpdateOnce

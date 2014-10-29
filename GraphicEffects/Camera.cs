@@ -135,7 +135,7 @@ namespace XoticEngine.GraphicEffects
             //Move the camera to the next point
             Vector2 move = nextPoint - shake;
             move.Normalize();
-            move *= shakeSpeed * (float)Time.DeltaTime;
+            move *= shakeSpeed * TimeF.DeltaTime;
 
             //Check if move is not overshooting
             if (move.Length() >= Vector2.Distance(shake, nextPoint))

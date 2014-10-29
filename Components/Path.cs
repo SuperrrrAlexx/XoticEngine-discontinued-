@@ -92,7 +92,7 @@ namespace XoticEngine.Components
             if (!ended || repeat)
             {
                 //Get how much to move
-                float move = speed * (float)Time.DeltaTime;
+                float move = speed * TimeF.DeltaTime;
 
                 while (Vector2.Distance(position, path[next]) <= move && !ended)
                 {

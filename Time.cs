@@ -26,4 +26,14 @@ namespace XoticEngine
         public static double GameSpeed
         { get { return gameSpeed; } set { gameSpeed = value; } }
     }
+
+    public static class TimeF
+    {
+        public static float DeltaTime
+        { get { return (float)Time.DeltaTime; } }
+        public static float RealTime
+        { get { return (float)Time.RealTime; } }
+        public static float GameSpeed
+        { get { return (float)Time.GameSpeed; } set { Time.GameSpeed = value; } }
+    }
 }

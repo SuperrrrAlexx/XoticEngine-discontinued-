@@ -73,8 +73,8 @@ namespace XoticEngine.ParticleSystem
         public virtual void Update()
         {
             //Move and rotate the particle
-            position += speed * (float)Time.DeltaTime;
-            rotation += rotationSpeed * (float)Time.DeltaTime;
+            position += speed * TimeF.DeltaTime;
+            rotation += rotationSpeed * TimeF.DeltaTime;
 
             //Set the lifetime
             lifeTime = RealLifeTime;

@@ -52,7 +52,7 @@ namespace XoticEngine.Achievements
             {
                 case "up":
                     //Move up
-                    position.Y -= speed * (float)Time.RealTime;
+                    position.Y -= speed * TimeF.RealTime;
 
                     //Check if the achievement is fully on the screen
                     if (position.Y <= Graphics.Viewport.Height - backRect.Height)
@@ -64,7 +64,7 @@ namespace XoticEngine.Achievements
                     break;
                 case "down":
                     //Move down
-                    position.Y += speed * (float)Time.RealTime;
+                    position.Y += speed * TimeF.RealTime;
 
                     //Check if the achievement is fully off the screen
                     if (position.Y >= Graphics.Viewport.Height)

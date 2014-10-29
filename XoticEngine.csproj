@@ -120,6 +120,7 @@
     <Compile Include="Input\GamePadInput.cs" />
     <Compile Include="Input\IClickable.cs" />
     <Compile Include="Input\MouseInput.cs" />
+    <Compile Include="MathF.cs" />
     <Compile Include="ParticleSystem\AnimationParticle.cs" />
     <Compile Include="Components\Path.cs" />
     <Compile Include="SpriteBatchHolder.cs" />
