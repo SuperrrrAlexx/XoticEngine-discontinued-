@@ -9,7 +9,7 @@ namespace XoticEngine.GraphicEffects
     public class Camera
     {
         private Matrix transform;
-        private Vector2 position, nextPosition, size;
+        private Vector2 position, nextPosition;
         private float zoom, rotation;
         private float smoothness = 1;
         private bool applyOnUpdate = true;
@@ -75,10 +75,10 @@ namespace XoticEngine.GraphicEffects
             ConstrainBounds();
 
             //Create the transform matrix
-            transform = Matrix.CreateTranslation(new Vector3(-position - shake, 0)) *
+            transform = Matrix.CreateTranslation(new Vector3(-(position + shake), 0)) *
                 Matrix.CreateRotationZ(rotation) *
                 Matrix.CreateScale(new Vector3(zoom, zoom, 1)) *
-                Matrix.CreateTranslation(new Vector3(size * 0.5f, 0));
+                Matrix.CreateTranslation(new Vector3(Graphics.Viewport.Center.ToVector2(), 0));
 
             //Apply the matrix
             if (applyOnUpdate)
@@ -99,13 +99,12 @@ namespace XoticEngine.GraphicEffects
         {
             //Constrain the x and y to the bounds
             if (bounds.HasValue)
-                position = Vector2.Clamp(position, bounds.Value.Location.ToVector2() + size / 2, new Vector2(bounds.Value.Right - size.X / 2, bounds.Value.Bottom - size.Y / 2));
+                position = Vector2.Clamp(position, bounds.Value.Location.ToVector2() + Size / 2, new Vector2(bounds.Value.Right, bounds.Value.Bottom) - Size / 2);
         }
 
         public void Reset()
         {
             //Reset all the variables
-            size = new Vector2(Graphics.Viewport.Width, Graphics.Viewport.Height);
             SetPosition(Graphics.Viewport.Center.ToVector2());
             zoom = 1.0f;
             rotation = 0.0f;
@@ -119,9 +118,6 @@ namespace XoticEngine.GraphicEffects
             //Save the position as the next and current position
             this.nextPosition = position;
             this.position = position;
-
-            //Update the matrix
-            UpdateMatrix();
         }
 
         public void Shake(Vector2 shakeAmount, float speed, double time)
@@ -144,6 +140,8 @@ namespace XoticEngine.GraphicEffects
                 shake += move;
         }
 
+        public bool ApplyOnUpdate
+        { get { return applyOnUpdate; } set { applyOnUpdate = value; } }
         public Matrix TransformMatrix
         { get { return transform; } }
         public Rectangle? Bounds
@@ -156,26 +154,14 @@ namespace XoticEngine.GraphicEffects
             }
         }
         public Vector2 Size
-        {
-            get { return size; }
-            set
-            {
-                size = value;
-                UpdateMatrix();
-            }
-        }
+        { get { return Graphics.Viewport.Size().ToVector2() / zoom; } }
         public float Smoothness
         { get { return 1.0f - smoothness; } set { smoothness = 1.0f - value; } }
         //Position and rotation
         public Vector2 Position
-        {
-            get { return nextPosition; }
-            set
-            {
-                nextPosition = value;
-                Update();
-            }
-        }
+        { get { return position; } set { position = value; } }
+        public Vector2 NextPosition
+        { get { return nextPosition; } set { nextPosition = value; } }
         public float Zoom
         {
             get { return zoom; }

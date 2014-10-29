@@ -39,6 +39,12 @@ namespace XoticEngine
             return new Point((int)Math.Round(v.X, MidpointRounding.AwayFromZero), (int)Math.Round(v.Y, MidpointRounding.AwayFromZero));
         }
 
+        //Rectangle size
+        public static Point Size(this Rectangle r)
+        {
+            return new Point(r.Width, r.Height);
+        }
+
         //Angle and direction
         public static float GetAngle(this Vector2 v)
         {
