@@ -100,7 +100,12 @@ namespace XoticEngine.GraphicEffects
         {
             //Constrain the x and y to the bounds
             if (bounds.HasValue)
-                position = Vector2.Clamp(position, bounds.Value.Location.ToVector2() + Size / 2, new Vector2(bounds.Value.Right, bounds.Value.Bottom) - Size / 2);
+            {
+                Vector2 topLeft = bounds.Value.Location.ToVector2() + Size / 2;
+                Vector2 bottomRight = new Vector2(bounds.Value.Right, bounds.Value.Bottom) - Size / 2;
+                position = Vector2.Clamp(position, topLeft, bottomRight);
+                nextPosition = Vector2.Clamp(nextPosition, topLeft, bottomRight);
+            }
         }
 
         public void Reset()
