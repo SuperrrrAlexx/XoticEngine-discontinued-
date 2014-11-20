@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using XoticEngine.GameObjects;
 
 namespace XoticEngine.GraphicEffects
 {
-    public class Camera
+    public sealed class Camera : IMovable
     {
         private Matrix transform;
         private Vector2 position, nextPosition;
@@ -118,6 +119,11 @@ namespace XoticEngine.GraphicEffects
             //Save the position as the next and current position
             this.nextPosition = position;
             this.position = position;
+        }
+
+        public void Move(Vector2 amount)
+        {
+            NextPosition += amount;
         }
 
         public void Shake(Vector2 shakeAmount, float speed, double time)
