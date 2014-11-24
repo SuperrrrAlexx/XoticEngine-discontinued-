@@ -107,19 +107,19 @@ namespace XoticEngine.Input
             }
 
             //Move IMovable
-            public static void MoveOnInput(IMovable movable, MoveKeys keys, float speed)
+            public static void MoveOnInput(IMoveable movable, MoveKeys keys, float speed)
             {
                 MoveOnInput(movable, moveKeyArrays[keys], new Vector2(speed));
             }
-            public static void MoveOnInput(IMovable movable, MoveKeys keys, Vector2 speed)
+            public static void MoveOnInput(IMoveable movable, MoveKeys keys, Vector2 speed)
             {
                 MoveOnInput(movable, moveKeyArrays[keys], speed);
             }
-            public static void MoveOnInput(IMovable movable, Keys?[] keys, float speed)
+            public static void MoveOnInput(IMoveable movable, Keys?[] keys, float speed)
             {
                 MoveOnInput(movable, keys, new Vector2(speed));
             }
-            public static void MoveOnInput(IMovable movable, Keys?[] keys, Vector2 speed)
+            public static void MoveOnInput(IMoveable movable, Keys?[] keys, Vector2 speed)
             {
                 //Check if the array contains 4 keys
                 if (keys.Length != 4)

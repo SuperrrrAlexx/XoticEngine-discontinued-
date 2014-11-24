@@ -7,7 +7,7 @@ using XoticEngine.GameObjects;
 
 namespace XoticEngine.GraphicEffects
 {
-    public sealed class Camera : IMovable
+    public sealed class Camera : IMoveable, ICloneable
     {
         private Matrix transform;
         private Vector2 position, nextPosition;
@@ -70,6 +70,7 @@ namespace XoticEngine.GraphicEffects
             UpdateMatrix();
         }
 
+        //Update the transform matrix
         public void UpdateMatrix()
         {
             //Check the bounds
@@ -126,6 +127,7 @@ namespace XoticEngine.GraphicEffects
             this.position = position;
         }
 
+        //IMoveable
         public void Move(Vector2 amount)
         {
             NextPosition += amount;
@@ -149,6 +151,17 @@ namespace XoticEngine.GraphicEffects
                 shake = nextPoint;
             else
                 shake += move;
+        }
+
+        //ICloneable
+        public object Clone()
+        {
+            return new Camera(position, zoom, rotation)
+            {
+                ApplyOnUpdate = this.applyOnUpdate,
+                Bounds = this.bounds,
+                Smoothness = this.smoothness
+            };
         }
 
         public bool ApplyOnUpdate

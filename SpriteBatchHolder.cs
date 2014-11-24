@@ -24,6 +24,7 @@ namespace XoticEngine
             }
         }
 
+        //Begin and end sprite batches
         public void Begin()
         {
             //Begin all spritebatches with their respective settings

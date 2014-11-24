@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using XoticEngine.GameObjects.MenuItems;
+using XoticEngine.GraphicEffects;
 using XoticEngine.Utilities;
 
 namespace XoticEngine.GameObjects
@@ -14,7 +15,10 @@ namespace XoticEngine.GameObjects
         //Name
         public readonly string Name;
 
-        Dictionary<string, List<GameObject>> gameObjects;
+        //The game objects
+        private Dictionary<string, List<GameObject>> gameObjects;
+        //The camera
+        private Camera camera;
 
         public GameState(string name)
             : base()
@@ -26,11 +30,16 @@ namespace XoticEngine.GameObjects
             X.AddGameState(this);
         }
 
+        //Update and draw game objects and camera
         public virtual void Update()
         {
             //Update each gameobject
             foreach (GameObject g in this)
                 g.Update();
+
+            //Update the camera
+            if (camera != null)
+                camera.Update();
         }
         public virtual void Draw(SpriteBatchHolder spriteBatches)
         {
@@ -56,6 +65,7 @@ namespace XoticEngine.GameObjects
                 DrawGameObject(child, spriteBatches);
         }
 
+        //Add and remove game objects
         public void Add(GameObject g)
         {
             //Check if the key exists
@@ -77,6 +87,7 @@ namespace XoticEngine.GameObjects
             gameObjects[g.Name].Remove(g);
         }
 
+        //Begin and end state
         public virtual void BeginState()
         {
             GameConsole.Warning("Gamestate " + Name + " started.");
@@ -95,6 +106,7 @@ namespace XoticEngine.GameObjects
             return Name.GetHashCode();
         }
 
+        //IEnumerable
         public IEnumerator<GameObject> GetEnumerator()
         {
             for (int list = 0; list < gameObjects.Count; list++)
@@ -117,5 +129,7 @@ namespace XoticEngine.GameObjects
         }
         public Dictionary<string, List<GameObject>> GameObjects
         { get { return gameObjects; } }
+        public Camera Camera
+        { get { return camera; } set { camera = value; } }
     }
 }

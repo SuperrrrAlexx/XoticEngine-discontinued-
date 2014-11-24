@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace XoticEngine.GameObjects
 {
-    public interface IMovable
+    public interface IMoveable
     {
         void Move(Vector2 amount);
     }

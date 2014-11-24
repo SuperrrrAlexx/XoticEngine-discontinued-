@@ -64,6 +64,7 @@ namespace XoticEngine.GameObjects
             this.kinematics = new KinematicProperties(this);
         }
 
+        //Update and draw
         public virtual void Update()
         {
             //Update each child
@@ -77,6 +78,7 @@ namespace XoticEngine.GameObjects
                 g.Draw(spriteBatches);
         }
 
+        //Parent and children
         public void AddChild(GameObject child)
         {
             //Remove the child from its old parent
@@ -142,6 +144,7 @@ namespace XoticEngine.GameObjects
             return Name.GetHashCode();
         }
 
+        //IEnumerable
         public IEnumerator<GameObject> GetEnumerator()
         {
             for (int list = 0; list < children.Count; list++)

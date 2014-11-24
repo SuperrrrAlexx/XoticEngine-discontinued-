@@ -7,11 +7,10 @@ namespace XoticEngine.Input
 {
     public static partial class InputManager
     {
-        //Events
-        //Mouse
+        //Mouse events
         public delegate void ClickEvent(object sender, ClickEventArgs e);
         public static event ClickEvent OnClick;
-        //Keyboard
+        //Keyboard events
         public delegate void KeyEvent(object sender, KeyEventArgs k);
         public static event KeyEvent OnKeyPressed;
         public delegate void CharEvent(object sender, CharEventArgs c);

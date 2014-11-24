@@ -99,7 +99,7 @@
     <Compile Include="Components\Stopwatch.cs" />
     <Compile Include="Enumerators.cs" />
     <Compile Include="GameObjects\IXDrawable.cs" />
-    <Compile Include="GameObjects\IMovable.cs" />
+    <Compile Include="GameObjects\IMoveable.cs" />
     <Compile Include="GameObjects\MenuItems\MenuItem.cs" />
     <Compile Include="GameObjects\SpriteGameObject.cs" />
     <Compile Include="Input\CharEventArgs.cs" />

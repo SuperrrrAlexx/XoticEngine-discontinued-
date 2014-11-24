@@ -33,6 +33,7 @@ namespace XoticEngine
             base.Initialize();
         }
 
+        //Update and draw
         protected override void Update(GameTime gameTime)
         {
             //Save the game time
@@ -51,7 +52,6 @@ namespace XoticEngine
 
             base.Update(gameTime);
         }
-
         protected override void Draw(GameTime gameTime)
         {
             //Save the game time
