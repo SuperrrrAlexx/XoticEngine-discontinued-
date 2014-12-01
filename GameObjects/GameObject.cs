@@ -12,8 +12,6 @@ namespace XoticEngine.GameObjects
     {
         //Name
         public readonly string Name;
-        //Drawing
-        private float depth;
         //Kinematics
         private Vector2 position, relativePosition, origin;
         private float rotation, relativeRotation;
@@ -30,7 +28,6 @@ namespace XoticEngine.GameObjects
             this.relativeRotation = 0.0f;
             this.origin = Vector2.Zero;
             this.relativeScale = Vector2.One;
-            this.depth = 0;
             this.kinematics = new KinematicProperties(this);
         }
         public GameObject(string name, Vector2 position)
@@ -40,27 +37,24 @@ namespace XoticEngine.GameObjects
             this.relativeRotation = 0.0f;
             this.origin = Vector2.Zero;
             this.relativeScale = Vector2.One;
-            this.depth = 0;
             this.kinematics = new KinematicProperties(this);
         }
-        public GameObject(string name, Vector2 position, float rotation, Vector2 origin, float depth)
+        public GameObject(string name, Vector2 position, float rotation, Vector2 origin)
         {
             this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
             this.origin = origin;
             this.relativeScale = Vector2.One;
-            this.depth = depth;
             this.kinematics = new KinematicProperties(this);
         }
-        public GameObject(string name, Vector2 position, float rotation, Vector2 origin, Vector2 scale, float depth)
+        public GameObject(string name, Vector2 position, float rotation, Vector2 origin, Vector2 scale)
         {
             this.Name = name;
             this.relativePosition = position;
             this.relativeRotation = rotation;
             this.origin = origin;
             this.relativeScale = scale;
-            this.depth = depth;
             this.kinematics = new KinematicProperties(this);
         }
 
@@ -156,9 +150,6 @@ namespace XoticEngine.GameObjects
             return GetEnumerator();
         }
 
-        //Drawing
-        public float Depth
-        { get { return depth; } set { depth = value; } }
         //Kinematics
         public KinematicProperties Kinematics
         { get { return kinematics; } }

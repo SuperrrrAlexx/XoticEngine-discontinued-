@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using XoticEngine.Components;
+using XoticEngine.GameObjects;
 using XoticEngine.Shapes;
 
 namespace XoticEngine
@@ -12,6 +13,11 @@ namespace XoticEngine
     public static class Extensions
     {
         //Drawing
+        public static void Draw(this SpriteBatch s, IXDrawable d)
+        {
+            //Draw an IXDrawable
+            s.Draw(d.Sprite, d.Position, d.SourceRectangle, d.DrawColor, d.Rotation, d.Origin, d.Scale, d.Effects, d.Depth);
+        }
         public static void DrawLine(this SpriteBatch s, Line l, Color color)
         {
             //Calculate the direction

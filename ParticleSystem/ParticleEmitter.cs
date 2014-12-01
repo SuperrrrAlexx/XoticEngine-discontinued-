@@ -15,6 +15,7 @@ namespace XoticEngine.ParticleSystem
         //Drawing
         private DrawModes drawMode = DrawModes.AlphaBlend;
         private bool oldestInFront = true;
+        private float depth;
         //Particles
         private Particle particle;
         private List<Particle> particles;
@@ -23,9 +24,10 @@ namespace XoticEngine.ParticleSystem
         private List<IParticleModifier> modList, modOnceList;
 
         public ParticleEmitter(string name, Vector2 position, float depth, Particle particle, double particlesPerSecond, List<IParticleModifier> modifierList)
-            : base(name, position, 0, Vector2.Zero, depth)
+            : base(name, position, 0, Vector2.Zero)
         {
             this.prevPosition = position;
+            this.depth = depth;
 
             //Particles
             this.particle = particle;
@@ -140,5 +142,7 @@ namespace XoticEngine.ParticleSystem
         { get { return oldestInFront; } set { oldestInFront = value; } }
         public List<Particle> Particles
         { get { return particles; } }
+        public float Depth
+        { get { return depth; } set { depth = value; } }
     }
 }

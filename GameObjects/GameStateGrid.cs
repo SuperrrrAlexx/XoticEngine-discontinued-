@@ -9,31 +9,31 @@ namespace XoticEngine.GameObjects
 {
     public class GameStateGrid : GameState
     {
-        private Vector2 cellSize;
+        private Point cellSize;
         private readonly int gridWidth, gridHeight;
-        private GameObject[,] grid;
+        private IGridObject[,] grid;
 
         public GameStateGrid(string name, int gridWidth, int gridHeight)
             : base(name)
         {
-            this.cellSize = Vector2.Zero;
+            this.cellSize = Point.Zero;
             this.gridWidth = gridWidth;
             this.gridHeight = gridHeight;
-            grid = new GameObject[gridWidth, gridHeight];
+            grid = new IGridObject[gridWidth, gridHeight];
         }
-        public GameStateGrid(string name, Vector2 cellSize, int gridWidth, int gridHeight)
+        public GameStateGrid(string name, int gridWidth, int gridHeight, Point cellSize)
             : base(name)
         {
             this.cellSize = cellSize;
             this.gridWidth = gridWidth;
             this.gridHeight = gridHeight;
-            grid = new GameObject[gridWidth, gridHeight];
+            grid = new IGridObject[gridWidth, gridHeight];
         }
 
         public override void Update()
         {
             //Update each GameObject in the grid
-            foreach (GameObject g in grid)
+            foreach (IGridObject g in grid)
                 if (g != null)
                     g.Update();
 
@@ -42,33 +42,28 @@ namespace XoticEngine.GameObjects
         public override void Draw(SpriteBatchHolder spriteBatches)
         {
             //Draw each GameObject in the grid
-            foreach (GameObject g in grid)
-                if (g != null)
-                    g.Draw(spriteBatches);
+            for (int x = 0; x < grid.GetLength(0); x++)
+                for (int y = 0; y < grid.GetLength(1); y++)
+                    if (grid[x, y] != null)
+                        grid[x, y].Draw(spriteBatches, new Point(x * CellWidth, y * CellHeight));
 
             base.Draw(spriteBatches);
         }
 
-        public GameObject this[int x, int y]
+        public IGridObject this[int x, int y]
         {
             get { return grid[x, y]; }
             set
             {
-                //Set the parent for the new grid object
-                if (value != null)
-                    value.Parent = new GameObject("grid[" + x + ", " + y + "]", new Vector2(x * CellWidth, y * CellHeight));
-                //Remove the parent for the old grid object
-                if (grid[x, y] != null)
-                    grid[x, y].Parent = null;
                 //Save the new grid object
                 grid[x, y] = value;
             }
         }
-        public Vector2 CellSize
+        public Point CellSize
         { get { return cellSize; } set { cellSize = value; } }
-        public float CellWidth
+        public int CellWidth
         { get { return cellSize.X; } set { cellSize.X = value; } }
-        public float CellHeight
+        public int CellHeight
         { get { return cellSize.Y; } set { cellSize.Y = value; } }
         public int GridWidth
         { get { return gridWidth; } }

@@ -10,6 +10,7 @@ namespace XoticEngine.GameObjects.MenuItems
     public abstract class MenuItem : GameObject, IClickable
     {
         protected Rectangle clickRect;
+        protected float depth = 0;
         //Click event
         private bool hovering, leftDown, middleDown, rightDown;
         public event InputManager.ClickEvent OnClick;
@@ -20,14 +21,16 @@ namespace XoticEngine.GameObjects.MenuItems
             this.clickRect = backRect;
         }
         public MenuItem(string name, Rectangle backRect, float rotation, Vector2 origin, float depth)
-            : base(name, backRect.Location.ToVector2(), rotation, origin, depth)
+            : base(name, backRect.Location.ToVector2(), rotation, origin)
         {
             this.clickRect = backRect;
+            this.depth = depth;
         }
         public MenuItem(string name, Rectangle backRect, float rotation, Vector2 origin, Vector2 scale, float depth)
-            : base(name, backRect.Location.ToVector2(), rotation, origin, scale, depth)
+            : base(name, backRect.Location.ToVector2(), rotation, origin, scale)
         {
             this.clickRect = backRect;
+            this.depth = depth;
         }
 
         public override void Update()
@@ -101,5 +104,7 @@ namespace XoticEngine.GameObjects.MenuItems
         { get { return middleDown; } }
         public bool RightMouseDown
         { get { return rightDown; } }
+        public float Depth
+        { get { return depth; } set { depth = value; } }
     }
 }

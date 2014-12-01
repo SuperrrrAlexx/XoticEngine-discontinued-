@@ -98,6 +98,8 @@
     <Compile Include="Assets.cs" />
     <Compile Include="Components\Stopwatch.cs" />
     <Compile Include="Enumerators.cs" />
+    <Compile Include="GameObjects\GridSpriteObject.cs" />
+    <Compile Include="GameObjects\IGridObject.cs" />
     <Compile Include="GameObjects\IXDrawable.cs" />
     <Compile Include="GameObjects\IMoveable.cs" />
     <Compile Include="GameObjects\MenuItems\MenuItem.cs" />

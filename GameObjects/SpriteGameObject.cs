@@ -14,6 +14,7 @@ namespace XoticEngine.GameObjects
         private Color color = Color.White;
         private Rectangle? sourceRect = null;
         private SpriteEffects effects = SpriteEffects.None;
+        private float depth = 0;
 
         public SpriteGameObject(string name, Texture2D texture, Vector2 position)
             : base(name, position)
@@ -27,16 +28,18 @@ namespace XoticEngine.GameObjects
             this.color = color;
         }
         public SpriteGameObject(string name, Texture2D texture, Vector2 position, Color color, float rotation, Vector2 origin, float depth)
-            : base(name, position, rotation, origin, depth)
+            : base(name, position, rotation, origin)
         {
             this.texture = texture;
             this.color = color;
+            this.depth = depth;
         }
         public SpriteGameObject(string name, Texture2D texture, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, float depth)
-            : base(name, position, rotation, origin, scale, depth)
+            : base(name, position, rotation, origin, scale)
         {
             this.texture = texture;
             this.color = color;
+            this.depth = depth;
         }
 
         public DrawModes DrawMode
@@ -49,5 +52,7 @@ namespace XoticEngine.GameObjects
         { get { return sourceRect; } set { sourceRect = value; } }
         public SpriteEffects Effects
         { get { return effects; } set { effects = value; } }
+        public float Depth
+        { get { return depth; } set { depth = value; } }
     }
 }
