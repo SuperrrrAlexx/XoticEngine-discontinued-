@@ -45,6 +45,14 @@ namespace XoticEngine
             return new Point((int)Math.Round(v.X, MidpointRounding.AwayFromZero), (int)Math.Round(v.Y, MidpointRounding.AwayFromZero));
         }
 
+        //Vector2
+        public static Vector2 GetNormalized(this Vector2 v)
+        {
+            Vector2 n = v;
+            n.Normalize();
+            return n;
+        }
+
         //Rectangle size
         public static Point Size(this Rectangle r)
         {
